@@ -1,20 +1,47 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { NativeBaseProvider } from 'native-base'
+import { NavigationContainer } from '@react-navigation/native'
+import TabNav from './components/TabNav'
+import { StatusBar } from 'expo-status-bar'
+
+import { useColorScheme } from 'react-native'
+import { useState, createContext } from 'react'
+import { bgImageDark, bgImageLight } from './utils/images'
+
+import * as Haptics from 'expo-haptics'
+
+export const ThemeContext = createContext()
+export const UserContext = createContext()
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [user, setUser] = useState(null)
+  const [room, setRoom] = useState('none')
+  const [colorScheme, setColorScheme] = useState(useColorScheme())
+  const [bgImage, setBgImage] = useState(
+    useColorScheme() === 'dark' ? bgImageDark : bgImageLight
+  )
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  const toggleTheme = () => {
+    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
+    setBgImage(colorScheme === 'dark' ? bgImageLight : bgImageDark)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+  }
+
+  return (
+    <SafeAreaProvider>
+      <StatusBar style='light' hidden={true} />
+      <NavigationContainer>
+        <NativeBaseProvider>
+          <UserContext.Provider value={{ user, setUser, room, setRoom }}>
+            <ThemeContext.Provider
+              value={{ colorScheme, bgImage, toggleTheme }}
+            >
+              <TabNav colorScheme={colorScheme} />
+            </ThemeContext.Provider>
+          </UserContext.Provider>
+        </NativeBaseProvider>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  )
+}
