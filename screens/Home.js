@@ -1,24 +1,13 @@
-import { useContext } from 'react'
-import { Box, Text, Button, VStack } from 'native-base'
-import { ImageBackground } from 'react-native'
-import { ThemeContext, UserContext } from '../App'
-
+import React, { useContext } from 'react';
+import { ThemeContext, UserContext } from '../App';
+import ThemedBox from '../components/ThemedBox';
+import { Text, Button, VStack, Box } from 'native-base';
+import { ImageBackground } from 'react-native';
 import { styles } from '../utils/styles'
 
 export default function HomeScreen({ navigation }) {
-  const { colorScheme, bgImage, toggleTheme } = useContext(ThemeContext)
-  const { user } = useContext(UserContext)
-
-  let themeContainerStyle
-  let themeTextStyle
-
-  if (colorScheme === 'dark') {
-    themeContainerStyle = styles.darkContainer
-    themeTextStyle = styles.darkThemeText
-  } else {
-    themeContainerStyle = styles.lightContainer
-    themeTextStyle = styles.lightThemeText
-  }
+  const { colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle } = useContext(ThemeContext);
+  const { user } = useContext(UserContext);
 
   return (
     <Box style={[styles.container, themeContainerStyle]}>
@@ -46,5 +35,6 @@ export default function HomeScreen({ navigation }) {
         </VStack>
       </ImageBackground>
     </Box>
-  )
+  );
 }
+

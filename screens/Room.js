@@ -47,7 +47,7 @@ export default function Room({ route, navigation }) {
 
   useEffect(() => {
     function fetchMessages() {
-      fetch(`https://youth-connect-backend.onrender.com/api/v1/messages`)
+      fetch(`https://youth-connect-server.onrender.com/api/v1/messages`)
         .then(res => res.json())
         .then(data => {
           let filteredMessages = data.filter(message => message.room === room);

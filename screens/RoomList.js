@@ -24,7 +24,7 @@ export default function RoomList({ navigation }) {
 
   useLayoutEffect(() => {
     function fetchRooms() {
-      fetch('https://youth-connect-backend.onrender.com/api/v1/rooms')
+      fetch('api/v1/rooms')
         .then(res => res.json())
         .then(data => {
           setRooms(data);
