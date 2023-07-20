@@ -40,10 +40,11 @@ export default function Room({ route, navigation }) {
     };
 
     socket.emit('MESSAGE', payload);
+    setMessages([...messages, payload]);
   };
-
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
+
 
   useEffect(() => {
     function fetchMessages() {
@@ -59,6 +60,13 @@ export default function Room({ route, navigation }) {
 
     fetchMessages();
   }, [room]);
+
+  useEffect(() => {
+    socket.on('NEW MESSAGE', (payload) => {
+      console.log(payload);
+      setMessages([...messages, payload]);
+    })
+  }, [socket])
 
   return (
     <Box
@@ -142,6 +150,7 @@ export default function Room({ route, navigation }) {
             <FormControl>
               <FormControl.Label>Send a message</FormControl.Label>
               <Input
+                value={message}
                 style={themeContainerStyle}
                 onChangeText={setMessage}
               />

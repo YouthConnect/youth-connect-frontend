@@ -16,7 +16,7 @@ import { colors, styles } from '../utils/styles';
 
 import base64 from 'base-64';
 
-export default function Login() {
+export default function Login({ navigation }) {
   const { colorScheme, bgImage } = useContext(ThemeContext);
   const { user, setUser } = useContext(UserContext);
 
@@ -42,9 +42,13 @@ export default function Login() {
         method: 'POST',
         headers: headers,
       })
-        .then(res => res.json())
+
+        .then(res =>
+          res.json())
         .then(data => {
+          console.log('this is data', data);
           setUser(data.user);
+          navigation.navigate('Home');
         })
         .catch(err => console.error(err));
     } catch (error) {

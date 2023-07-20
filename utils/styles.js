@@ -9,6 +9,10 @@ export const colors = {
   darkBackground: '#5aa5aa',
 }
 
+const blueGreen = {
+  green1: '#D9ED92'
+}
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,

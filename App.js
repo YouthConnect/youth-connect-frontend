@@ -15,7 +15,7 @@ export const ThemeContext = createContext()
 export const UserContext = createContext()
 
 export default function App() {
-  const [user, setUser] = useState({username: 'name'})
+  const [user, setUser] = useState(null)
   const [room, setRoom] = useState('none')
   const [colorScheme, setColorScheme] = useState(useColorScheme())
   const [themeContainerStyle, setThemeContainerStyle] = useState()
