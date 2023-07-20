@@ -38,7 +38,7 @@ export default function Login() {
       let headers = new Headers();
       let user = base64.encode(`${username}:${password}`);
       headers.set('Authorization', `Basic ${user}`);
-      fetch('https://youth-connect-backend.onrender.com/signin', {
+      fetch('https://youth-connect-server.onrender.com/signin', {
         method: 'POST',
         headers: headers,
       })
