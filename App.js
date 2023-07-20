@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import TabNav from './components/TabNav'
 import { StatusBar } from 'expo-status-bar'
 
-import { useColorScheme } from 'react-native'
+import { useColorScheme } from 'react-native'  
 import { useState, createContext } from 'react'
 import { bgImageDark, bgImageLight } from './utils/images'
 
@@ -18,14 +18,30 @@ export default function App() {
   const [user, setUser] = useState(null)
   const [room, setRoom] = useState('none')
   const [colorScheme, setColorScheme] = useState(useColorScheme())
+  const [themeContainerStyle, setThemeContainerStyle] = useState()
+  const [themeTextStyle, setThemeTextStyle] = useState();
   const [bgImage, setBgImage] = useState(
     useColorScheme() === 'dark' ? bgImageDark : bgImageLight
   )
 
   const toggleTheme = () => {
+    // colorScheme === 'dark' ? setToLightTheme() : setToDarkTheme()
     setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
     setBgImage(colorScheme === 'dark' ? bgImageLight : bgImageDark)
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+  }
+
+  // let themeContainerStyle
+  // let themeTextStyle
+
+  function setToDarkTheme(){
+    setThemeContainerStyle(styles.darkContainer)
+    setThemeTextStyle(styles.darkThemeText)
+  };
+
+  function setToLightTheme(){
+    setThemeContainerStyle(styles.lightContainer)
+    setThemeTextStyle(styles.lightThemeText)
   }
 
   return (
@@ -35,7 +51,7 @@ export default function App() {
         <NativeBaseProvider>
           <UserContext.Provider value={{ user, setUser, room, setRoom }}>
             <ThemeContext.Provider
-              value={{ colorScheme, bgImage, toggleTheme }}
+              value={{ colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle }}
             >
               <TabNav colorScheme={colorScheme} />
             </ThemeContext.Provider>

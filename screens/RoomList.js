@@ -5,6 +5,7 @@ import { ImageBackground } from 'react-native';
 
 import { ThemeContext, UserContext } from '../App';
 import { styles } from '../utils/styles';
+import socket from '../utils/socket';
 
 export default function RoomList({ navigation }) {
   const { colorScheme, bgImage } = useContext(ThemeContext);
@@ -24,7 +25,7 @@ export default function RoomList({ navigation }) {
 
   useLayoutEffect(() => {
     function fetchRooms() {
-      fetch('https://youth-connect-backend.onrender.com/api/v1/rooms')
+      fetch('https://youth-connect-server.onrender.com/api/v1/rooms')
         .then(res => res.json())
         .then(data => {
           setRooms(data);
@@ -65,6 +66,7 @@ export default function RoomList({ navigation }) {
                         bg='transparent'
                         onPress={() => {
                           navigation.navigate('Room');
+                          socket.emit('join', {room: room.name});
                           setRoom(room.name);
                         }}
                       >
