@@ -41,6 +41,8 @@ export default function Room({ route, navigation }) {
 
     socket.emit('MESSAGE', payload);
     setMessages([...messages, payload]);
+
+    setMessage('');
   };
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
