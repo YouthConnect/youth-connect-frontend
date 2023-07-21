@@ -4,6 +4,7 @@ import ThemedBox from '../components/ThemedBox';
 import { Text, Button, VStack, Box } from 'native-base';
 import { ImageBackground } from 'react-native';
 import { styles } from '../utils/styles'
+import {ThemedText} from '../components/ThemedText'
 
 export default function HomeScreen({ navigation }) {
   const { colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle } = useContext(ThemeContext);
