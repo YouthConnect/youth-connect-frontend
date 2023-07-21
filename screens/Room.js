@@ -48,7 +48,7 @@ export default function Room({ route, navigation }) {
   const [message, setMessage] = useState('');
 
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     function fetchMessages() {
       try {
       fetch(`https://youth-connect-server.onrender.com/api/v1/messages`)
@@ -67,9 +67,14 @@ export default function Room({ route, navigation }) {
     fetchMessages();
   }, [room]);
 
+  const addNewMessage = (message) => {
+    
+    setMessages([...messages, message])
+  }
+
   useEffect(() => {
     console.log('messages: ', messages)
-    socket.on('NEW MESSAGE', (payload) => setMessages([...messages, JSON.parse(payload)]))   
+    socket.on('NEW MESSAGE', (payload) => addNewMessage)   
   }, [socket, messages])
 
   return (
