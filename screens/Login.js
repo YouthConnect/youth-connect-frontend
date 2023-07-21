@@ -50,7 +50,7 @@ export default function Login({ navigation }) {
           setUser(data.user);
           navigation.navigate('Home');
         })
-        .catch(err => console.error(err));
+        
     } catch (error) {
       console.log('ERROR SIGNING IN: ', error);
     }
