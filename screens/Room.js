@@ -48,34 +48,45 @@ export default function Room({ route, navigation }) {
   const [message, setMessage] = useState('');
 
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // Fetch initial messages from the server when entering the room
     function fetchMessages() {
       try {
-      fetch(`https://youth-connect-server.onrender.com/api/v1/messages`)
-        .then(res => res.json())
-        .then(data => {
-          let filteredMessages = data.filter(message => message.room === room);
-
-          setMessages(filteredMessages);
-        }) 
-      } catch(err) {
-        console.error('ERROR FECTHING MESSAGES: ', err)
-      } 
-        
+        fetch(`https://youth-connect-server.onrender.com/api/v1/messages`)
+          .then((res) => res.json())
+          .then((data) => {
+            let filteredMessages = data.filter((message) => message.room === room);
+            setMessages(filteredMessages);
+          })
+          .catch((err) => {
+            console.error('ERROR FETCHING MESSAGES: ', err);
+          });
+      } catch (err) {
+        console.error('ERROR FETCHING MESSAGES: ', err);
+      }
     }
 
     fetchMessages();
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      socket.off('NEW MESSAGE', addNewMessage);
+    };
   }, [room]);
 
-  const addNewMessage = (message) => {
-    
-    setMessages([...messages, message])
-  }
-
   useEffect(() => {
-    console.log('messages: ', messages)
-    socket.on('NEW MESSAGE', (payload) => addNewMessage)   
-  }, [socket, messages])
+    // Listen for new messages from the socket
+    socket.on('NEW MESSAGE', addNewMessage);
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      socket.off('NEW MESSAGE', addNewMessage);
+    };
+  }, [socket, addNewMessage]);
+
+  const addNewMessage = (payload) => {
+    setMessages((prevMessages) => [...prevMessages, payload]);
+  };
 
   return (
     <Box
