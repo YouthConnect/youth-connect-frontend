@@ -10,7 +10,7 @@ import {
 } from 'native-base';
 
 import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, KeyboardAvoidingView } from 'react-native';
 
 import * as Haptics from 'expo-haptics';
 
@@ -89,6 +89,11 @@ export default function Room({ route, navigation }) {
   };
 
   return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} // Adjust behavior based on the platform
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0} // Optional offset for iOS
+    >
     <Box
       style={[styles.container, themeContainerStyle]}
       safeArea
@@ -190,5 +195,6 @@ export default function Room({ route, navigation }) {
         )}
       </ImageBackground>
     </Box>
+    </KeyboardAvoidingView>
   );
 }
