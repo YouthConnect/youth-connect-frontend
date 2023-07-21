@@ -9,6 +9,7 @@ export const colors = {
   darkBackground: '#5aa5aa',
 }
 
+// coolors.co <-- get more styles
 const blueGreen = {
   green1: '#D9ED92'
 }

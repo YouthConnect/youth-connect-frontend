@@ -25,12 +25,15 @@ export default function RoomList({ navigation }) {
 
   useLayoutEffect(() => {
     function fetchRooms() {
+      try {
       fetch('https://youth-connect-server.onrender.com/api/v1/rooms')
         .then(res => res.json())
         .then(data => {
           setRooms(data);
         })
-        .catch(err => console.error(err));
+      } catch(err) {
+        console.error('ERROR FETCHING ROOMS: ', err)
+      }
     }
     fetchRooms();
   }, []);

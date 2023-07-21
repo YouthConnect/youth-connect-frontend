@@ -6,8 +6,9 @@ import TabNav from './components/TabNav'
 import { StatusBar } from 'expo-status-bar'
 
 import { useColorScheme } from 'react-native'  
-import { useState, createContext } from 'react'
+import { useState, useEffect, createContext } from 'react'
 import { bgImageDark, bgImageLight } from './utils/images'
+import { styles } from './utils/styles'
 
 import * as Haptics from 'expo-haptics'
 
@@ -15,34 +16,38 @@ export const ThemeContext = createContext()
 export const UserContext = createContext()
 
 export default function App() {
-  const [user, setUser] = useState(null)
-  const [room, setRoom] = useState('none')
-  const [colorScheme, setColorScheme] = useState(useColorScheme())
-  const [themeContainerStyle, setThemeContainerStyle] = useState()
+  
+  const [user, setUser] = useState(null);
+  const [room, setRoom] = useState('none');
+  const [colorScheme, setColorScheme] = useState(useColorScheme());
+  const [themeContainerStyle, setThemeContainerStyle] = useState();
   const [themeTextStyle, setThemeTextStyle] = useState();
-  const [bgImage, setBgImage] = useState(
-    useColorScheme() === 'dark' ? bgImageDark : bgImageLight
-  )
-
-  const toggleTheme = () => {
-    // colorScheme === 'dark' ? setToLightTheme() : setToDarkTheme()
-    setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
-    setBgImage(colorScheme === 'dark' ? bgImageLight : bgImageDark)
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-  }
-
-  // let themeContainerStyle
-  // let themeTextStyle
+  const [bgImage, setBgImage] = useState();
 
   function setToDarkTheme(){
     setThemeContainerStyle(styles.darkContainer)
     setThemeTextStyle(styles.darkThemeText)
+    setBgImage(bgImageDark)
+    setColorScheme('dark')
   };
 
   function setToLightTheme(){
     setThemeContainerStyle(styles.lightContainer)
     setThemeTextStyle(styles.lightThemeText)
+    setBgImage(bgImageLight)
+    setColorScheme('light')
   }
+
+  const toggleTheme = () => {
+    colorScheme === 'dark' ? setToLightTheme() : setToDarkTheme()
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+  }
+
+  useEffect(() => {
+    colorScheme === 'dark' ? setToDarkTheme() : setToLightTheme()
+  }, [colorScheme])
+
+
 
   return (
     <SafeAreaProvider>
@@ -51,8 +56,9 @@ export default function App() {
         <NativeBaseProvider>
           <UserContext.Provider value={{ user, setUser, room, setRoom }}>
             <ThemeContext.Provider
-              value={{ colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle }}
-            >
+               value={{ colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle }}
+              
+            > 
               <TabNav colorScheme={colorScheme} />
             </ThemeContext.Provider>
           </UserContext.Provider>

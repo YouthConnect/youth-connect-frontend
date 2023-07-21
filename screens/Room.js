@@ -8,7 +8,8 @@ import {
   Button,
   ScrollView,
 } from 'native-base';
-import React, { useEffect, useState, useContext } from 'react';
+
+import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
 import { ImageBackground } from 'react-native';
 
 import * as Haptics from 'expo-haptics';
@@ -41,35 +42,35 @@ export default function Room({ route, navigation }) {
 
     socket.emit('MESSAGE', payload);
     setMessages([...messages, payload]);
-
     setMessage('');
   };
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
 
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     function fetchMessages() {
+      try {
       fetch(`https://youth-connect-server.onrender.com/api/v1/messages`)
         .then(res => res.json())
         .then(data => {
           let filteredMessages = data.filter(message => message.room === room);
 
           setMessages(filteredMessages);
-        })
-        .catch(err => console.error(err));
+        }) 
+      } catch(err) {
+        console.error('ERROR FECTHING MESSAGES: ', err)
+      } 
+        
     }
 
     fetchMessages();
   }, [room]);
 
   useEffect(() => {
-    socket.on('NEW MESSAGE', (payload) => {
-      console.log('this is payload', payload);
-      setMessages([...messages, JSON.parse(payload)]);
-      console.log('bracket stuff', [...messages, payload]);
-    })
-  }, [socket])
+    console.log('messages: ', messages)
+    socket.on('NEW MESSAGE', (payload) => setMessages([...messages, JSON.parse(payload)]))   
+  }, [socket, messages])
 
   return (
     <Box
