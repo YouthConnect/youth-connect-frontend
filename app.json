@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "trychatapp",
-    "slug": "trychatapp",
+    "name": "youth-connect",
+    "slug": "youth-connect",
     "version": "1.3.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,23 +14,23 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.stormyfrolic.trychatapp"
+      "bundleIdentifier": "com.youthconnect.youth-connect"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#aaaa"
       },
-      "package": "com.stormyfrolic.trychatapp"
+      "package": "com.youthconnect.youth-connect"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "9bf4b201-b52f-4101-9d07-3d5910f736c5"
+        "projectId": "545ff028-5243-4b9f-a705-834bbe0097b9"
       }
     },
-    "owner": "stormyfrolic"
+    "owner": "youthconnect"
   }
 }
