@@ -6,6 +6,7 @@ import { ImageBackground } from 'react-native';
 import { ThemeContext, UserContext } from '../App';
 import { styles } from '../utils/styles';
 import socket from '../utils/socket';
+import { createRoom } from '../utils/APIFunctions';
 
 export default function RoomList({ navigation }) {
   const { colorScheme, bgImage } = useContext(ThemeContext);
@@ -37,6 +38,8 @@ export default function RoomList({ navigation }) {
     }
     fetchRooms();
   }, []);
+
+  
 
   return (
     <Box style={[styles.container, themeContainerStyle]}>

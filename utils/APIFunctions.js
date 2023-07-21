@@ -3,7 +3,7 @@
 // General API functions that the server currently supports
 // Use these functions anywhere in the front end to do things
 
-const createRoom = async payload => {
+export const createRoom = async payload => {
   const method = 'POST';
   const url = 'https://youth-connect-server.onrender.com/api/v1/rooms';
   const action = 'CREATING ROOM';
@@ -36,7 +36,7 @@ const createRoom = async payload => {
   // ...
 };
 
-const getRooms = async () => {
+export const getRooms = async () => {
   const method = 'GET';
   const url = 'https://youth-connect-server.onrender.com/api/v1/rooms';
   const action = 'GETTING ROOMS';
@@ -63,7 +63,7 @@ const getRooms = async () => {
   // ...
 };
 
-const deleteRoom = async payload => {
+export const deleteRoom = async payload => {
   const method = 'DELETE';
   const url = `https://youth-connect-server.onrender.com/api/v1/rooms/${id}`;
   const action = 'DELETING ROOM';
@@ -91,7 +91,7 @@ const deleteRoom = async payload => {
 };
 
 
-const deleteMessage = async (id) => {
+export const deleteMessage = async (id) => {
   const method = "DELETE";
   const url = `https://youth-connect-server.onrender.com/api/v1/messages/${id}`;
   const action = "DELETING MESSAGE";
@@ -118,7 +118,7 @@ const deleteMessage = async (id) => {
   // ...
 };
 
-const updateRoom = async payload => {
+export const updateRoom = async payload => {
   const method = 'PUT';
   const url = `https://youth-connect-server.onrender.com/api/v1/rooms/${payload.room}`;
   const action = 'UPDATING ROOM';
@@ -151,9 +151,9 @@ const updateRoom = async payload => {
   // ...
 };
 
-const createUser = async payload => {
+export const createUser = async payload => {
   const method = 'POST';
-  const url = 'https://youth-connect-server.onrender.com/api/v1/users';
+  const url = 'https://youth-connect-server.onrender.com/signup';
   const action = 'CREATING USER';
   let headers = new Headers();
   const body = {
@@ -182,7 +182,7 @@ const createUser = async payload => {
   // ...
 };
 
-const getUsers = async payload => {
+export const getUsers = async payload => {
   const method = 'GET';
   const url = 'https://youth-connect-server.onrender.com/api/v1/users';
   const action = 'GETTING USERS';
