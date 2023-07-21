@@ -68,8 +68,11 @@ export default function Room({ route, navigation }) {
   }, [room]);
 
   const addNewMessage = (message) => {
-    
     setMessages([...messages, message])
+  }
+
+  const isValidRoom = (room) => {
+    return room !== 'none' && room !== null && room !== undefined
   }
 
   useEffect(() => {
@@ -88,7 +91,7 @@ export default function Room({ route, navigation }) {
         style={{ flex: 1 }}
       >
         <Box mt={12}>
-          {room && room !== 'none' ? (
+          {isValidRoom(room) ? (
             <>
               <Text fontSize={'md'}>Signed in as: {user.username}</Text>
               <Text fontSize='md'>You are in room: {room}</Text>
@@ -103,7 +106,7 @@ export default function Room({ route, navigation }) {
             </Text>
           )}
 
-          {room && room !== 'none' && (
+          {isValidRoom(room) && (
             <Button
               size={'sm'}
               onPress={() => {
@@ -171,7 +174,7 @@ export default function Room({ route, navigation }) {
                 handleSubmit();
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               }}
-              disabled={!room || room === 'none' ? true : false}
+              disabled={!isValidRoom(room)}
             >
               Send
             </Button>

@@ -23,12 +23,14 @@ export default function App() {
   const [themeContainerStyle, setThemeContainerStyle] = useState();
   const [themeTextStyle, setThemeTextStyle] = useState();
   const [bgImage, setBgImage] = useState();
+  const [themeButtonStyle, setThemeButtonStyle] = useState();
 
   function setToDarkTheme(){
     setThemeContainerStyle(styles.darkContainer)
     setThemeTextStyle(styles.darkThemeText)
     setBgImage(bgImageDark)
     setColorScheme('dark')
+    setThemeButtonStyle(styles.darkThemeButton)
   };
 
   function setToLightTheme(){
@@ -36,6 +38,7 @@ export default function App() {
     setThemeTextStyle(styles.lightThemeText)
     setBgImage(bgImageLight)
     setColorScheme('light')
+    setThemeButtonStyle(styles.lightThemeButton)
   }
 
   const toggleTheme = () => {
@@ -56,7 +59,7 @@ export default function App() {
         <NativeBaseProvider>
           <UserContext.Provider value={{ user, setUser, room, setRoom }}>
             <ThemeContext.Provider
-               value={{ colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle }}
+               value={{ colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle, themeButtonStyle }}
               
             > 
               <TabNav colorScheme={colorScheme} />
