@@ -4,11 +4,13 @@ import { ThemeContext } from '../App'
 import { styles } from '../utils/styles'
 import { fonts} from '../utils/fonts'
 
-export default function ThemedText(text) {
-  const { themeStyles } = useContext(ThemeContext);
+
+export default function ThemedText({ text, fontSize, textAlign, mb}) {
+  const { themeTextStyle } = useContext(ThemeContext);
+
   return (
-    <Text style={[styles.themeTextStyle, themeStyles]}>
-{text}
+    <Text mb={mb} textAlign={textAlign} fontSize={fontSize} style={[styles.themeTextStyle, themeTextStyle]}>
+      {text}
     </Text>
   );
 }
