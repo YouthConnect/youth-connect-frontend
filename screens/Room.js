@@ -7,30 +7,30 @@ import {
   Center,
   Button,
   ScrollView,
-} from 'native-base';
+} from 'native-base'
 
-import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
-import { ImageBackground } from 'react-native';
+import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
+import { ImageBackground } from 'react-native'
 
-import * as Haptics from 'expo-haptics';
+import * as Haptics from 'expo-haptics'
 
-import { colors, styles } from '../utils/styles';
-import { UserContext, ThemeContext } from '../App';
-import socket from '../utils/socket';
+import { colors, styles } from '../utils/styles'
+import { UserContext, ThemeContext } from '../App'
+import socket from '../utils/socket'
 
 export default function Room({ route, navigation }) {
-  const { colorScheme, bgImage } = useContext(ThemeContext);
-  const { user, room, setRoom } = useContext(UserContext);
+  const { colorScheme, bgImage } = useContext(ThemeContext)
+  const { user, room, setRoom } = useContext(UserContext)
 
-  let themeContainerStyle;
-  let themeTextStyle;
+  let themeContainerStyle
+  let themeTextStyle
 
   if (colorScheme === 'dark') {
-    themeContainerStyle = styles.darkContainer;
-    themeTextStyle = styles.darkThemeText;
+    themeContainerStyle = styles.darkContainer
+    themeTextStyle = styles.darkThemeText
   } else {
-    themeContainerStyle = styles.lightContainer;
-    themeTextStyle = styles.lightThemeText;
+    themeContainerStyle = styles.lightContainer
+    themeTextStyle = styles.lightThemeText
   }
 
   const handleSubmit = () => {
@@ -38,55 +38,59 @@ export default function Room({ route, navigation }) {
       text: message,
       room: room,
       username: user.username,
-    };
+    }
 
-    socket.emit('MESSAGE', payload);
-    setMessages([...messages, payload]);
-    setMessage('');
-  };
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
+    socket.emit('MESSAGE', payload)
+    setMessages([...messages, payload])
+    setMessage('')
+  }
+  const [messages, setMessages] = useState([])
+  const [message, setMessage] = useState('')
 
-
-  useEffect(() => {
-    function fetchMessages() {
-      try {
+  function getAllMessagesMessages() {
+    try {
       fetch(`https://youth-connect-server.onrender.com/api/v1/messages`)
         .then(res => res.json())
         .then(data => {
-          let filteredMessages = data.filter(message => message.room === room);
+          let filteredMessages = data.filter(message => message.room === room)
 
-          setMessages(filteredMessages);
-        }) 
-      } catch(err) {
-        console.error('ERROR FECTHING MESSAGES: ', err)
-      } 
-        
+          setMessages(filteredMessages)
+        })
+    } catch (err) {
+      console.error('ERROR FECTHING MESSAGES: ', err)
     }
+  }
 
-    fetchMessages();
-  }, [room]);
+  useEffect(() => {
+    socket.emit('GET RECENT MESSAGES', room)
+  }, [room])
 
-  const addNewMessage = (message) => {
-    
+  const addNewMessage = message => {
+    console.log('NEW MESSAGE', message)
     setMessages([...messages, message])
   }
 
   useEffect(() => {
-    console.log('messages: ', messages)
-    socket.on('NEW MESSAGE', (payload) => addNewMessage)   
-  }, [socket, messages])
+    try {
+      socket.on('NEW MESSAGE', payload => {
+        addNewMessage(payload)
+      })
+    } catch (error) {
+      console.error('ERROR RECEIVING MESAGE', error)
+    }
+
+    try {
+      socket.on('SENDING RECENT MESSAGES', payload => {
+        setMessages(payload)
+      })
+    } catch (error) {
+      console.error('ERROR RECEVING RECENT MESSAGES', error)
+    }
+  }, [socket])
 
   return (
-    <Box
-      style={[styles.container, themeContainerStyle]}
-      safeArea
-    >
-      <ImageBackground
-        source={bgImage}
-        resizeMode='cover'
-        style={{ flex: 1 }}
-      >
+    <Box style={[styles.container, themeContainerStyle]} safeArea>
+      <ImageBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
         <Box mt={12}>
           {room && room !== 'none' ? (
             <>
@@ -94,11 +98,7 @@ export default function Room({ route, navigation }) {
               <Text fontSize='md'>You are in room: {room}</Text>
             </>
           ) : (
-            <Text
-              style={themeTextStyle}
-              textAlign={'center'}
-              fontSize={'lg'}
-            >
+            <Text style={themeTextStyle} textAlign={'center'} fontSize={'lg'}>
               Please join a room
             </Text>
           )}
@@ -107,9 +107,9 @@ export default function Room({ route, navigation }) {
             <Button
               size={'sm'}
               onPress={() => {
-                setMessages([]);
-                setRoom('none');
-                navigation.navigate('Rooms');
+                setMessages([])
+                setRoom('none')
+                navigation.navigate('Rooms')
               }}
             >
               Leave
@@ -123,12 +123,7 @@ export default function Room({ route, navigation }) {
           alignContent={'center'}
           contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
         >
-          <VStack
-            mt={10}
-            mb={50}
-            space={4}
-            alignItems='center'
-          >
+          <VStack mt={10} mb={50} space={4} alignItems='center'>
             {messages.length > 0 &&
               messages.map((message, i) => {
                 return (
@@ -143,14 +138,11 @@ export default function Room({ route, navigation }) {
                     rounded='md'
                     shadow={3}
                   >
-                    <Text
-                      style={themeTextStyle}
-                      fontSize={'md'}
-                    >
+                    <Text style={themeTextStyle} fontSize={'md'}>
                       {message.username}: {message.text}
                     </Text>
                   </Center>
-                );
+                )
               })}
           </VStack>
         </ScrollView>
@@ -168,8 +160,8 @@ export default function Room({ route, navigation }) {
               mt='2'
               colorScheme='cyan'
               onPress={() => {
-                handleSubmit();
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                handleSubmit()
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
               }}
               disabled={!room || room === 'none' ? true : false}
             >
@@ -179,5 +171,5 @@ export default function Room({ route, navigation }) {
         )}
       </ImageBackground>
     </Box>
-  );
+  )
 }

@@ -6,58 +6,55 @@ import {
   Heading,
   VStack,
   Button,
-} from 'native-base';
+} from 'native-base'
 
-import { ImageBackground } from 'react-native';
-import { ThemeContext, UserContext } from '../App';
+import { ImageBackground } from 'react-native'
+import { ThemeContext, UserContext } from '../App'
 
-import React, { useContext, useState } from 'react';
-import { colors, styles } from '../utils/styles';
+import React, { useContext, useState } from 'react'
+import { colors, styles } from '../utils/styles'
 
-import base64 from 'base-64';
+import base64 from 'base-64'
 
 export default function Login({ navigation }) {
-  const { colorScheme, bgImage } = useContext(ThemeContext);
-  const { user, setUser } = useContext(UserContext);
+  const { colorScheme, bgImage } = useContext(ThemeContext)
+  const { user, setUser } = useContext(UserContext)
 
-  let themeContainerStyle;
-  let themeTextStyle;
+  let themeContainerStyle
+  let themeTextStyle
 
   if (colorScheme === 'dark') {
-    themeContainerStyle = styles.darkContainer;
-    themeTextStyle = styles.darkThemeText;
+    themeContainerStyle = styles.darkContainer
+    themeTextStyle = styles.darkThemeText
   } else {
-    themeContainerStyle = styles.lightContainer;
-    themeTextStyle = styles.lightThemeText;
+    themeContainerStyle = styles.lightContainer
+    themeTextStyle = styles.lightThemeText
   }
 
   const handleSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
-      let headers = new Headers();
-      let user = base64.encode(`${username}:${password}`);
-      headers.set('Authorization', `Basic ${user}`);
+      let headers = new Headers()
+      let user = base64.encode(`${username}:${password}`)
+      headers.set('Authorization', `Basic ${user}`)
       fetch('https://youth-connect-server.onrender.com/signin', {
         method: 'POST',
         headers: headers,
       })
-
-        .then(res =>
-          res.json())
+        .then(res => res.json())
         .then(data => {
-          console.log('this is data', data);
-          setUser(data.user);
-          navigation.navigate('Home');
+          console.log('this is data', data)
+          setUser(data.user)
+          navigation.navigate('Home')
         })
-        
     } catch (error) {
-      console.log('ERROR SIGNING IN: ', error);
+      console.log('ERROR SIGNING IN: ', error)
     }
-  };
+  }
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   return (
     <ImageBackground
@@ -66,34 +63,17 @@ export default function Login({ navigation }) {
       style={{ flex: 1, ...themeContainerStyle }}
     >
       <Center w='100%'>
-        <Box
-          safeArea
-          p='2'
-          py='20'
-          w='90%'
-          maxW='290'
-        >
-          <Heading
-            mt='1'
-            style={themeTextStyle}
-            fontWeight='medium'
-            size='xs'
-          >
+        <Box safeArea p='2' py='20' w='90%' maxW='290'>
+          <Heading mt='1' style={themeTextStyle} fontWeight='medium' size='xs'>
             {user?.username
               ? `You're all set ${user?.username}`
               : 'Sign in to continue!'}
           </Heading>
 
-          <VStack
-            space={3}
-            mt='5'
-          >
+          <VStack space={3} mt='5'>
             <FormControl>
               <FormControl.Label>Username</FormControl.Label>
-              <Input
-                style={styles.darkContainer}
-                onChangeText={setUsername}
-              />
+              <Input style={styles.darkContainer} onChangeText={setUsername} />
             </FormControl>
             <FormControl>
               <FormControl.Label>Password</FormControl.Label>
@@ -115,5 +95,5 @@ export default function Login({ navigation }) {
         </Box>
       </Center>
     </ImageBackground>
-  );
+  )
 }
