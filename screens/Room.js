@@ -65,8 +65,9 @@ export default function Room({ route, navigation }) {
 
   useEffect(() => {
     socket.on('NEW MESSAGE', (payload) => {
-      console.log(payload);
-      setMessages([...messages, payload]);
+      console.log('this is payload', payload);
+      setMessages([...messages, JSON.parse(payload)]);
+      console.log('bracket stuff', [...messages, payload]);
     })
   }, [socket])
 
