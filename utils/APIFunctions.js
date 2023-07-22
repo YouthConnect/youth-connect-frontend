@@ -3,6 +3,8 @@
 // General API functions that the server currently supports
 // Use these functions anywhere in the front end to do things
 
+
+
 export const createRoom = async payload => {
   const method = 'POST';
   const url = 'https://youth-connect-server.onrender.com/api/v1/rooms';
@@ -19,17 +21,21 @@ export const createRoom = async payload => {
   // let user = base64.encode(`${username}:${password}`);
   // Bearer auth only
   headers.set('Authorization', `Bearer ${user.token}`);
+  // all posts and puts and delete
+  headers.set('Content-Type', 'application/json');
+  let newRoom
   try {
     fetch(url, {
       method: method,
       headers: headers,
-      body: body,
+      body: JSON.stringify(body),
     })
       .then(res => res.json())
       .then(data => {
-        //-----
+        console.log('Data from create room', data)
+        return data
       })
-      .catch(err => console.error(err));
+    
   } catch (error) {
     console.log('ERROR ', action, ':', error);
   }
@@ -46,6 +52,8 @@ export const getRooms = async () => {
   // let user = base64.encode(`${username}:${password}`);
   // Bearer auth only
   headers.set('Authorization', `Bearer ${user.token}`);
+  // all posts and puts and delete
+  headers.set('Content-Type', 'application/json');
   try {
     fetch(url, {
       method: method,
@@ -56,12 +64,16 @@ export const getRooms = async () => {
       .then(data => {
         //-----
       })
-      .catch(err => console.error(err));
+      
   } catch (error) {
     console.log('ERROR ', action, ':', error);
   }
   // ...
 };
+
+  
+  
+
 
 export const deleteRoom = async payload => {
   const method = 'DELETE';
@@ -73,6 +85,8 @@ export const deleteRoom = async payload => {
   // let user = base64.encode(`${username}:${password}`);
   // Bearer auth only
   headers.set('Authorization', `Bearer ${user.token}`);
+  // all posts and puts and delete
+  headers.set('Content-Type', 'application/json');
   try {
     fetch(url, {
       method: method,
@@ -83,7 +97,7 @@ export const deleteRoom = async payload => {
       .then(data => {
         //-----
       })
-      .catch(err => console.error(err));
+      
   } catch (error) {
     console.log('ERROR ', action, ':', error);
   }
@@ -101,6 +115,8 @@ export const deleteMessage = async (id) => {
   // let user = base64.encode(`${username}:${password}`);
   // Bearer auth only
   headers.set("Authorization", `Bearer ${user.token}`);
+  // all posts and puts and delete
+  headers.set('Content-Type', 'application/json');
   try {
     fetch(url, {
       method: method,
@@ -111,7 +127,7 @@ export const deleteMessage = async (id) => {
       .then((data) => {
         //-----
       })
-      .catch((err) => console.error(err));
+      
   } catch (error) {
     console.log("ERROR ", action, ":", error);
   }
@@ -134,6 +150,8 @@ export const updateRoom = async payload => {
   // let user = base64.encode(`${username}:${password}`);
   // Bearer auth only
   headers.set('Authorization', `Bearer ${user.token}`);
+  // all posts and puts and delete
+  headers.set('Content-Type', 'application/json');
   try {
     fetch(url, {
       method: method,
@@ -142,9 +160,9 @@ export const updateRoom = async payload => {
     })
       .then(res => res.json())
       .then(data => {
-        //-----
+        return data
       })
-      .catch(err => console.error(err));
+    
   } catch (error) {
     console.log('ERROR ', action, ':', error);
   }
@@ -152,6 +170,7 @@ export const updateRoom = async payload => {
 };
 
 export const createUser = async payload => {
+  console.log('create user payload', payload);
   const method = 'POST';
   const url = 'https://youth-connect-server.onrender.com/signup';
   const action = 'CREATING USER';
@@ -165,21 +184,26 @@ export const createUser = async payload => {
   // let user = base64.encode(`${username}:${password}`);
   // Bearer auth only
   // headers.set("Authorization", `Bearer ${user.token}`);
+  // all posts and puts and delete
+  headers.set('Content-Type', 'application/json');
+  let newUser
   try {
     fetch(url, {
       method: method,
       headers: headers,
-      body: body,
+      body: JSON.stringify(body),
     })
       .then(res => res.json())
       .then(data => {
-        //-----
+        console.log('data', data);
+        newUser = data.user;
+        console.log(newUser);
       })
-      .catch(err => console.error(err));
+    
   } catch (error) {
     console.log('ERROR ', action, ':', error);
   }
-  // ...
+  return newUser
 };
 
 export const getUsers = async payload => {
@@ -192,6 +216,8 @@ export const getUsers = async payload => {
   // let user = base64.encode(`${username}:${password}`);
   // Bearer auth only
   headers.set('Authorization', `Bearer ${user.token}`);
+  // all posts and puts and delete
+  headers.set('Content-Type', 'application/json');
   try {
     fetch(url, {
       method: method,
@@ -202,7 +228,7 @@ export const getUsers = async payload => {
       .then(data => {
         //-----
       })
-      .catch(err => console.error(err));
+      
   } catch (error) {
     console.log('ERROR ', action, ':', error);
   }
