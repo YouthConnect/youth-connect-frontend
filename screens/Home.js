@@ -15,7 +15,7 @@ import {launchImageLibrary, launchCamera} from 'react-native-image-picker'
       quality: 1, // Change the quality of the image (0 to 1)
     };
 
-    launchCamera(options, (response) => {
+    ImagePicker.launchCamera(options, (response) => {
       if (response.didCancel) {
         // User cancelled the action
       } else if (response.error) {
