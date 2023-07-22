@@ -1,90 +1,78 @@
-import React, { useState, useLayoutEffect, useContext } from 'react';
+import React, { useState, useLayoutEffect, useContext } from 'react'
 
-import { Box, ScrollView, VStack, Center, Button, Text } from 'native-base';
-import { ImageBackground } from 'react-native';
-
-import { ThemeContext, UserContext } from '../App';
-import { styles } from '../utils/styles';
-import socket from '../utils/socket';
-import { createRoom } from '../utils/APIFunctions';
-import CreateRoomModal from '../components/CreateRoomModal';
+import { ScrollView, VStack, Center, Button } from 'native-base'
+import { ThemeContext, UserContext } from '../App'
+import { styles } from '../utils/styles'
+import socket from '../utils/socket'
+import CreateRoomModal from '../components/CreateRoomModal'
+import ThemedText from '../components/ThemedText'
+import ThemedBox from '../components/ThemedBox'
+import ThemedBackground from '../components/ThemedBackground'
 
 export default function RoomList({ navigation }) {
-  const { colorScheme, bgImage } = useContext(ThemeContext);
-  const { user, setRoom, rooms, setRooms } = useContext(UserContext);
-  let themeContainerStyle;
-  let themeTextStyle;
+  const {
+    colorScheme,
+    bgImage,
+    themeButtonStyle,
+    themeContainerStyle,
+    themeTextStyle,
+  } = useContext(ThemeContext)
+  const { user, setRoom, rooms, room, setRooms } = useContext(UserContext)
 
-  if (colorScheme === 'dark') {
-    themeContainerStyle = styles.darkContainer;
-    themeTextStyle = styles.darkThemeText;
-  } else {
-    themeContainerStyle = styles.lightContainer;
-    themeTextStyle = styles.lightThemeText;
-  }
-  
   return (
-    <Box style={[styles.container, themeContainerStyle]}>
-      <ImageBackground
-        source={bgImage}
-        resizeMode='cover'
-        style={{ flex: 1 }}
-      >
+    <ThemedBox container={true}>
+      <ThemedBackground>
         {user?.username ? (
           <>
-            <Text
+            <ThemedText
               mt={10}
               marginLeft={5}
               style={themeTextStyle}
               fontSize={'lg'}
-            >
-              Join a room:
-            </Text>
+              text='Join a room:'
+            />
+
             <CreateRoomModal />
             <ScrollView maxH={500}>
-              <VStack
-                mt={5}
-                space={4}
-                alignItems='center'
-              >
+              <VStack mt={5} space={4} alignItems='center'>
                 {rooms?.length > 0 &&
                   rooms.map((room, i) => {
                     return (
                       <Button
                         key={i}
                         bg='transparent'
+                        style={[themeButtonStyle]}
                         onPress={() => {
-                          navigation.navigate('Room');
-                          socket.emit('join', {room: room.name});
-                          setRoom(room.name);
+                          socket.emit('join', { room: room.name })
+                          setRoom(room.name)
+                          navigation.navigate('Room')
                         }}
                       >
                         <Center
                           w='64'
                           h='20'
-                          bg={`cyan.${i + 1}00`}
+                          style={themeContainerStyle}
                           rounded='md'
                           shadow={3}
                         >
                           {room.name}
                         </Center>
                       </Button>
-                    );
+                    )
                   })}
               </VStack>
             </ScrollView>
           </>
         ) : (
-          <Text
-            mt={12}
+          <ThemedText
+            mt={0}
             textAlign='center'
             fontSize={'lg'}
             style={themeTextStyle}
-          >
-            Please Log in first
-          </Text>
+            text='Please Log in first'
+          />
         )}
-      </ImageBackground>
-    </Box>
-  );
+      </ThemedBackground>
+    </ThemedBox>
+  )
 }

@@ -3,11 +3,11 @@ import { Box } from 'native-base'
 import { ThemeContext } from '../App'
 import { styles } from '../utils/styles'
 
-export default function ThemedBox({ children }) {
-  console.log('Children', children)
+export default function ThemedBox({ safeArea, container, p, py, w, maxW, children }) {
+  
   const { themeContainerStyle } = useContext(ThemeContext);
   return (
-    <Box style={[styles.container, themeContainerStyle]}>
+    <Box p={p} py={py} w={w} maxW={maxW} style={[container && styles.container, themeContainerStyle]} safeArea={safeArea}>
       {children}
     </Box>
   );

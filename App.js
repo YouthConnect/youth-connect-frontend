@@ -5,11 +5,10 @@ import { NavigationContainer } from '@react-navigation/native'
 import TabNav from './components/TabNav'
 import { StatusBar } from 'expo-status-bar'
 
-import { useColorScheme } from 'react-native'  
+import { useColorScheme } from 'react-native'
 import { useState, useEffect, createContext } from 'react'
 import { bgImageDark, bgImageLight } from './utils/images'
 import { styles } from './utils/styles'
-
 
 import * as Haptics from 'expo-haptics'
 
@@ -21,44 +20,61 @@ export function fetchRooms(setRooms) {
     fetch('https://youth-connect-server.onrender.com/api/v1/rooms')
       .then(res => res.json())
       .then(data => {
-        setRooms(data);
+        setRooms(data)
       })
   } catch (err) {
     console.error('ERROR FETCHING ROOMS: ', err)
   }
 }
 
+/*(export function getAllMessages() {
+    try {
+      fetch(`https://youth-connect-server.onrender.com/api/v1/messages`)
+        .then(res => res.json())
+        .then(data => {
+          let filteredMessages = data.filter(message => message.room === room)
+
+          setMessages(filteredMessages)
+        })
+    } catch (err) {
+      console.error('ERROR FETCHING MESSAGES: ', err)
+    }
+}*/
 
 export default function App() {
-  
-  const [user, setUser] = useState(null);
-  const [room, setRoom] = useState('none');
+  const [user, setUser] = useState(null)
+  const [room, setRoom] = useState('none')
   const [rooms, setRooms] = useState([])
-  const [colorScheme, setColorScheme] = useState(useColorScheme());
-  const [themeContainerStyle, setThemeContainerStyle] = useState();
-  const [themeTextStyle, setThemeTextStyle] = useState();
-  const [bgImage, setBgImage] = useState();
-  const [themeButtonStyle, setThemeButtonStyle] = useState();
+  const [bgImage, setBgImage] = useState()
+  const [colorScheme, setColorScheme] = useState(useColorScheme())
+  const [themeContainerStyle, setThemeContainerStyle] = useState()
+  const [themeTextStyle, setThemeTextStyle] = useState()
+  const [themeButtonStyle, setThemeButtonStyle] = useState()
+  const [themeNavStyle, setThemeNavStyle] = useState()
+  const [themeInputStyle, setThemeInputStyle] = useState()
 
- 
   useEffect(() => {
     fetchRooms(setRooms)
   }, [])
 
-  function setToDarkTheme(){
+  function setToDarkTheme() {
     setThemeContainerStyle(styles.darkContainer)
     setThemeTextStyle(styles.darkThemeText)
     setBgImage(bgImageDark)
     setColorScheme('dark')
     setThemeButtonStyle(styles.darkThemeButton)
-  };
+    setThemeNavStyle(styles.darkNav)
+    setThemeInputStyle(styles.darkInput)
+  }
 
-  function setToLightTheme(){
+  function setToLightTheme() {
     setThemeContainerStyle(styles.lightContainer)
     setThemeTextStyle(styles.lightThemeText)
     setBgImage(bgImageLight)
     setColorScheme('light')
     setThemeButtonStyle(styles.lightThemeButton)
+    setThemeNavStyle(styles.lightNav)
+    setThemeInputStyle(styles.lightInput)
   }
 
   const toggleTheme = () => {
@@ -71,16 +87,26 @@ export default function App() {
   }, [colorScheme])
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ paddingTop: 30, ...themeNavStyle }}>
       <StatusBar style='light' hidden={true} />
       <NavigationContainer>
         <NativeBaseProvider>
-          <UserContext.Provider value={{ user, setUser, room, setRoom, rooms, setRooms }}>
+          <UserContext.Provider
+            value={{ user, setUser, room, setRoom, rooms, setRooms }}
+          >
             <ThemeContext.Provider
-               value={{ colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle, themeButtonStyle }}
-              
-            > 
-              <TabNav colorScheme={colorScheme} />
+              value={{
+                colorScheme,
+                bgImage,
+                toggleTheme,
+                themeContainerStyle,
+                themeTextStyle,
+                themeInputStyle,
+                themeNavStyle,
+                themeButtonStyle,
+              }}
+            >
+              <TabNav room={room} themeNavStyle={themeNavStyle} />
             </ThemeContext.Provider>
           </UserContext.Provider>
         </NativeBaseProvider>

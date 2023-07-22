@@ -10,14 +10,12 @@ import Login from '../screens/Login'
 import Room from '../screens/Room'
 import { colors } from '../utils/styles'
 
-export default function TabNav({colorScheme }) {
- 
+export default function TabNav({ room, themeNavStyle }) {
   const screenOptions = {
     unmountOnBlur: false,
     headerShown: false,
     tabBarItemStyle: {
-      backgroundColor:
-        colorScheme === 'light' ? colors.primary : colors.secondary,
+      ...themeNavStyle,
     },
   }
 
@@ -26,7 +24,7 @@ export default function TabNav({colorScheme }) {
       <Tab.Screen name='Home' component={HomeScreen} />
       <Tab.Screen name='Login' component={Login} />
       <Tab.Screen name='Rooms' component={RoomList} />
-      <Tab.Screen name='Room' component={Room} />
+      <Tab.Screen name={'Room'} /*displayName={room}*/ component={Room} />
     </Tab.Navigator>
   )
 }

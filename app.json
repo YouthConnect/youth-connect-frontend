@@ -14,14 +14,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.youthconnect.youth-connect"
+      "bundleIdentifier": "com.youthconnect.youthconnect"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#aaaa"
       },
-      "package": "com.youthconnect.youth-connect"
+      "package": "com.youthconnect.youthconnect"
     },
     "web": {
       "favicon": "./assets/favicon.png"

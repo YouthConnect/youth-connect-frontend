@@ -7,31 +7,31 @@ import {
   Center,
   Button,
   ScrollView,
+  KeyboardAvoidingView,
 } from 'native-base'
 
+import { Platform } from 'react-native'
+
 import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
-import { ImageBackground } from 'react-native'
+import ThemedBox from '../components/ThemedBox'
 
 import * as Haptics from 'expo-haptics'
 
 import { colors, styles } from '../utils/styles'
 import { UserContext, ThemeContext } from '../App'
 import socket from '../utils/socket'
+import ThemedText from '../components/ThemedText'
+import ThemedBackground from '../components/ThemedBackground'
 
 export default function Room({ route, navigation }) {
-  const { colorScheme, bgImage } = useContext(ThemeContext)
+  const {
+    colorScheme,
+    bgImage,
+    themeButtonStyle,
+    themeContainerStyle,
+    themeTextStyle,
+  } = useContext(ThemeContext)
   const { user, room, setRoom } = useContext(UserContext)
-
-  let themeContainerStyle
-  let themeTextStyle
-
-  if (colorScheme === 'dark') {
-    themeContainerStyle = styles.darkContainer
-    themeTextStyle = styles.darkThemeText
-  } else {
-    themeContainerStyle = styles.lightContainer
-    themeTextStyle = styles.lightThemeText
-  }
 
   const handleSubmit = () => {
     const payload = {
@@ -47,20 +47,6 @@ export default function Room({ route, navigation }) {
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState('')
 
-  function getAllMessagesMessages() {
-    try {
-      fetch(`https://youth-connect-server.onrender.com/api/v1/messages`)
-        .then(res => res.json())
-        .then(data => {
-          let filteredMessages = data.filter(message => message.room === room)
-
-          setMessages(filteredMessages)
-        })
-    } catch (err) {
-      console.error('ERROR FECTHING MESSAGES: ', err)
-    }
-  }
-
   useEffect(() => {
     socket.emit('GET RECENT MESSAGES', room)
   }, [room])
@@ -70,8 +56,9 @@ export default function Room({ route, navigation }) {
     setMessages([...messages, message])
   }
 
-  const isValidRoom = (room) => {
-    return room !== 'none' && room !== null && room !== undefined
+  const isValidRoom = room => {
+    let valid = room !== 'none' && room !== null && room !== undefined
+    return valid
   }
 
   useEffect(() => {
@@ -80,7 +67,7 @@ export default function Room({ route, navigation }) {
         addNewMessage(payload)
       })
     } catch (error) {
-      console.error('ERROR RECEIVING MESAGE', error)
+      console.error('ERROR RECEIVING MESSAGE', error)
     }
 
     try {
@@ -88,28 +75,27 @@ export default function Room({ route, navigation }) {
         setMessages(payload)
       })
     } catch (error) {
-      console.error('ERROR RECEVING RECENT MESSAGES', error)
+      console.error('ERROR RECEIVING RECENT MESSAGES', error)
     }
   }, [socket])
 
   return (
-    <Box style={[styles.container, themeContainerStyle]} safeArea>
-      <ImageBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
-        <Box mt={12}>
-          {isValidRoom(room) ? (
-            <>
-              <Text fontSize={'md'}>Signed in as: {user.username}</Text>
-              <Text fontSize='md'>You are in room: {room}</Text>
-            </>
-          ) : (
-            <Text style={themeTextStyle} textAlign={'center'} fontSize={'lg'}>
-              Please join a room
-            </Text>
-          )}
+    <ThemedBox container={true} safeArea={true}>
+      <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
+        <Box flex={1} mt={15} p={3}>
+          {!isValidRoom(room) &&
+            <ThemedText
+              style={themeTextStyle}
+              textAlign={'center'}
+              fontSize={'lg'}
+              text={'Please join a room'}
+            ></ThemedText>
+          }
 
           {isValidRoom(room) && (
             <Button
               size={'sm'}
+              style={[themeButtonStyle]}
               onPress={() => {
                 setMessages([])
                 setRoom('none')
@@ -120,36 +106,45 @@ export default function Room({ route, navigation }) {
             </Button>
           )}
         </Box>
-
-        <ScrollView
-          mt={5}
-          maxH={400}
-          alignContent={'center'}
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+        <KeyboardAvoidingView
+          h={{
+            base: '400px',
+            lg: 'auto',
+          }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <VStack mt={10} mb={50} space={4} alignItems='center'>
-            {messages.length > 0 &&
-              messages.map((message, i) => {
-                return (
-                  <Center
-                    key={i}
-                    w='80'
-                    bg={
-                      colorScheme === 'light'
-                        ? colors.backgroundDark
-                        : colors.darkBackground
-                    }
-                    rounded='md'
-                    shadow={3}
-                  >
-                    <Text style={themeTextStyle} fontSize={'md'}>
-                      {message.username}: {message.text}
-                    </Text>
-                  </Center>
-                )
-              })}
-          </VStack>
-        </ScrollView>
+          <ScrollView
+            mt={5}
+            maxH={400}
+            alignContent={'center'}
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+          >
+            <VStack mt={10} mb={50} space={4} alignItems='center'>
+              {messages.length > 0 &&
+                messages.map((message, i) => {
+                  return (
+                    <Center
+                      key={i}
+                      w='80'
+                      bg={
+                        colorScheme === 'light'
+                          ? colors.backgroundDark
+                          : colors.darkBackground
+                      }
+                      rounded='md'
+                      shadow={3}
+                    >
+                      <ThemedText
+                        style={themeTextStyle}
+                        fontSize={'md'}
+                        text={`${message.username}: ${message.text}`}
+                      ></ThemedText>
+                    </Center>
+                  )
+                })}
+            </VStack>
+          </ScrollView>
+        </KeyboardAvoidingView>
         {user?.username && (
           <VStack>
             <FormControl>
@@ -161,6 +156,7 @@ export default function Room({ route, navigation }) {
               />
             </FormControl>
             <Button
+              style={[themeButtonStyle]}
               mt='2'
               colorScheme='cyan'
               onPress={() => {
@@ -173,7 +169,7 @@ export default function Room({ route, navigation }) {
             </Button>
           </VStack>
         )}
-      </ImageBackground>
-    </Box>
+      </ThemedBackground>
+    </ThemedBox>
   )
 }
