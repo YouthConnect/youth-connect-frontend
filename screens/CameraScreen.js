@@ -1,4 +1,4 @@
-import React, { useState , useContext} from 'react';
+//import React, { useState , useContext} from 'react';
 import {
   View,
   TextInput,
@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import { Box, Input } from "native-base";
 import * as ImagePicker from 'expo-image-picker';
-import socket from '../utils/socket'
-import { UserContext } from '../App'
-const { user, room  } = useContext(UserContext);
+//import socket from '../utils/socket'
+//import { UserContext } from '../App'
+//const { user, room  } = useContext(UserContext);
 
 //const [pickedImagePath, setPickedImagePath] = useState('');
 
