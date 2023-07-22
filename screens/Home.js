@@ -5,7 +5,28 @@ import { Text, Button, VStack, Box } from 'native-base';
 import { ImageBackground } from 'react-native';
 import { styles } from '../utils/styles'
 import ThemedText from '../components/ThemedText'
+import ImagePickerScreen from './ImagePickerScreen';
+import ImagePicker from 'react-native-image-picker';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker'
 
+  const handleOpenCamera = () => {
+    const options = {
+      mediaType: 'photo', // Change this to 'video' if you want to record videos
+      quality: 1, // Change the quality of the image (0 to 1)
+    };
+
+    launchCamera(options, (response) => {
+      if (response.didCancel) {
+        // User cancelled the action
+      } else if (response.error) {
+        // Error occurred
+      } else {
+        // Image/Video successfully captured
+        console.log('Image/Video:', response);
+        // Do something with the captured media (e.g., display it on the screen)
+      }
+    });
+  };
 export default function HomeScreen({ navigation }) {
   const { colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle } = useContext(ThemeContext);
   const { user } = useContext(UserContext);
@@ -34,6 +55,8 @@ export default function HomeScreen({ navigation }) {
           <Button mt={10} size={'sm'} onPress={toggleTheme}>
             Change Theme
           </Button>
+          <Button title="Open Camera" onPress={handleOpenCamera}> Camera 
+            </Button> 
         </VStack>
       </ImageBackground>
     </Box>
