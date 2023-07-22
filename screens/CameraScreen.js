@@ -8,7 +8,9 @@ import {
 } from 'react-native';
 import { Box, Input } from "native-base";
 import * as ImagePicker from 'expo-image-picker';
-const [pickedImagePath, setPickedImagePath] = useState('');
+import socket from '../utils/socket'
+
+//const [pickedImagePath, setPickedImagePath] = useState('');
 
 const CameraScreen = () => {
 
@@ -35,7 +37,14 @@ const CameraScreen = () => {
 
     if (!result.canceled) {
       // setImage(result);
-      setPickedImagePath(result.uri);
+      //setPickedImagePath(result.uri);
+      const payload = {
+        text: result.uri,
+        room: room,
+        username: user.username,
+      }
+  
+      socket.emit('MESSAGE', payload)
     }
   };
 

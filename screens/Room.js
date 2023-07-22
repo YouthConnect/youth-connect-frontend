@@ -4,6 +4,7 @@ import {
   Input,
   Box,
   Text,
+  Image,
   Center,
   Button,
   ScrollView,
@@ -74,6 +75,18 @@ export default function Room({ route, navigation }) {
     return room !== 'none' && room !== null && room !== undefined
   }
 
+  const isValidHttpUrl=(string)=> {
+    let url;
+    
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;  
+    }
+  
+    return url.protocol === "http:" || url.protocol === "https:";
+  }
+
   useEffect(() => {
     try {
       socket.on('NEW MESSAGE', payload => {
@@ -142,9 +155,13 @@ export default function Room({ route, navigation }) {
                     rounded='md'
                     shadow={3}
                   >
+                  {isValidHttpUrl(message.text) ? (
+                   <Image src={message.text} />
+                  ) : (
                     <Text style={themeTextStyle} fontSize={'md'}>
                       {message.username}: {message.text}
                     </Text>
+                  )}
                   </Center>
                 )
               })}
@@ -171,6 +188,9 @@ export default function Room({ route, navigation }) {
             >
               Send
             </Button>
+            <Button onPress={() => navigation.navigate('Camera')}>
+            Camera 
+          </Button>
           </VStack>
         )}
       </ImageBackground>
