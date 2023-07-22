@@ -9,6 +9,7 @@ import {
   Button,
   ScrollView,
   KeyboardAvoidingView,
+  Menu
 } from 'native-base'
 
 import { Platform } from 'react-native'
@@ -33,6 +34,27 @@ export default function Room({ route, navigation }) {
     themeTextStyle,
   } = useContext(ThemeContext)
   const { user, room, setRoom } = useContext(UserContext)
+
+  function RoomHB() {
+    return <Box w="90%" alignItems="center">
+      <Menu closeOnSelect={false} w="190" onOpen={() => console.log("opened")} onClose={() => console.log("closed")} trigger={triggerProps => {
+        return <Pressable {...triggerProps}>
+          <HamburgerIcon />
+        </Pressable>;
+      }}>
+        <Menu.OptionGroup defaultValue="Arial" title="Rooms" type="radio">
+          <Menu.ItemOption value="Main">Main</Menu.ItemOption>
+          <Menu.ItemOption value="Homework">Homework</Menu.ItemOption>
+          <Menu.ItemOption value="Game">Game</Menu.ItemOption>
+        </Menu.OptionGroup>
+        <Divider mt="3" w="100%" />
+        <Menu.OptionGroup title="Edit Rooms" type="checkbox">
+          <Menu.ItemOption value="Add a Room">Add a Room</Menu.ItemOption>
+          <Menu.ItemOption value="Delete a Room">Delete a Room</Menu.ItemOption>
+        </Menu.OptionGroup>
+      </Menu>
+    </Box>;
+  }
 
   const handleSubmit = () => {
     const payload = {
@@ -62,16 +84,17 @@ export default function Room({ route, navigation }) {
     return valid
   }
 
-  const isValidHttpUrl=(string)=> {
-    let url;
-    
-    try {
-      url = new URL(string);
-    } catch (_) {
-      return false;  
-    }
-  
-    return url.protocol === "http:" || url.protocol === "https:";
+  const isValidHttpUrl = (str) => {
+    const pattern = new RegExp(
+      '^([a-zA-Z]+:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$', // fragment locator
+      'i'
+    );
+    return pattern.test(str);
   }
 
   useEffect(() => {
@@ -147,14 +170,14 @@ export default function Room({ route, navigation }) {
                       rounded='md'
                       shadow={3}
                     >
-                   {isValidHttpUrl(message.text) ? (
-                   <Image src={message.text} />
-                  ) : (
-                      <ThemedText
-                        style={themeTextStyle}
-                        fontSize={'md'}
-                        text={`${message.username}: ${message.text}`}
-                      ></ThemedText>
+                      {isValidHttpUrl(message.text) ? (
+                        <Image src={message.text} />
+                      ) : (
+                        <ThemedText
+                          style={themeTextStyle}
+                          fontSize={'md'}
+                          text={`${message.username}: ${message.text}`}
+                        ></ThemedText>
                       )}
                     </Center>
                   )
@@ -185,8 +208,8 @@ export default function Room({ route, navigation }) {
               Send
             </Button>
             <Button onPress={() => navigation.navigate('Camera')}>
-            Camera 
-          </Button>
+              Camera
+            </Button>
           </VStack>
         )}
       </ThemedBackground>

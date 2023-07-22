@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+//import React, { useState , useContext} from 'react';
 import {
   View,
   TextInput,
@@ -8,7 +8,9 @@ import {
 } from 'react-native';
 import { Box, Input } from "native-base";
 import * as ImagePicker from 'expo-image-picker';
-import socket from '../utils/socket'
+//import socket from '../utils/socket'
+//import { UserContext } from '../App'
+//const { user, room  } = useContext(UserContext);
 
 //const [pickedImagePath, setPickedImagePath] = useState('');
 
@@ -38,13 +40,14 @@ const CameraScreen = () => {
     if (!result.canceled) {
       // setImage(result);
       //setPickedImagePath(result.uri);
-      const payload = {
-        text: result.uri,
-        room: room,
-        username: user.username,
-      }
+      alert("picture uri"+ result.uri);
+      // const payload = {
+      //   text: result.uri,
+      //   room: room,
+      //   username: user.username,
+      // }
   
-      socket.emit('MESSAGE', payload)
+      // socket.emit('MESSAGE', payload)
     }
   };
 
@@ -65,12 +68,12 @@ const CameraScreen = () => {
     if (!result.canceled) {
       // setImage(result);
       setPickedImagePath(result.uri);
-      const payload = {
-        text: "photo taken"+result.uri,
-        room: room,
-        username: user.username,
-      }
-      socket.emit('MESSAGE', payload)
+      // const payload = {
+      //   text: "photo taken"+result.uri,
+      //   room: room,
+      //   username: user.username,
+      // }
+      // socket.emit('MESSAGE', payload)
     }
   };
 
