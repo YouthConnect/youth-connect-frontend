@@ -9,7 +9,7 @@ import { useColorScheme } from 'react-native'
 import { useState, useEffect, createContext } from 'react'
 import { bgImageDark, bgImageLight } from './utils/images'
 import { styles } from './utils/styles'
-import { fetchRooms } from './utils/APIFunctions'
+
 
 import * as Haptics from 'expo-haptics'
 
