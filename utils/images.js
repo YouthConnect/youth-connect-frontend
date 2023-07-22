@@ -1,7 +1,7 @@
 export const bgImageLight = {
-  uri: 'file://public/white.png',
+  uri: 'https://github.com/YouthConnect/youth-connect-frontend/blob/camera3/public/white.png',
 };
 
 export const bgImageDark = {
-  uri: 'https://github.com/ShadowDraco/javascript-401d53-class43/blob/main/public/splashNLVD.png?raw=true',
+  uri: 'https://github.com/YouthConnect/youth-connect-frontend/blob/camera3/public/splashNLVD.png',
 };
