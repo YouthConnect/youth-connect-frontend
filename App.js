@@ -38,6 +38,7 @@ export default function App() {
   const [themeContainerStyle, setThemeContainerStyle] = useState();
   const [themeTextStyle, setThemeTextStyle] = useState();
   const [bgImage, setBgImage] = useState();
+  const [themeButtonStyle, setThemeButtonStyle] = useState();
 
  
   useEffect(() => {
@@ -49,6 +50,7 @@ export default function App() {
     setThemeTextStyle(styles.darkThemeText)
     setBgImage(bgImageDark)
     setColorScheme('dark')
+    setThemeButtonStyle(styles.darkThemeButton)
   };
 
   function setToLightTheme(){
@@ -56,6 +58,7 @@ export default function App() {
     setThemeTextStyle(styles.lightThemeText)
     setBgImage(bgImageLight)
     setColorScheme('light')
+    setThemeButtonStyle(styles.lightThemeButton)
   }
 
   const toggleTheme = () => {
@@ -74,7 +77,7 @@ export default function App() {
         <NativeBaseProvider>
           <UserContext.Provider value={{ user, setUser, room, setRoom, rooms, setRooms }}>
             <ThemeContext.Provider
-               value={{ colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle }}
+               value={{ colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle, themeButtonStyle }}
               
             > 
               <TabNav colorScheme={colorScheme} />

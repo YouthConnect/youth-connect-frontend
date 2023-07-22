@@ -70,6 +70,10 @@ export default function Room({ route, navigation }) {
     setMessages([...messages, message])
   }
 
+  const isValidRoom = (room) => {
+    return room !== 'none' && room !== null && room !== undefined
+  }
+
   useEffect(() => {
     try {
       socket.on('NEW MESSAGE', payload => {
@@ -92,7 +96,7 @@ export default function Room({ route, navigation }) {
     <Box style={[styles.container, themeContainerStyle]} safeArea>
       <ImageBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
         <Box mt={12}>
-          {room && room !== 'none' ? (
+          {isValidRoom(room) ? (
             <>
               <Text fontSize={'md'}>Signed in as: {user.username}</Text>
               <Text fontSize='md'>You are in room: {room}</Text>
@@ -103,7 +107,7 @@ export default function Room({ route, navigation }) {
             </Text>
           )}
 
-          {room && room !== 'none' && (
+          {isValidRoom(room) && (
             <Button
               size={'sm'}
               onPress={() => {
@@ -163,7 +167,7 @@ export default function Room({ route, navigation }) {
                 handleSubmit()
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
               }}
-              disabled={!room || room === 'none' ? true : false}
+              disabled={!isValidRoom(room)}
             >
               Send
             </Button>
