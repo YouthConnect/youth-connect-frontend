@@ -37,6 +37,7 @@ export default function HomeScreen({ navigation }) {
           <Button style={[themeButtonStyle]} mt={10} size={'sm'} onPress={toggleTheme}>
             Change Theme
           </Button>
+          
         </VStack>
       </ ThemedBackground>
     </ThemedBox>

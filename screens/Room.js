@@ -4,6 +4,7 @@ import {
   Input,
   Box,
   Text,
+  Image,
   Center,
   Button,
   ScrollView,
@@ -59,6 +60,18 @@ export default function Room({ route, navigation }) {
   const isValidRoom = room => {
     let valid = room !== 'none' && room !== null && room !== undefined
     return valid
+  }
+
+  const isValidHttpUrl=(string)=> {
+    let url;
+    
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;  
+    }
+  
+    return url.protocol === "http:" || url.protocol === "https:";
   }
 
   useEffect(() => {
@@ -134,11 +147,15 @@ export default function Room({ route, navigation }) {
                       rounded='md'
                       shadow={3}
                     >
+                   {isValidHttpUrl(message.text) ? (
+                   <Image src={message.text} />
+                  ) : (
                       <ThemedText
                         style={themeTextStyle}
                         fontSize={'md'}
                         text={`${message.username}: ${message.text}`}
                       ></ThemedText>
+                      )}
                     </Center>
                   )
                 })}
@@ -167,6 +184,9 @@ export default function Room({ route, navigation }) {
             >
               Send
             </Button>
+            <Button onPress={() => navigation.navigate('Camera')}>
+            Camera 
+          </Button>
           </VStack>
         )}
       </ThemedBackground>
