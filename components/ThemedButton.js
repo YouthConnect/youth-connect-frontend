@@ -3,13 +3,17 @@ import { Button } from 'native-base'
 import { ThemeContext } from '../App'
 import { styles } from '../utils/styles'
 
-export default function ThemedButton({ children }) {
-  console.log('Children', children)
-  const { themeContainerStyle } = useContext(ThemeContext);
+export default function ThemedButton({ mt, w, size, width, disabled, colorScheme, children }) {
+  const { themeButtonStyle } = useContext(ThemeContext);
   return (
     <Button 
-    size={'sm'}
-    style={[styles.container, themeContainerStyle]}>
+    mt={mt}
+    w={w}
+    size={size}
+    width={width}
+    disabled={disabled}
+    colorScheme={colorScheme}
+    style={[themeButtonStyle]}>
       {children}
     </Button>
   );

@@ -21,6 +21,12 @@ export const styles = StyleSheet.create({
     alignContent: 'center',
     height: '100%',
   },
+  lightNav: {
+    backgroundColor: colors.primary
+  },
+  darkNav: {
+    backgroundColor: colors.secondary
+  },
   lightContainer: {
     backgroundColor: colors.backgroundDark,
   },
@@ -30,8 +36,22 @@ export const styles = StyleSheet.create({
   darkContainer: {
     backgroundColor: colors.darkBackground,
   },
+  lightThemeButton: {
+    backgroundColor: colors.backgroundDarker
+  },
+  darkThemeButton: {
+    backgroundColor: colors.darkBackground
+  },
   lightThemeText: {
     color: '#333',
+  },
+  lightInput: {
+    backgroundColor: colors.backgroundDarker,
+    color: 'white'
+  },
+  darkInput: {
+    backgroundColor: colors.backgroundDark,
+    color: 'white'
   },
   darkThemeText: {
     color: '#fff',

@@ -1,7 +1,8 @@
 import { Button, Modal, FormControl, Input, Center, Alert, Text } from 'native-base';
 import React, { useState, useContext } from 'react';
-import { UserContext } from '../App';
+import { UserContext, ThemeContext } from '../App';
 import { createUser } from '../utils/APIFunctions';
+import { styles, colors } from '../utils/styles';
 
 const SignUpModal = ({ visible, onClose }) => {
   const [showModal, setShowModal] = useState(false);
@@ -9,6 +10,7 @@ const SignUpModal = ({ visible, onClose }) => {
   const [password, setPassword] = useState('');
   const [alert, setAlert] = useState(false);
   const { user, setUser } = useContext(UserContext);
+  const { colorScheme, themeButtonStyle } = useContext(ThemeContext);
 
   const handleSubmit = async () => {
     // Perform validation, e.g., check if the fields are not empty
@@ -52,33 +54,10 @@ const SignUpModal = ({ visible, onClose }) => {
     setShowModal(false);
   }
   
-
-  /* try {
-     let newUser = await createUser(
-       {
-         username: username,
-         password: password,
-         DOB: "12/01/1990",
-       })
-     console.log(newUser)
-     setUser(newUser)
-     setShowModal(false);
-
-   } catch (error) {
-     console.error('Error signing up:', error);
-   };*/
-
-  /*.then((createdUser) => {
-
-    console.log('user created', createdUser)
-    // Close the modal
-    setShowModal(false);
-    setUser(createdUser.user);
-  })*/
   return (
-    <Center>
-      <Button onPress={() => setShowModal(true)}>Sign Up</Button>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+    <Center style={colorScheme === 'light' ? {backgroundColor: 'white' } : styles.llightContainer}>
+      <Button style={[themeButtonStyle]} onPress={() => setShowModal(true)}>Sign Up</Button>
+      <Modal style={{backgroundColor: colorScheme === 'light' ? 'white' : colors.backgroundDarker}} isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content maxWidth="400px">
           <Modal.CloseButton />
           <Modal.Header>Sign Up For Youth Connect</Modal.Header>
