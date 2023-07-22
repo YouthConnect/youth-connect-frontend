@@ -1,14 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext } from 'react';
 
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-const Tab = createMaterialTopTabNavigator()
+const Tab = createMaterialTopTabNavigator();
 
-import HomeScreen from '../screens/Home'
-import RoomList from '../screens/RoomList'
-import Login from '../screens/Login'
-import Room from '../screens/Room'
-import { colors } from '../utils/styles'
+import HomeScreen from '../screens/Home';
+import RoomList from '../screens/RoomList';
+import Login from '../screens/Login';
+import Room from '../screens/Room';
+import { colors } from '../utils/styles';
 
 export default function TabNav({ room, themeNavStyle }) {
   const screenOptions = {
@@ -17,14 +17,30 @@ export default function TabNav({ room, themeNavStyle }) {
     tabBarItemStyle: {
       ...themeNavStyle,
     },
-  }
+  };
 
   return (
-    <Tab.Navigator initialRouteName='Home' screenOptions={{ ...screenOptions }}>
-      <Tab.Screen name='Home' component={HomeScreen} />
-      <Tab.Screen name='Login' component={Login} />
-      <Tab.Screen name='Rooms' component={RoomList} />
-      <Tab.Screen name={'Room'} /*displayName={room}*/ component={Room} />
+    <Tab.Navigator
+      initialRouteName='Home'
+      screenOptions={{ ...screenOptions }}
+    >
+      <Tab.Screen
+        name='Home'
+        component={HomeScreen}
+      />
+      <Tab.Screen
+        name='Login'
+        component={Login}
+      />
+      <Tab.Screen
+        name='RoomList'
+        component={RoomList}
+      />
+      <Tab.Screen
+        name={'Room'}
+        title={room}
+        component={Room}
+      />
     </Tab.Navigator>
-  )
+  );
 }

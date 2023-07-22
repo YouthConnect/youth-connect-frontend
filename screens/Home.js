@@ -30,7 +30,7 @@ export default function HomeScreen({ navigation }) {
             </Button>
           
 
-          <Button style={[themeButtonStyle]} onPress={()=> navigation.navigate('Rooms')}>
+          <Button style={[themeButtonStyle]} onPress={()=> navigation.navigate('RoomList')}>
             Join a room
           </Button>
 
