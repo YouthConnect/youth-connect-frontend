@@ -9,6 +9,7 @@ import RoomList from '../screens/RoomList'
 import Login from '../screens/Login'
 import Room from '../screens/Room'
 import { colors } from '../utils/styles'
+import CameraScreen from '../screens/CameraScreen'
 
 export default function TabNav({colorScheme }) {
  
@@ -27,6 +28,7 @@ export default function TabNav({colorScheme }) {
       <Tab.Screen name='Login' component={Login} />
       <Tab.Screen name='Rooms' component={RoomList} />
       <Tab.Screen name='Room' component={Room} />
+      <Tab.Screen name='Camera' component={CameraScreen} />
     </Tab.Navigator>
   )
 }

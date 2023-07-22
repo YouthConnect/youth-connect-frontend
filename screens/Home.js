@@ -39,6 +39,10 @@ export default function HomeScreen({ navigation }) {
           <Button mt={10} size={'sm'} onPress={toggleTheme}>
             Change Theme
           </Button>
+          
+          <Button onPress={() => navigation.navigate('Camera')}>
+            Camera 
+          </Button>
         </VStack>
       </ImageBackground>
     </Box>
