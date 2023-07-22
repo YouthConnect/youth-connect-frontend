@@ -6,10 +6,12 @@ import { ImageBackground } from 'react-native';
 import { ThemeContext, UserContext } from '../App';
 import { styles } from '../utils/styles';
 import socket from '../utils/socket';
+import { createRoom } from '../utils/APIFunctions';
+import CreateRoomModal from '../components/CreateRoomModal';
 
 export default function RoomList({ navigation }) {
   const { colorScheme, bgImage } = useContext(ThemeContext);
-  const { user, setRoom } = useContext(UserContext);
+  const { user, setRoom, rooms, setRooms } = useContext(UserContext);
   let themeContainerStyle;
   let themeTextStyle;
 
@@ -20,24 +22,7 @@ export default function RoomList({ navigation }) {
     themeContainerStyle = styles.lightContainer;
     themeTextStyle = styles.lightThemeText;
   }
-
-  const [rooms, setRooms] = useState([]);
-
-  useLayoutEffect(() => {
-    function fetchRooms() {
-      try {
-      fetch('https://youth-connect-server.onrender.com/api/v1/rooms')
-        .then(res => res.json())
-        .then(data => {
-          setRooms(data);
-        })
-      } catch(err) {
-        console.error('ERROR FETCHING ROOMS: ', err)
-      }
-    }
-    fetchRooms();
-  }, []);
-
+  
   return (
     <Box style={[styles.container, themeContainerStyle]}>
       <ImageBackground
@@ -55,6 +40,7 @@ export default function RoomList({ navigation }) {
             >
               Join a room:
             </Text>
+            <CreateRoomModal />
             <ScrollView maxH={500}>
               <VStack
                 mt={5}
