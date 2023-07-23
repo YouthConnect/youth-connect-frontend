@@ -35,26 +35,7 @@ export default function Room({ route, navigation }) {
   } = useContext(ThemeContext)
   const { user, room, setRoom } = useContext(UserContext)
 
-  function RoomHB() {
-    return <Box w="90%" alignItems="center">
-      <Menu closeOnSelect={false} w="190" onOpen={() => console.log("opened")} onClose={() => console.log("closed")} trigger={triggerProps => {
-        return <Pressable {...triggerProps}>
-          <HamburgerIcon />
-        </Pressable>;
-      }}>
-        <Menu.OptionGroup defaultValue="Arial" title="Rooms" type="radio">
-          <Menu.ItemOption value="Main">Main</Menu.ItemOption>
-          <Menu.ItemOption value="Homework">Homework</Menu.ItemOption>
-          <Menu.ItemOption value="Game">Game</Menu.ItemOption>
-        </Menu.OptionGroup>
-        <Divider mt="3" w="100%" />
-        <Menu.OptionGroup title="Edit Rooms" type="checkbox">
-          <Menu.ItemOption value="Add a Room">Add a Room</Menu.ItemOption>
-          <Menu.ItemOption value="Delete a Room">Delete a Room</Menu.ItemOption>
-        </Menu.OptionGroup>
-      </Menu>
-    </Box>;
-  }
+
 
   const handleSubmit = () => {
     const payload = {
@@ -67,13 +48,20 @@ export default function Room({ route, navigation }) {
     setMessages([...messages, payload])
     setMessage('')
   }
+  const [pickedImagePath, setPickedImagePath] = useState('');
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState('')
-
+  const testimage = "https://i.imgur.com/2nCt3Sbl.jpg"
   useEffect(() => {
     socket.emit('GET RECENT MESSAGES', room)
   }, [room])
 
+  useEffect(() => {
+    if(!pickedImagePath)
+    {
+      setPickedImagePath(testimage);
+    }
+},[pickedImagePath])
   const addNewMessage = message => {
     console.log('NEW MESSAGE', message)
     setMessages([...messages, message])
@@ -85,16 +73,25 @@ export default function Room({ route, navigation }) {
   }
 
   const isValidHttpUrl = (str) => {
-    const pattern = new RegExp(
-      '^([a-zA-Z]+:\\/\\/)?' + // protocol
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-      '(\\#[-a-z\\d_]*)?$', // fragment locator
-      'i'
-    );
-    return pattern.test(str);
+    // if (str.includes('Image')){
+    //   str.trimLeft("Image ")
+      // alert("Image " + testimage)
+       return true;
+    // }
+    // else
+    //   return false;
+
+
+    // const pattern = new RegExp(
+    //   '^([a-zA-Z]+:\\/\\/)?' + // protocol
+    //   '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+    //   '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+    //   '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+    //   '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+    //   '(\\#[-a-z\\d_]*)?$', // fragment locator
+    //   'i'
+    // );
+    // return pattern.test(str);
   }
 
   useEffect(() => {
@@ -159,27 +156,28 @@ export default function Room({ route, navigation }) {
               {messages.length > 0 &&
                 messages.map((message, i) => {
                   return (
-                    <Center
-                      key={i}
-                      w='80'
-                      bg={
-                        colorScheme === 'light'
+                    <>
+                      <Center
+                        key={i}
+                        w='80'
+                        bg={colorScheme === 'light'
                           ? colors.backgroundDark
-                          : colors.darkBackground
-                      }
-                      rounded='md'
-                      shadow={3}
-                    >
-                      {isValidHttpUrl(message.text) ? (
-                        <Image src={message.text} />
-                      ) : (
-                        <ThemedText
-                          style={themeTextStyle}
-                          fontSize={'md'}
-                          text={`${message.username}: ${message.text}`}
-                        ></ThemedText>
-                      )}
-                    </Center>
+                          : colors.darkBackground}
+                        rounded='md'
+                        shadow={3}
+                      >
+                        {isValidHttpUrl(message.text) ? (
+                          //  {alert("Image " + testimage)}
+                          <Image source = {{uri:pickedImagePath}}
+   style = {{ width: 200, height: 200 }} />
+                        ) : (
+                          <ThemedText
+                            style={themeTextStyle}
+                            fontSize={'md'}
+                            text={`${message.username}: ${message.text}`}
+                          ></ThemedText>
+                        )}
+                      </Center></>
                   )
                 })}
             </VStack>
