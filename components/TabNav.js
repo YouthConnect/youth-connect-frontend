@@ -31,21 +31,9 @@ export default function TabNav({ user, room, themeNavStyle }) {
         name='Home'
         component={HomeScreen}
       />
-      {/*
-      <Tab.Screen
-        name='Login'
-        component={Login}
-      />
-    */}
-      { /* user?.username && (
+
         <Tab.Screen
-          name='RoomList'
-          component={RoomList}
-        />
-      ) */}
-      
-        <Tab.Screen
-          // tabBarIcon
+          
           name={room !== 'none' ? room : 'Chat'}
           title={'Room'}
           component={Room}
