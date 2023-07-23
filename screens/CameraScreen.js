@@ -94,9 +94,9 @@ const CameraScreen = () => {
             onPress={handlePickImage}
             color="blue"
             title="Select Image" />
-            <Image source = {{uri:pickedImagePath?pickedImagePath:testimage}}
-   style = {{ width: 200, height: 200 }}
-   />
+            {/* <Image source = {{uri:pickedImagePath?pickedImagePath:testimage}} */}
+   {/* style = {{ width: 200, height: 200 }} */}
+   {/* /> */}
         </View>
       </View>
   )

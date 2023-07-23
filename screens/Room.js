@@ -71,7 +71,7 @@ export default function Room({ route, navigation }) {
     // if (str.includes('Image')){
     //   str.trimLeft("Image ")
       // alert("Image " + testimage)
-       return true;
+       return false;
     // }
     // else
     //   return false;
@@ -151,7 +151,6 @@ export default function Room({ route, navigation }) {
               {messages.length > 0 &&
                 messages.map((message, i) => {
                   return (
-                    <>
                       <Center
                         key={i}
                         w='80'
@@ -161,20 +160,13 @@ export default function Room({ route, navigation }) {
                         rounded='md'
                         shadow={3}
                       >
-                        {isValidHttpUrl(message.text) ? (
-                          //  {alert("Image " + testimage)}
-                          <Image source = {{uri:pickedImagePath}}
-   style = {{ width: 200, height: 200 }} />
-                        ) : (
                           <ThemedText
                             style={themeTextStyle}
                             fontSize={'md'}
                             text={`${message.username}: ${message.text}`}
                           ></ThemedText>
-                        )}
-                      </Center></>
-                  )
-                })}
+                      </Center>
+                )})}
             </VStack>
           </ScrollView>
         </KeyboardAvoidingView>
