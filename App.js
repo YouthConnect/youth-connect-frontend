@@ -2,8 +2,10 @@ import 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { NativeBaseProvider } from 'native-base'
 import { NavigationContainer } from '@react-navigation/native'
-import TabNav from './components/TabNav'
+import NavBar from './components/NavBar'
 import { StatusBar } from 'expo-status-bar'
+import TabNav from './components/TabNav'
+
 
 import { useColorScheme } from 'react-native'
 import { useState, useEffect, createContext } from 'react'
@@ -14,7 +16,7 @@ import * as Haptics from 'expo-haptics'
 
 export const ThemeContext = createContext()
 export const UserContext = createContext()
-
+export const ImageContext = createContext()
 export function fetchRooms(setRooms) {
   try {
     fetch('https://youth-connect-server.onrender.com/api/v1/rooms')
