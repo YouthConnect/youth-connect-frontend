@@ -5,8 +5,6 @@ import { NavigationContainer } from '@react-navigation/native'
 import NavBar from './components/NavBar'
 import { StatusBar } from 'expo-status-bar'
 import TabNav from './components/TabNav'
-
-
 import { useColorScheme } from 'react-native'
 import { useState, useEffect, createContext } from 'react'
 import { bgImageDark, bgImageLight } from './utils/images'
