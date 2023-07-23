@@ -10,15 +10,20 @@ import {
 import React, { useState, useContext } from 'react';
 import { UserContext, ThemeContext } from '../App';
 import { styles, colors } from '../utils/styles';
+import base64 from 'base-64';
 
-const SignUpModal = ({ visible, onClose }) => {
+const LoginModal = ({ visible, onClose }) => {
   const [showModal, setShowModal] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [alert, setAlert] = useState(false);
   const { user, setUser } = useContext(UserContext);
-  const { colorScheme, themeInputStyle, themeTextStyle, themeButtonStyle } =
-    useContext(ThemeContext);
+  const {
+    themeInputStyle,
+    themeContainerStyle,
+
+    themeButtonStyle,
+  } = useContext(ThemeContext);
 
   const handleSubmit = async () => {
     // Perform validation, e.g., check if the fields are not empty
@@ -28,77 +33,57 @@ const SignUpModal = ({ visible, onClose }) => {
     }
     console.log('username password', username, password);
 
-    const method = 'POST';
-    const url = 'https://youth-connect-server.onrender.com/signup';
-    const action = 'CREATING USER';
-    let headers = new Headers();
-    const body = {
-      username: username,
-      password: password,
-      DOB: '12/01/1090',
-    };
-    // Basic auth only
-    // let user = base64.encode(`${username}:${password}`);
-    // Bearer auth only
-    // headers.set("Authorization", `Bearer ${user.token}`);
-    // all posts and puts and delete
-    headers.set('Content-Type', 'application/json');
-
     try {
-      fetch(url, {
-        method: method,
+      let headers = new Headers();
+      let user = base64.encode(`${username}:${password}`);
+      headers.set('Authorization', `Basic ${user}`);
+      fetch('https://youth-connect-server.onrender.com/signin', {
+        method: 'POST',
         headers: headers,
-        body: JSON.stringify(body),
       })
         .then(res => res.json())
         .then(data => {
-          console.log('data', data);
+          console.log('login success');
           setUser(data.user);
+          navigation.navigate('RoomList');
         });
     } catch (error) {
-      console.log('ERROR ', action, ':', error);
+      console.log('ERROR SIGNING IN: ', error);
     }
     setShowModal(false);
   };
 
   return (
-    <Center
-      style={
-        colorScheme === 'light'
-          ? { backgroundColor: 'white' }
-          : styles.llightContainer
-      }
-    >
+    <Center style={[themeContainerStyle]}>
       <Button
+        testID='LOGIN BUTTON'
         style={[themeButtonStyle]}
         onPress={() => setShowModal(true)}
       >
-        Sign Up
+        Log in
       </Button>
       <Modal
-        style={{
-          backgroundColor:
-            colorScheme === 'light' ? 'white' : colors.backgroundDarker,
-        }}
+        testID='LOGIN'
+        style={themeContainerStyle}
         isOpen={showModal}
         onClose={() => setShowModal(false)}
       >
         <Modal.Content maxWidth='400px'>
           <Modal.CloseButton />
-          <Modal.Header>Sign Up For Youth Connect</Modal.Header>
+          <Modal.Header>Log in to Youth Connect</Modal.Header>
           <Modal.Body>
-            <FormControl>
+            <FormControl testID='LOGIN FORM'>
               <FormControl.Label>Username</FormControl.Label>
               <Input
-                
+                style={themeInputStyle}
                 onChangeText={setUsername}
               />
             </FormControl>
             <FormControl mt='3'>
               <FormControl.Label>Password</FormControl.Label>
               <Input
-                
                 type='password'
+                style={themeInputStyle}
                 onChangeText={setPassword}
               />
             </FormControl>
@@ -106,8 +91,7 @@ const SignUpModal = ({ visible, onClose }) => {
           <Modal.Footer>
             <Button.Group space={2}>
               <Button
-                variant='ghost'
-                colorScheme='blueGray'
+                style={[themeButtonStyle]}
                 onPress={() => {
                   setShowModal(false);
                 }}
@@ -118,6 +102,8 @@ const SignUpModal = ({ visible, onClose }) => {
                 onPress={() => {
                   handleSubmit();
                 }}
+                style={[themeButtonStyle]}
+                disabled={user?.username ? true : false}
               >
                 Submit
               </Button>
@@ -138,4 +124,4 @@ const SignUpModal = ({ visible, onClose }) => {
   );
 };
 
-export default SignUpModal;
+export default LoginModal;
