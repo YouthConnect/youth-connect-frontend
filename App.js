@@ -1,4 +1,12 @@
-import 'react-native-gesture-handler';
+
+import 'react-native-gesture-handler'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { NativeBaseProvider } from 'native-base'
+import { NavigationContainer } from '@react-navigation/native'
+import NavBar from './components/NavBar'
+import { StatusBar } from 'expo-status-bar'
+import TabNav from './components/TabNav'
+
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NativeBaseProvider } from 'native-base';
@@ -43,16 +51,19 @@ export function fetchRooms(setRooms) {
 }*/
 
 export default function App() {
-  const [user, setUser] = useState(null);
-  const [room, setRoom] = useState('none');
-  const [rooms, setRooms] = useState([]);
-  const [bgImage, setBgImage] = useState();
-  const [colorScheme, setColorScheme] = useState(useColorScheme());
-  const [themeContainerStyle, setThemeContainerStyle] = useState();
-  const [themeTextStyle, setThemeTextStyle] = useState();
-  const [themeButtonStyle, setThemeButtonStyle] = useState();
-  const [themeNavStyle, setThemeNavStyle] = useState();
-  const [themeInputStyle, setThemeInputStyle] = useState();
+
+  const [user, setUser] = useState(null)
+  const [room, setRoom] = useState('none')
+  const [rooms, setRooms] = useState([])
+  const [bgImage, setBgImage] = useState()
+  const [colorScheme, setColorScheme] = useState(useColorScheme())
+  const [themeContainerStyle, setThemeContainerStyle] = useState()
+  const [themeTextStyle, setThemeTextStyle] = useState()
+  const [themeButtonStyle, setThemeButtonStyle] = useState()
+  const [themeNavStyle, setThemeNavStyle] = useState()
+  const [themeInputStyle, setThemeInputStyle] = useState()
+  const [pickedImagePath, setPickedImagePath] = useState()
+
 
   useEffect(() => {
     fetchRooms(setRooms);
@@ -104,7 +115,7 @@ export default function App() {
       <NavigationContainer>
         <NativeBaseProvider initialWindowMetrics={inset}>
           <UserContext.Provider
-            value={{ user, setUser, room, setRoom, rooms, setRooms }}
+            value={{ user, setUser, room, setRoom, rooms, setRooms, pickedImagePath, setPickedImagePath }}
           >
             <ThemeContext.Provider
               value={{

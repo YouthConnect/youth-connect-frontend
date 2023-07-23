@@ -4,21 +4,25 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 const Tab = createMaterialTopTabNavigator();
 
+
 import HomeScreen from '../screens/Home';
 import RoomList from '../screens/RoomList';
 import Login from '../screens/Login';
 import Room from '../screens/Room';
+import Camera from '../screens/CameraScreen'
 
 export default function TabNav({ user, room, themeNavStyle }) {
+
   const screenOptions = {
     unmountOnBlur: false,
     headerShown: false,
     tabBarItemStyle: {
-      ...themeNavStyle,
+      ...themeNavStyle
     },
   };
 
   return (
+
     <Tab.Navigator
       initialRouteName='Home'
       screenOptions={{ ...screenOptions }}
@@ -46,6 +50,9 @@ export default function TabNav({ user, room, themeNavStyle }) {
           component={Room}
         />
       )}
+
+      <Tab.Screen name='Camera' component={Camera} />
+
     </Tab.Navigator>
   );
 }

@@ -62,6 +62,7 @@ export default function HomeScreen({ navigation }) {
           >
             Change Theme
           </Button>
+          
         </VStack>
       </ThemedBackground>
     </ThemedBox>

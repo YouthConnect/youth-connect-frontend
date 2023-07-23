@@ -4,11 +4,14 @@ import {
   Input,
   Box,
   Text,
+  Image,
   Center,
   Button,
   ScrollView,
   KeyboardAvoidingView,
-} from 'native-base';
+  Menu
+} from 'native-base'
+
 
 import { Platform } from 'react-native';
 
@@ -17,11 +20,12 @@ import ThemedBox from '../components/ThemedBox';
 
 import * as Haptics from 'expo-haptics';
 
-import { colors, styles } from '../utils/styles';
-import { UserContext, ThemeContext } from '../App';
-import socket from '../utils/socket';
-import ThemedText from '../components/ThemedText';
-import ThemedBackground from '../components/ThemedBackground';
+import { colors, styles } from '../utils/styles'
+import { UserContext, ThemeContext} from '../App'
+import socket from '../utils/socket'
+import ThemedText from '../components/ThemedText'
+import ThemedBackground from '../components/ThemedBackground'
+
 
 export default function Room({ route, navigation }) {
   const {
@@ -30,8 +34,9 @@ export default function Room({ route, navigation }) {
     themeButtonStyle,
     themeContainerStyle,
     themeTextStyle,
-  } = useContext(ThemeContext);
-  const { user, room, setRoom } = useContext(UserContext);
+
+  } = useContext(ThemeContext)
+  const { user, room, setRoom,pickedImagePath } = useContext(UserContext)
 
   const handleSubmit = () => {
     const payload = {
@@ -40,16 +45,19 @@ export default function Room({ route, navigation }) {
       username: user.username,
     };
 
-    socket.emit('MESSAGE', payload);
-    setMessages([...messages, payload]);
-    setMessage('');
-  };
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
+
+    socket.emit('MESSAGE', payload)
+    setMessages([...messages, payload])
+    setMessage('')
+  }
+  const [messages, setMessages] = useState([])
+  const [message, setMessage] = useState('')
+  const testimage = "https://i.imgur.com/2nCt3Sbl.jpg"
 
   useEffect(() => {
     socket.emit('GET RECENT MESSAGES', room);
   }, [room]);
+
 
   const addNewMessage = message => {
     console.log('NEW MESSAGE', message);
@@ -60,6 +68,28 @@ export default function Room({ route, navigation }) {
     let valid = room !== 'none' && room !== null && room !== undefined;
     return valid;
   };
+
+  const isValidHttpUrl = (str) => {
+    // if (str.includes('Image')){
+    //   str.trimLeft("Image ")
+      // alert("Image " + testimage)
+       return false;
+    // }
+    // else
+    //   return false;
+
+
+    // const pattern = new RegExp(
+    //   '^([a-zA-Z]+:\\/\\/)?' + // protocol
+    //   '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+    //   '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+    //   '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+    //   '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+    //   '(\\#[-a-z\\d_]*)?$', // fragment locator
+    //   'i'
+    // );
+    // return pattern.test(str);
+  }
 
   useEffect(() => {
     try {
@@ -139,25 +169,24 @@ export default function Room({ route, navigation }) {
               {messages.length > 0 &&
                 messages.map((message, i) => {
                   return (
-                    <Center
-                      key={i}
-                      w='80'
-                      bg={
-                        colorScheme === 'light'
+                      <Center
+                        key={i}
+                        w='80'
+                        bg={colorScheme === 'light'
                           ? colors.backgroundDark
-                          : colors.darkBackground
-                      }
-                      rounded='md'
-                      shadow={3}
-                    >
-                      <ThemedText
-                        style={themeTextStyle}
-                        fontSize={'md'}
-                        text={`${message.username}: ${message.text}`}
-                      ></ThemedText>
-                    </Center>
-                  );
-                })}
+
+                          : colors.darkBackground}
+                        rounded='md'
+                        shadow={3}
+                      >
+                          <ThemedText
+                            style={themeTextStyle}
+                            fontSize={'md'}
+                            text={`${message.username}: ${message.text}`}
+                          ></ThemedText>
+                      </Center>
+                )})}
+
             </VStack>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -182,6 +211,9 @@ export default function Room({ route, navigation }) {
               disabled={!isValidRoom(room)}
             >
               Send
+            </Button>
+            <Button onPress={() => navigation.navigate('Camera')}>
+              Camera
             </Button>
           </VStack>
         )}
