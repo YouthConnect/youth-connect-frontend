@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "trychatapp",
-    "slug": "trychatapp",
-    "version": "1.3.0",
+    "name": "youth-connect",
+    "slug": "youth-connect",
+    "version": "1.5.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -11,26 +11,42 @@
       "resizeMode": "cover",
       "backgroundColor": "#aaaa"
     },
-    "assetBundlePatterns": ["**/*"],
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends.",
+          "cameraPermission": "The app accesses your photos to let you share them with your friends"
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.stormyfrolic.trychatapp"
+
+      "bundleIdentifier": "com.youthconnect.youth-connect",
+      "infoPlist": { 
+        "NSCameraUsageDescription": "We needs camera permissions to allow you to upload profile photos.", 
+        "NSPhotoLibraryAddUsageDescription": "We needs photo library permissions to allow you to upload profile images.",
+         "NSPhotoLibraryUsageDescription": "We needs photo library permissions to allow you to upload profile images."
+         },
+      "assetBundlePatterns": ["**/*"]
+
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#aaaa"
       },
-      "package": "com.stormyfrolic.trychatapp"
+      "package": "com.youthconnect.youthconnect"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "9bf4b201-b52f-4101-9d07-3d5910f736c5"
+        "projectId": "545ff028-5243-4b9f-a705-834bbe0097b9"
       }
     },
-    "owner": "stormyfrolic"
+    "owner": "youthconnect"
   }
 }

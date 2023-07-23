@@ -1,40 +1,46 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ThemeContext, UserContext } from '../App';
+import { Button, VStack } from 'native-base';
+import { styles } from '../utils/styles';
+import SignUpModal from '../components/SignUpModal';
 import ThemedBox from '../components/ThemedBox';
-import { Text, Button, VStack, Box } from 'native-base';
-import { ImageBackground } from 'react-native';
-import { styles } from '../utils/styles'
+import ThemedText from '../components/ThemedText'
+import ThemedButton from '../components/ThemedButton';
+import ThemedBackground from '../components/ThemedBackground';
 
 export default function HomeScreen({ navigation }) {
-  const { colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle } = useContext(ThemeContext);
+  const { colorScheme, bgImage, toggleTheme, themeContainerStyle, themeTextStyle, themeButtonStyle } = useContext(ThemeContext);
   const { user } = useContext(UserContext);
 
   return (
-    <Box style={[styles.container, themeContainerStyle]}>
-      <ImageBackground
-        source={bgImage}
-        resizeMode='cover'
-        style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}
+    <ThemedBox container={true}>
+
+      <ThemedBackground
       >
-        <Text mb={10} style={themeTextStyle} textAlign={'center'} fontSize='xl'>
+        <ThemedText mb={10} textAlign={'center'} fontSize='xl' text={`Welcome to Youth Connect! ${user && user.username}`}  />
+        {/* <Text mb={10} style={themeTextStyle} textAlign={'center'} fontSize='xl'>
           Welcome to Youth Connect! {user && user.username}
-        </Text>
+        </Text> */}
 
         <VStack space={4} alignItems='center'>
-          <Button width='105px' onPress={() => navigation.navigate('Login')}>
-            Log In
-          </Button>
+          <SignUpModal />
+         
+            <Button style={[themeButtonStyle]} onPress={() => navigation.navigate('Login')}>
+              Log In
+            </Button>
+          
 
-          <Button onPress={() => navigation.navigate('Rooms')}>
+          <Button style={[themeButtonStyle]} onPress={()=> navigation.navigate('Rooms')}>
             Join a room
           </Button>
 
-          <Button mt={10} size={'sm'} onPress={toggleTheme}>
+          <Button style={[themeButtonStyle]} mt={10} size={'sm'} onPress={toggleTheme}>
             Change Theme
           </Button>
+          
         </VStack>
-      </ImageBackground>
-    </Box>
+      </ ThemedBackground>
+    </ThemedBox>
   );
 }
 

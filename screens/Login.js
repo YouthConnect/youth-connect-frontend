@@ -8,28 +8,19 @@ import {
   Button,
 } from 'native-base';
 
-import { ImageBackground } from 'react-native';
 import { ThemeContext, UserContext } from '../App';
 
 import React, { useContext, useState } from 'react';
 import { colors, styles } from '../utils/styles';
 
 import base64 from 'base-64';
+import ThemedBackground from '../components/ThemedBackground';
 
-export default function Login() {
-  const { colorScheme, bgImage } = useContext(ThemeContext);
+
+export default function Login({ navigation }) {
+  const { colorScheme, themeContainerStyle, themeInputStyle, themeTextStyle, themeButtonStyle} = useContext(ThemeContext);
   const { user, setUser } = useContext(UserContext);
 
-  let themeContainerStyle;
-  let themeTextStyle;
-
-  if (colorScheme === 'dark') {
-    themeContainerStyle = styles.darkContainer;
-    themeTextStyle = styles.darkThemeText;
-  } else {
-    themeContainerStyle = styles.lightContainer;
-    themeTextStyle = styles.lightThemeText;
-  }
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -42,11 +33,15 @@ export default function Login() {
         method: 'POST',
         headers: headers,
       })
-        .then(res => res.json())
+
+        .then(res =>
+          res.json())
         .then(data => {
+          console.log('this is data', data);
           setUser(data.user);
+          navigation.navigate('Home');
         })
-        .catch(err => console.error(err));
+        
     } catch (error) {
       console.log('ERROR SIGNING IN: ', error);
     }
@@ -56,52 +51,32 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   return (
-    <ImageBackground
-      source={bgImage}
-      resizeMode='cover'
-      style={{ flex: 1, ...themeContainerStyle }}
-    >
+    <ThemedBackground>
       <Center w='100%'>
-        <Box
-          safeArea
-          p='2'
-          py='20'
-          w='90%'
-          maxW='290'
-        >
-          <Heading
-            mt='1'
-            style={themeTextStyle}
-            fontWeight='medium'
-            size='xs'
-          >
+        <Box safeArea p='2' py='20' w='90%' maxW='290'>
+          <Heading mt='1' style={themeTextStyle} fontWeight='medium' size='xs'>
             {user?.username
               ? `You're all set ${user?.username}`
               : 'Sign in to continue!'}
           </Heading>
 
-          <VStack
-            space={3}
-            mt='5'
-          >
+          <VStack space={3} mt='5'>
             <FormControl>
               <FormControl.Label>Username</FormControl.Label>
-              <Input
-                style={styles.darkContainer}
-                onChangeText={setUsername}
-              />
+              <Input style={themeInputStyle} onChangeText={setUsername} />
             </FormControl>
             <FormControl>
               <FormControl.Label>Password</FormControl.Label>
+
               <Input
-                style={styles.darkContainer}
+                style={themeInputStyle}
                 type='password'
                 onChangeText={setPassword}
               />
             </FormControl>
             <Button
               mt='2'
-              colorScheme='cyan'
+              style={[themeButtonStyle]}
               onPress={handleSubmit}
               disabled={user?.username ? true : false}
             >
@@ -110,6 +85,6 @@ export default function Login() {
           </VStack>
         </Box>
       </Center>
-    </ImageBackground>
-  );
+    </ThemedBackground>
+  )
 }
