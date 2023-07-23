@@ -20,7 +20,7 @@ import ThemedBox from '../components/ThemedBox'
 import * as Haptics from 'expo-haptics'
 
 import { colors, styles } from '../utils/styles'
-import { UserContext, ThemeContext } from '../App'
+import { UserContext, ThemeContext} from '../App'
 import socket from '../utils/socket'
 import ThemedText from '../components/ThemedText'
 import ThemedBackground from '../components/ThemedBackground'
@@ -33,7 +33,8 @@ export default function Room({ route, navigation }) {
     themeContainerStyle,
     themeTextStyle,
   } = useContext(ThemeContext)
-  const { user, room, setRoom } = useContext(UserContext)
+  const { user, room, setRoom,pickedImagePath } = useContext(UserContext)
+
 
 
 
@@ -48,7 +49,6 @@ export default function Room({ route, navigation }) {
     setMessages([...messages, payload])
     setMessage('')
   }
-  const [pickedImagePath, setPickedImagePath] = useState('');
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState('')
   const testimage = "https://i.imgur.com/2nCt3Sbl.jpg"
@@ -56,12 +56,7 @@ export default function Room({ route, navigation }) {
     socket.emit('GET RECENT MESSAGES', room)
   }, [room])
 
-  useEffect(() => {
-    if(!pickedImagePath)
-    {
-      setPickedImagePath(testimage);
-    }
-},[pickedImagePath])
+
   const addNewMessage = message => {
     console.log('NEW MESSAGE', message)
     setMessages([...messages, message])

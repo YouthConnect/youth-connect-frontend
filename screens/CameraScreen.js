@@ -10,13 +10,13 @@ import { Box, Input } from "native-base";
 import * as ImagePicker from 'expo-image-picker';
 import socket from '../utils/socket'
 import { UserContext } from '../App'
+import axios from 'axios';
 
 
 
 const CameraScreen = () => {
   const testimage = "https://i.imgur.com/2nCt3Sbl.jpg"
-const [pickedImagePath, setPickedImagePath] = useState('');
-  const { user, room } = useContext(UserContext);
+  const { user, room,setPickedImagePath } = useContext(UserContext);
   const handleCameraImage = async () => {
     
 
@@ -69,6 +69,11 @@ const [pickedImagePath, setPickedImagePath] = useState('');
     if (!result.canceled) {
       // setImage(result);
       setPickedImagePath(result.uri);
+ 
+      // JS file-like object
+      //var blob = new Blob ([fileBody], { type: 'text/xml' });
+      //let results = await axios.post('https://upload.box.com/api/2.0/files/content');
+   
       const payload = {
         text: "Image "+result.uri,
         room: room,
