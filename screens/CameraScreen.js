@@ -16,7 +16,7 @@ import axios from 'axios';
 
 const CameraScreen = () => {
   const testimage = "https://i.imgur.com/2nCt3Sbl.jpg"
-  const { user, room,setPickedImagePath } = useContext(UserContext);
+  const { user, room,pickedImagePath, setPickedImagePath } = useContext(UserContext);
   const handleCameraImage = async () => {
     
 
@@ -94,9 +94,9 @@ const CameraScreen = () => {
             onPress={handlePickImage}
             color="blue"
             title="Select Image" />
-            {/* <Image source = {{uri:pickedImagePath?pickedImagePath:testimage}} */}
-   {/* style = {{ width: 200, height: 200 }} */}
-   {/* /> */}
+            <Image source = {{uri:pickedImagePath?pickedImagePath:testimage}}
+   style = {{ width: 200, height: 200 }}
+   />
         </View>
       </View>
   )
