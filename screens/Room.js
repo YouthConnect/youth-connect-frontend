@@ -68,13 +68,17 @@ export default function Room({ route, navigation }) {
   }
 
   const isValidHttpUrl = (str) => {
-    // if (str.includes('Image')){
-    //   str.trimLeft("Image ")
+    // alert("Image " + str)
+
+    if (str.includes('Image')){
+      str.trimLeft("Image ")
       // alert("Image " + testimage)
        return true;
-    // }
-    // else
-    //   return false;
+    }
+    else
+      return false;
+
+    
 
 
     // const pattern = new RegExp(

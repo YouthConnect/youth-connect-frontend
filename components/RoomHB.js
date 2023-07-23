@@ -22,6 +22,8 @@ export default function RoomHB({navigation}) {
                                 onPress={() => {
                           socket.emit('join', { room: room.name })
                           setRoom(room.name)
+                          navigation.navigate('Room')
+
                         }}
                         >{room.name}</Menu.ItemOption>
                             </>
