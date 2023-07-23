@@ -1,23 +1,23 @@
-import React, { useState, useLayoutEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react';
 
-import { ScrollView, VStack, Center, Button } from 'native-base'
-import { ThemeContext, UserContext } from '../App'
-import { styles } from '../utils/styles'
-import socket from '../utils/socket'
-import CreateRoomModal from '../components/CreateRoomModal'
-import ThemedText from '../components/ThemedText'
-import ThemedBox from '../components/ThemedBox'
-import ThemedBackground from '../components/ThemedBackground'
+import { ScrollView, VStack, Center, Button } from 'native-base';
+import { ThemeContext, UserContext } from '../App';
+import socket from '../utils/socket';
+import CreateRoomModal from '../components/CreateRoomModal';
+import ThemedText from '../components/ThemedText';
+import ThemedBox from '../components/ThemedBox';
+import ThemedBackground from '../components/ThemedBackground';
 
 export default function RoomList({ navigation }) {
-  const {
-    colorScheme,
-    bgImage,
-    themeButtonStyle,
-    themeContainerStyle,
-    themeTextStyle,
-  } = useContext(ThemeContext)
-  const { user, setRoom, rooms, room, setRooms } = useContext(UserContext)
+  const { themeButtonStyle, themeContainerStyle, themeTextStyle } =
+    useContext(ThemeContext);
+  const { user, setRoom, rooms, room } = useContext(UserContext);
+
+  useEffect(() => {
+    if (room !== 'none') {
+      navigation.navigate(room);
+    }
+  }, [room]);
 
   return (
     <ThemedBox container={true}>
@@ -34,7 +34,11 @@ export default function RoomList({ navigation }) {
 
             <CreateRoomModal />
             <ScrollView maxH={500}>
-              <VStack mt={5} space={4} alignItems='center'>
+              <VStack
+                mt={5}
+                space={4}
+                alignItems='center'
+              >
                 {rooms?.length > 0 &&
                   rooms.map((room, i) => {
                     return (
@@ -43,9 +47,8 @@ export default function RoomList({ navigation }) {
                         bg='transparent'
                         style={[themeButtonStyle]}
                         onPress={() => {
-                          socket.emit('join', { room: room.name })
-                          setRoom(room.name)
-                          navigation.navigate('Room')
+                          socket.emit('join', { room: room.name });
+                          setRoom(room.name);
                         }}
                       >
                         <Center
@@ -58,7 +61,7 @@ export default function RoomList({ navigation }) {
                           {room.name}
                         </Center>
                       </Button>
-                    )
+                    );
                   })}
               </VStack>
             </ScrollView>
@@ -74,5 +77,5 @@ export default function RoomList({ navigation }) {
         )}
       </ThemedBackground>
     </ThemedBox>
-  )
+  );
 }
