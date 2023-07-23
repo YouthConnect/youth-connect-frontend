@@ -1,4 +1,4 @@
-//import React, { useState , useContext} from 'react';
+import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
 import {
   View,
   TextInput,
@@ -8,14 +8,15 @@ import {
 } from 'react-native';
 import { Box, Input } from "native-base";
 import * as ImagePicker from 'expo-image-picker';
-//import socket from '../utils/socket'
-//import { UserContext } from '../App'
-//const { user, room  } = useContext(UserContext);
+import socket from '../utils/socket'
+import { UserContext } from '../App'
 
-//const [pickedImagePath, setPickedImagePath] = useState('');
+
 
 const CameraScreen = () => {
-
+  const testimage = "https://i.imgur.com/2nCt3Sbl.jpg"
+const [pickedImagePath, setPickedImagePath] = useState('');
+  const { user, room } = useContext(UserContext);
   const handleCameraImage = async () => {
     
 
@@ -39,15 +40,15 @@ const CameraScreen = () => {
 
     if (!result.canceled) {
       // setImage(result);
-      //setPickedImagePath(result.uri);
-      alert("picture uri"+ result.uri);
-      // const payload = {
-      //   text: result.uri,
-      //   room: room,
-      //   username: user.username,
-      // }
-  
-      // socket.emit('MESSAGE', payload)
+      setPickedImagePath(result.uri);
+      //alert("picture uri"+ result.uri);
+      const payload = {
+        text: "Image " +result.uri,
+        room: room,
+        username: user.username,
+      }
+     // alert(payload);
+      socket.emit('MESSAGE', payload)
     }
   };
 
@@ -68,12 +69,12 @@ const CameraScreen = () => {
     if (!result.canceled) {
       // setImage(result);
       setPickedImagePath(result.uri);
-      // const payload = {
-      //   text: "photo taken"+result.uri,
-      //   room: room,
-      //   username: user.username,
-      // }
-      // socket.emit('MESSAGE', payload)
+      const payload = {
+        text: "Image "+result.uri,
+        room: room,
+        username: user.username,
+      }
+      socket.emit('MESSAGE', payload)
     }
   };
 
@@ -88,6 +89,9 @@ const CameraScreen = () => {
             onPress={handlePickImage}
             color="blue"
             title="Select Image" />
+            <Image source = {{uri:pickedImagePath?pickedImagePath:testimage}}
+   style = {{ width: 200, height: 200 }}
+   />
         </View>
       </View>
   )
