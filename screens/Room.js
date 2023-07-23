@@ -21,7 +21,7 @@ import ThemedBox from '../components/ThemedBox';
 import * as Haptics from 'expo-haptics';
 
 import { colors, styles } from '../utils/styles'
-import { UserContext, ThemeContext} from '../App'
+import { UserContext, ThemeContext } from '../App'
 import socket from '../utils/socket'
 import ThemedText from '../components/ThemedText'
 import ThemedBackground from '../components/ThemedBackground'
@@ -36,7 +36,7 @@ export default function Room({ route, navigation }) {
     themeTextStyle,
 
   } = useContext(ThemeContext)
-  const { user, room, setRoom,pickedImagePath } = useContext(UserContext)
+  const { user, room, setRoom, pickedImagePath } = useContext(UserContext)
 
   const handleSubmit = () => {
     const payload = {
@@ -72,15 +72,15 @@ export default function Room({ route, navigation }) {
   const isValidHttpUrl = (str) => {
     // alert("Image " + str)
 
-    if (str.includes('Image')){
+    if (str.includes('Image')) {
       str.trimLeft("Image ")
       // alert("Image " + testimage)
-       return true;
+      return true;
     }
     else
       return false;
 
-    
+
 
 
     // const pattern = new RegExp(
@@ -94,6 +94,13 @@ export default function Room({ route, navigation }) {
     // );
     // return pattern.test(str);
   }
+
+  useEffect(() => {
+    if (room !== 'none') {
+      console.log('ROOM CHANGED', room)
+      navigation.navigate(room);
+    }
+  }, [room]);
 
   useEffect(() => {
     try {
@@ -144,7 +151,7 @@ export default function Room({ route, navigation }) {
               onPress={() => {
                 setMessages([]);
                 setRoom('none');
-                navigation.navigate('RoomList');
+                navigation.navigate('Home');
               }}
             >
               Leave
@@ -173,28 +180,28 @@ export default function Room({ route, navigation }) {
               {messages.length > 0 &&
                 messages.map((message, i) => {
                   return (
-                    <>
-                      <Center
-                        key={i}
-                        w='80'
-                        bg={colorScheme === 'light'
-                          ? colors.backgroundDark
 
-                          : colors.darkBackground}
-                        rounded='md'
-                        shadow={3}
-                      >
-                        {isValidHttpUrl(message.text) ? (
-                          <Image source = {{uri:pickedImagePath}}
-   style = {{ width: 200, height: 200 }} />
-                        ) : (
-                          <ThemedText
-                            style={themeTextStyle}
-                            fontSize={'md'}
-                            text={`${message.username}: ${message.text}`}
-                          ></ThemedText>
-                        )}
-                      </Center></>
+                    <Center
+                      key={i}
+                      w='80'
+                      bg={colorScheme === 'light'
+                        ? colors.backgroundDark
+
+                        : colors.darkBackground}
+                      rounded='md'
+                      shadow={3}
+                    >
+                      {isValidHttpUrl(message.text) ? (
+                        <Image source={{ uri: pickedImagePath }}
+                          style={{ width: 200, height: 200 }} />
+                      ) : (
+                        <ThemedText
+                          style={themeTextStyle}
+                          fontSize={'md'}
+                          text={`${message.username}: ${message.text}`}
+                        ></ThemedText>
+                      )}
+                    </Center>
                   )
                 })}
             </VStack>

@@ -62,6 +62,8 @@ export default function App() {
     fetchRooms(setRooms);
   }, []);
 
+
+
   function setToDarkTheme() {
     setThemeContainerStyle(styles.darkContainer);
     setThemeTextStyle(styles.darkThemeText);
@@ -98,12 +100,12 @@ export default function App() {
 
   return (
     <SafeAreaProvider
-      style={{ paddingTop: 30, ...themeNavStyle }}
+      style={{ paddingTop: 40, ...themeNavStyle }}
       initialMetrics={inset}
     >
       <StatusBar
         style='light'
-        hidden={true}
+        hidden={false}
       />
       <NavigationContainer>
         <NativeBaseProvider initialWindowMetrics={inset}>

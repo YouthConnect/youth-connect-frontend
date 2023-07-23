@@ -45,7 +45,7 @@ const LoginModal = ({ visible, onClose }) => {
         .then(data => {
           console.log('login success');
           setUser(data.user);
-          navigation.navigate('RoomList');
+          navigation.navigate('Home');
         });
     } catch (error) {
       console.log('ERROR SIGNING IN: ', error);

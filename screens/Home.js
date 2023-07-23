@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { ThemeContext, UserContext } from '../App';
 import { Button, VStack } from 'native-base';
 import { styles } from '../utils/styles';
@@ -8,10 +8,11 @@ import ThemedText from '../components/ThemedText';
 
 import ThemedBackground from '../components/ThemedBackground';
 import LoginModal from '../components/LoginModal';
+import RoomHB from '../components/RoomHB';
 
 export default function HomeScreen({ navigation }) {
   const { toggleTheme, themeButtonStyle } = useContext(ThemeContext);
-  const { user } = useContext(UserContext);
+  const { user, room } = useContext(UserContext);
 
   return (
     <ThemedBox
@@ -24,9 +25,8 @@ export default function HomeScreen({ navigation }) {
           textAlign={'center'}
           fontSize='xl'
           testID={'HOME TITLE'}
-          text={`Welcome to Youth Connect! ${
-            user && user.username !== 'null' ? user.username : ''
-          }`}
+          text={`Welcome to Youth Connect! ${user && user.username !== 'null' ? user.username : ''
+            }`}
         />
         {/* <Text mb={10} style={themeTextStyle} textAlign={'center'} fontSize='xl'>
           Welcome to Youth Connect! {user && user.username}
@@ -35,8 +35,12 @@ export default function HomeScreen({ navigation }) {
           space={4}
           alignItems='center'
         >
-          <LoginModal />
-          <SignUpModal />
+          {user?.username ? '' :
+            <>
+              <LoginModal />
+              <SignUpModal />
+            </>
+          }
 
           {/*<Button
             style={[themeButtonStyle]}
@@ -46,12 +50,13 @@ export default function HomeScreen({ navigation }) {
           </Button>*/}
 
           {user?.username && (
-            <Button
+            /* <Button
               style={[themeButtonStyle]}
               onPress={() => navigation.navigate('RoomList')}
             >
               Join a room
-            </Button>
+            </Button> */
+            <RoomHB />
           )}
 
           <Button
@@ -62,7 +67,7 @@ export default function HomeScreen({ navigation }) {
           >
             Change Theme
           </Button>
-          
+
         </VStack>
       </ThemedBackground>
     </ThemedBox>
