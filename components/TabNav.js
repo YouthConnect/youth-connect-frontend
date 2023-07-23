@@ -8,9 +8,8 @@ import HomeScreen from '../screens/Home';
 import RoomList from '../screens/RoomList';
 import Login from '../screens/Login';
 import Room from '../screens/Room';
-import { colors } from '../utils/styles';
 
-export default function TabNav({ room, themeNavStyle }) {
+export default function TabNav({ user, room, themeNavStyle }) {
   const screenOptions = {
     unmountOnBlur: false,
     headerShown: false,
@@ -28,19 +27,25 @@ export default function TabNav({ room, themeNavStyle }) {
         name='Home'
         component={HomeScreen}
       />
+      {/*
       <Tab.Screen
         name='Login'
         component={Login}
       />
-      <Tab.Screen
-        name='RoomList'
-        component={RoomList}
-      />
-      <Tab.Screen
-        name={'Room'}
-        title={room}
-        component={Room}
-      />
+    */}
+      {user?.username && (
+        <Tab.Screen
+          name='RoomList'
+          component={RoomList}
+        />
+      )}
+      {user?.username && (
+        <Tab.Screen
+          name={room !== 'none' ? room : 'Chat'}
+          title={'Room'}
+          component={Room}
+        />
+      )}
     </Tab.Navigator>
   );
 }

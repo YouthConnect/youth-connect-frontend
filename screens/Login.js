@@ -17,13 +17,8 @@ import base64 from 'base-64';
 import ThemedBackground from '../components/ThemedBackground';
 
 export default function Login({ navigation }) {
-  const {
-    colorScheme,
-    themeContainerStyle,
-    themeInputStyle,
-    themeTextStyle,
-    themeButtonStyle,
-  } = useContext(ThemeContext);
+  const { themeInputStyle, themeTextStyle, themeButtonStyle } =
+    useContext(ThemeContext);
   const { user, setUser } = useContext(UserContext);
 
   const handleSubmit = e => {

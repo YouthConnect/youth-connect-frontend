@@ -8,20 +8,20 @@ import {
   Button,
   ScrollView,
   KeyboardAvoidingView,
-} from 'native-base'
+} from 'native-base';
 
-import { Platform } from 'react-native'
+import { Platform } from 'react-native';
 
-import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
-import ThemedBox from '../components/ThemedBox'
+import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
+import ThemedBox from '../components/ThemedBox';
 
-import * as Haptics from 'expo-haptics'
+import * as Haptics from 'expo-haptics';
 
-import { colors, styles } from '../utils/styles'
-import { UserContext, ThemeContext } from '../App'
-import socket from '../utils/socket'
-import ThemedText from '../components/ThemedText'
-import ThemedBackground from '../components/ThemedBackground'
+import { colors, styles } from '../utils/styles';
+import { UserContext, ThemeContext } from '../App';
+import socket from '../utils/socket';
+import ThemedText from '../components/ThemedText';
+import ThemedBackground from '../components/ThemedBackground';
 
 export default function Room({ route, navigation }) {
   const {
@@ -30,76 +30,87 @@ export default function Room({ route, navigation }) {
     themeButtonStyle,
     themeContainerStyle,
     themeTextStyle,
-  } = useContext(ThemeContext)
-  const { user, room, setRoom } = useContext(UserContext)
+  } = useContext(ThemeContext);
+  const { user, room, setRoom } = useContext(UserContext);
 
   const handleSubmit = () => {
     const payload = {
       text: message,
       room: room,
       username: user.username,
-    }
+    };
 
-    socket.emit('MESSAGE', payload)
-    setMessages([...messages, payload])
-    setMessage('')
-  }
-  const [messages, setMessages] = useState([])
-  const [message, setMessage] = useState('')
+    socket.emit('MESSAGE', payload);
+    setMessages([...messages, payload]);
+    setMessage('');
+  };
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    socket.emit('GET RECENT MESSAGES', room)
-  }, [room])
+    socket.emit('GET RECENT MESSAGES', room);
+  }, [room]);
 
   const addNewMessage = message => {
-    console.log('NEW MESSAGE', message)
-    setMessages([...messages, message])
-  }
+    console.log('NEW MESSAGE', message);
+    setMessages([...messages, message]);
+  };
 
   const isValidRoom = room => {
-    let valid = room !== 'none' && room !== null && room !== undefined
-    return valid
-  }
+    let valid = room !== 'none' && room !== null && room !== undefined;
+    return valid;
+  };
 
   useEffect(() => {
     try {
       socket.on('NEW MESSAGE', payload => {
-        addNewMessage(payload)
-      })
+        addNewMessage(payload);
+      });
     } catch (error) {
-      console.error('ERROR RECEIVING MESSAGE', error)
+      console.error('ERROR RECEIVING MESSAGE', error);
     }
 
     try {
       socket.on('SENDING RECENT MESSAGES', payload => {
-        setMessages(payload)
-      })
+        setMessages(payload);
+      });
     } catch (error) {
-      console.error('ERROR RECEIVING RECENT MESSAGES', error)
+      console.error('ERROR RECEIVING RECENT MESSAGES', error);
     }
-  }, [socket])
+  }, [socket]);
 
   return (
-    <ThemedBox container={true} safeArea={true}>
-      <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
-        <Box flex={1} mt={15} p={3}>
-          {!isValidRoom(room) &&
+    <ThemedBox
+      container={true}
+      safeArea={true}
+    >
+      <ThemedBackground
+        source={bgImage}
+        resizeMode='cover'
+        style={{ flex: 1 }}
+      >
+        <Box
+          flex={1}
+          mt={15}
+          p={3}
+        >
+          {!isValidRoom(room) && (
             <ThemedText
               style={themeTextStyle}
               textAlign={'center'}
               fontSize={'lg'}
               text={'Please join a room'}
             ></ThemedText>
-          }
+          )}
 
           {isValidRoom(room) && (
             <Button
               size={'sm'}
               style={[themeButtonStyle]}
               onPress={() => {
-                setMessages([])
-                setRoom('none')
-                navigation.navigate('Rooms')
+                setMessages([]);
+                setRoom('none');
+                navigation.navigate('RoomList');
               }}
             >
               Leave
@@ -119,7 +130,12 @@ export default function Room({ route, navigation }) {
             alignContent={'center'}
             contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
           >
-            <VStack mt={10} mb={50} space={4} alignItems='center'>
+            <VStack
+              mt={10}
+              mb={50}
+              space={4}
+              alignItems='center'
+            >
               {messages.length > 0 &&
                 messages.map((message, i) => {
                   return (
@@ -140,7 +156,7 @@ export default function Room({ route, navigation }) {
                         text={`${message.username}: ${message.text}`}
                       ></ThemedText>
                     </Center>
-                  )
+                  );
                 })}
             </VStack>
           </ScrollView>
@@ -160,8 +176,8 @@ export default function Room({ route, navigation }) {
               mt='2'
               colorScheme='cyan'
               onPress={() => {
-                handleSubmit()
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                handleSubmit();
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               }}
               disabled={!isValidRoom(room)}
             >
@@ -171,5 +187,5 @@ export default function Room({ route, navigation }) {
         )}
       </ThemedBackground>
     </ThemedBox>
-  )
+  );
 }
