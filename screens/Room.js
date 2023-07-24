@@ -24,6 +24,7 @@ import { UserContext, ThemeContext } from '../App'
 import socket from '../utils/socket'
 import ThemedText from '../components/ThemedText'
 import ThemedBackground from '../components/ThemedBackground'
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Room({ route, navigation }) {
   const {
@@ -35,6 +36,10 @@ export default function Room({ route, navigation }) {
   } = useContext(ThemeContext)
   const { user, room, setRoom, pickedImagePath } = useContext(UserContext)
   const [toChatBot, setToChatBot] = useState('')
+  const [messages, setMessages] = useState([])
+  const [message, setMessage] = useState('')
+  const testimage = 'https://i.imgur.com/2nCt3Sbl.jpg'
+
 
   const handleSubmit = () => {
     const payload = {
@@ -52,9 +57,6 @@ export default function Room({ route, navigation }) {
     socket.emit('TO CHAT BOT', toChatBot)
   }
 
-  const [messages, setMessages] = useState([])
-  const [message, setMessage] = useState('')
-  const testimage = 'https://i.imgur.com/2nCt3Sbl.jpg'
 
   useEffect(() => {
     socket.emit('GET RECENT MESSAGES', room)
@@ -115,6 +117,23 @@ export default function Room({ route, navigation }) {
       console.error('ERROR RECEIVING RECENT MESSAGES', error)
     }
 
+    try {
+      socket.on("NEW IMAGE", (payload) => {
+        console.log(payload)
+
+        const message = {
+          text: "Image " + payload.uri,
+          username: payload.username,
+          room: payload.room
+        }
+
+        setMessages([...messages, message]) // <- add image to messages
+      })
+    } catch (error) {
+      console.log('ERROR RECEVING NEW IMAGE:', error)
+    }
+
+
     /*
     try {
       socket.on('CHAT BOT MESSAGE', payload => {
@@ -126,107 +145,108 @@ export default function Room({ route, navigation }) {
     */
   }, [socket])
 
-  return (
-    <ThemedBox container={true} safeArea={true}>
-      <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
-        <Box flex={1} mt={15} p={3}>
-          {!isValidRoom(room) && (
-            <ThemedText
-              style={themeTextStyle}
-              textAlign={'center'}
-              fontSize={'lg'}
-              text={'Please join a room'}
-            ></ThemedText>
-          )}
-
-          {isValidRoom(room) && (
-            <Button
-              size={'sm'}
-              style={[themeButtonStyle]}
-              onPress={() => {
-                setMessages([])
-                setRoom('none')
-                navigation.navigate('Home')
-              }}
-            >
-              Leave
-            </Button>
-          )}
-        </Box>
-        <KeyboardAvoidingView
-          h={{
-            base: '400px',
-            lg: 'auto',
-          }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
-          <ScrollView
-            mt={5}
-            maxH={400}
-            alignContent={'center'}
-            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-          >
-            <VStack mt={10} mb={50} space={4} alignItems='center'>
-              {messages.length > 0 &&
-                messages.map((message, i) => {
-                  return (
-                    <Center
-                      key={i}
-                      w='80'
-                      bg={
-                        colorScheme === 'light'
-                          ? colors.backgroundDark
-                          : colors.darkBackground
-                      }
-                      rounded='md'
-                      shadow={3}
-                    >
-                      {isValidHttpUrl(message.text) ? (
-                        <Image
-                          source={{ uri: pickedImagePath }}
-                          style={{ width: 200, height: 200 }}
-                        />
-                      ) : (
-                        <ThemedText
-                          style={themeTextStyle}
-                          fontSize={'md'}
-                          text={`${message.username}: ${message.text}`}
-                        ></ThemedText>
-                      )}
-                    </Center>
-                  )
-                })}
-            </VStack>
-          </ScrollView>
-        </KeyboardAvoidingView>
-        {user?.username && (
-          <VStack>
-            <FormControl>
-              <FormControl.Label>Send a message</FormControl.Label>
-              <Input
-                value={message}
-                style={themeContainerStyle}
-                onChangeText={setMessage}
-              />
-            </FormControl>
-            <Button
-              style={[themeButtonStyle]}
-              mt='2'
-              colorScheme='cyan'
-              onPress={() => {
-                handleSubmit()
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-              }}
-              disabled={!isValidRoom(room)}
-            >
-              Send
-            </Button>
-            <Button onPress={() => navigation.navigate('Camera')}>
-              Camera
-            </Button>
-          </VStack>
+return (
+  <ThemedBox container={true} safeArea={true}>
+    <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
+      <Box flex={1} mt={15} p={3}>
+        {!isValidRoom(room) && (
+          <ThemedText
+            style={themeTextStyle}
+            textAlign={'center'}
+            fontSize={'lg'}
+            text={'Please join a room'}
+          ></ThemedText>
         )}
-      </ThemedBackground>
-    </ThemedBox>
-  )
+
+        {isValidRoom(room) && (
+          <Button
+            size={'sm'}
+            style={[themeButtonStyle]}
+            onPress={() => {
+              setMessages([])
+              setRoom('none')
+              navigation.navigate('Home')
+            }}
+          >
+            Leave
+          </Button>
+        )}
+      </Box>
+      <KeyboardAvoidingView
+        h={{
+          base: '400px',
+          lg: 'auto',
+        }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView
+          mt={5}
+          maxH={400}
+          alignContent={'center'}
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+        >
+          <VStack mt={10} mb={50} space={4} alignItems='center'>
+            {messages.length > 0 &&
+              messages.map((message, i) => {
+                return (
+                  <Center
+                    key={i}
+                    w='80'
+                    bg={
+                      colorScheme === 'light'
+                        ? colors.backgroundDark
+                        : colors.darkBackground
+                    }
+                    rounded='md'
+                    shadow={3}
+                  >
+                    {isValidHttpUrl(message.text) ? (
+                      <Image // uri: pickedImagePath
+                        source={{ uri: message.text }}
+                        style={{ width: 200, height: 200 }}
+                      />
+                    ) : (
+                      <ThemedText
+                        style={themeTextStyle}
+                        fontSize={'md'}
+                        text={`${message.username}: ${message.text}`}
+                      ></ThemedText>
+                    )}
+                  </Center>
+                )
+              })}
+          </VStack>
+        </ScrollView>
+      </KeyboardAvoidingView>
+      {user?.username && (
+        <VStack>
+          <FormControl>
+            <FormControl.Label>Send a message</FormControl.Label>
+            <Input
+              value={message}
+              style={themeContainerStyle}
+              onChangeText={setMessage}
+            />
+          </FormControl>
+          <Button
+            style={[themeButtonStyle]}
+            mt='2'
+            colorScheme='cyan'
+            onPress={() => {
+              handleSubmit()
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+            }}
+            disabled={!isValidRoom(room)}
+          >
+            Send
+          </Button>
+          <Button onPress={() => navigation.navigate('Camera')}>
+            {/* Camera */}
+            <Ionicons name="camera-outline" size={24} color="black" />
+          </Button>
+        </VStack>
+      )}
+    </ThemedBackground>
+  </ThemedBox>
+)
 }

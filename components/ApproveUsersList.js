@@ -1,22 +1,59 @@
 import React from 'react'
 import { VStack, Button, Modal, Center } from 'native-base'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useContext } from 'react'
-import { ThemeContext } from '../App'
+import { ThemeContext, UserContext } from '../App'
+import base64 from 'base-64'
 export default function ApproveUsersList() {
+  const { user } = useContext(UserContext)
   const [showModal, setShowModal] = useState(false)
   const [users, setUsers] = useState([])
   const { themeButtonStyle } = useContext(ThemeContext)
 
-  const getUsers = () => {
-    // fetch to https://youth-connect-backend.onrender.com/unapproved
-    // setUsers(data)
+
+  const getUsers = async () => {
+    try {
+      let headers = new Headers()
+
+      headers.set('Authorization', `Bearer ${user.token}`)
+      fetch('https://youth-connect-backen.onrender.com/users/unapproved', {
+        method: 'GET',
+        headers: headers,
+      })
+        .then(res => res.json())
+        .then(data => {
+          
+          setUsers(data)
+        })
+    } catch (error) {
+      console.log('ERROR GETTING USERS: ', error)
+    }
   }
 
-  const approveUser = userId => {
-    // fetch to https://youth-connect-backend.onrender.com/users/${userId}/approve
-    // getUsers() // <-- to refresh
+  const approveUser = async userId => {
+    console.log(userId)
+    try {
+      let headers = new Headers()
+
+      headers.set('Authorization', `Bearer ${user.token}`)
+      fetch(`https://youth-connect-backen.onrender.com/users/${userId}/approve`, {
+        method: 'POST',
+        headers: headers,
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          getUsers()
+        })
+    } catch (error) {
+      console.log('ERROR SIGNING IN: ', error)
+    }
   }
+
+
+  useEffect(() => {
+    getUsers()
+  }, [])
 
   return (
     <Center>
@@ -43,7 +80,7 @@ export default function ApproveUsersList() {
                   return (
                     <Button
                       onPress={() => {
-                        approveUser(user._id)
+                        approveUser(user.id)
                       }}
                     >
                       {user.username} | {user.role} |{' '}
