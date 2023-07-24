@@ -29,7 +29,7 @@ const SignUpModal = ({ visible, onClose }) => {
     console.log('username password', username, password);
 
     const method = 'POST';
-    const url = 'https://youth-connect-server.onrender.com/signup';
+    const url = 'https://youth-connect-backend.onrender.com/signup';
     const action = 'CREATING USER';
     let headers = new Headers();
     const body = {

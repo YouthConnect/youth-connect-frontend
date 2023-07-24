@@ -13,8 +13,10 @@ export default function RoomList({ navigation }) {
     useContext(ThemeContext);
   const { user, setRoom, rooms, room } = useContext(UserContext);
 
+
   useEffect(() => {
     if (room !== 'none') {
+      console.log('ROOM CHANGED', room)
       navigation.navigate(room);
     }
   }, [room]);

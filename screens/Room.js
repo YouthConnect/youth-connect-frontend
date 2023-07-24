@@ -9,23 +9,21 @@ import {
   Button,
   ScrollView,
   KeyboardAvoidingView,
-  Menu
+  Menu,
 } from 'native-base'
 
+import { Platform } from 'react-native'
 
-import { Platform } from 'react-native';
+import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
+import ThemedBox from '../components/ThemedBox'
 
-import React, { useEffect, useLayoutEffect, useState, useContext } from 'react';
-import ThemedBox from '../components/ThemedBox';
-
-import * as Haptics from 'expo-haptics';
+import * as Haptics from 'expo-haptics'
 
 import { colors, styles } from '../utils/styles'
-import { UserContext, ThemeContext} from '../App'
+import { UserContext, ThemeContext } from '../App'
 import socket from '../utils/socket'
 import ThemedText from '../components/ThemedText'
 import ThemedBackground from '../components/ThemedBackground'
-
 
 export default function Room({ route, navigation }) {
   const {
@@ -34,50 +32,52 @@ export default function Room({ route, navigation }) {
     themeButtonStyle,
     themeContainerStyle,
     themeTextStyle,
-
   } = useContext(ThemeContext)
-  const { user, room, setRoom,pickedImagePath } = useContext(UserContext)
+  const { user, room, setRoom, pickedImagePath } = useContext(UserContext)
+  const [toChatBot, setToChatBot] = useState('')
 
   const handleSubmit = () => {
     const payload = {
       text: message,
       room: room,
       username: user.username,
-    };
-
+    }
 
     socket.emit('MESSAGE', payload)
     setMessages([...messages, payload])
     setMessage('')
   }
+
+  const sendToChatBot = () => {
+    socket.emit('TO CHAT BOT', toChatBot)
+  }
+
   const [messages, setMessages] = useState([])
   const [message, setMessage] = useState('')
-  const testimage = "https://i.imgur.com/2nCt3Sbl.jpg"
+  const testimage = 'https://i.imgur.com/2nCt3Sbl.jpg'
 
   useEffect(() => {
-    socket.emit('GET RECENT MESSAGES', room);
-  }, [room]);
-
+    socket.emit('GET RECENT MESSAGES', room)
+  }, [room])
 
   const addNewMessage = message => {
-    console.log('NEW MESSAGE', message);
-    setMessages([...messages, message]);
-  };
+    console.log('NEW MESSAGE', message)
+    setMessages([...messages, message])
+  }
 
   const isValidRoom = room => {
-    let valid = room !== 'none' && room !== null && room !== undefined;
-    return valid;
-  };
+    let valid = room !== 'none' && room !== null && room !== undefined
+    return valid
+  }
 
-  const isValidHttpUrl = (str) => {
-    // if (str.includes('Image')){
-    //   str.trimLeft("Image ")
+  const isValidHttpUrl = str => {
+    // alert("Image " + str)
+
+    if (str.includes('Image')) {
+      str.trimLeft('Image ')
       // alert("Image " + testimage)
-       return false;
-    // }
-    // else
-    //   return false;
-
+      return true
+    } else return false
 
     // const pattern = new RegExp(
     //   '^([a-zA-Z]+:\\/\\/)?' + // protocol
@@ -92,38 +92,44 @@ export default function Room({ route, navigation }) {
   }
 
   useEffect(() => {
+    if (room !== 'none') {
+      console.log('ROOM CHANGED', room)
+      navigation.navigate(room)
+    }
+  }, [room])
+
+  useEffect(() => {
     try {
       socket.on('NEW MESSAGE', payload => {
-        addNewMessage(payload);
-      });
+        addNewMessage(payload)
+      })
     } catch (error) {
-      console.error('ERROR RECEIVING MESSAGE', error);
+      console.error('ERROR RECEIVING MESSAGE', error)
     }
 
     try {
       socket.on('SENDING RECENT MESSAGES', payload => {
-        setMessages(payload);
+        setMessages(payload)
+      })
+    } catch (error) {
+      console.error('ERROR RECEIVING RECENT MESSAGES', error)
+    }
+
+    /*
+    try {
+      socket.on('CHAT BOT MESSAGE', payload => {
+        setMessages([...messages, payload]);
       });
     } catch (error) {
-      console.error('ERROR RECEIVING RECENT MESSAGES', error);
+      console.error('ERROR RECEIVING CHAT BOT MESSAGE', error);
     }
-  }, [socket]);
+    */
+  }, [socket])
 
   return (
-    <ThemedBox
-      container={true}
-      safeArea={true}
-    >
-      <ThemedBackground
-        source={bgImage}
-        resizeMode='cover'
-        style={{ flex: 1 }}
-      >
-        <Box
-          flex={1}
-          mt={15}
-          p={3}
-        >
+    <ThemedBox container={true} safeArea={true}>
+      <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
+        <Box flex={1} mt={15} p={3}>
           {!isValidRoom(room) && (
             <ThemedText
               style={themeTextStyle}
@@ -138,9 +144,9 @@ export default function Room({ route, navigation }) {
               size={'sm'}
               style={[themeButtonStyle]}
               onPress={() => {
-                setMessages([]);
-                setRoom('none');
-                navigation.navigate('RoomList');
+                setMessages([])
+                setRoom('none')
+                navigation.navigate('Home')
               }}
             >
               Leave
@@ -160,33 +166,36 @@ export default function Room({ route, navigation }) {
             alignContent={'center'}
             contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
           >
-            <VStack
-              mt={10}
-              mb={50}
-              space={4}
-              alignItems='center'
-            >
+            <VStack mt={10} mb={50} space={4} alignItems='center'>
               {messages.length > 0 &&
                 messages.map((message, i) => {
                   return (
-                      <Center
-                        key={i}
-                        w='80'
-                        bg={colorScheme === 'light'
+                    <Center
+                      key={i}
+                      w='80'
+                      bg={
+                        colorScheme === 'light'
                           ? colors.backgroundDark
-
-                          : colors.darkBackground}
-                        rounded='md'
-                        shadow={3}
-                      >
-                          <ThemedText
-                            style={themeTextStyle}
-                            fontSize={'md'}
-                            text={`${message.username}: ${message.text}`}
-                          ></ThemedText>
-                      </Center>
-                )})}
-
+                          : colors.darkBackground
+                      }
+                      rounded='md'
+                      shadow={3}
+                    >
+                      {isValidHttpUrl(message.text) ? (
+                        <Image
+                          source={{ uri: pickedImagePath }}
+                          style={{ width: 200, height: 200 }}
+                        />
+                      ) : (
+                        <ThemedText
+                          style={themeTextStyle}
+                          fontSize={'md'}
+                          text={`${message.username}: ${message.text}`}
+                        ></ThemedText>
+                      )}
+                    </Center>
+                  )
+                })}
             </VStack>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -205,8 +214,8 @@ export default function Room({ route, navigation }) {
               mt='2'
               colorScheme='cyan'
               onPress={() => {
-                handleSubmit();
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                handleSubmit()
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
               }}
               disabled={!isValidRoom(room)}
             >
@@ -219,5 +228,5 @@ export default function Room({ route, navigation }) {
         )}
       </ThemedBackground>
     </ThemedBox>
-  );
+  )
 }
