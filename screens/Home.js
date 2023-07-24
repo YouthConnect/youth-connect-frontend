@@ -9,6 +9,7 @@ import ThemedText from '../components/ThemedText'
 import ThemedBackground from '../components/ThemedBackground'
 import LoginModal from '../components/LoginModal'
 import RoomHB from '../components/RoomHB'
+import ApproveUsersList from '../components/ApproveUsersList'
 
 export default function HomeScreen({ navigation }) {
   const { toggleTheme, themeButtonStyle } = useContext(ThemeContext)
@@ -26,6 +27,8 @@ export default function HomeScreen({ navigation }) {
             user && user.username !== 'null' ? user.username : ''
           }`}
         />
+
+        {user && user.role === 'admin' && <ApproveUsersList />}
 
         <VStack space={4} alignItems='center'>
           {user?.username ? (

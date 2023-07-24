@@ -46,6 +46,7 @@ const LoginModal = ({ visible, onClose }) => {
         .then(res => res.json())
         .then(data => {
           console.log('login success')
+          console.log(data.user)
           setUser(data.user)
           navigation.navigate('Home')
         })
