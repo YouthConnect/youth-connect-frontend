@@ -1,19 +1,20 @@
-import { Menu, Pressable, Button, Box, useDisclose } from 'native-base'
+import { Menu, Pressable, Button, Box, Center, useDisclose } from 'native-base'
 import React, { useContext } from 'react'
 import socket from '../utils/socket'
 import { ThemeContext, UserContext } from '../App'
+import { styles } from '../utils/styles'
 
 export default function RoomHB() {
-  const { themeButtonStyle } = useContext(ThemeContext)
+  const { themeButtonStyle, themeContainerStyle } = useContext(ThemeContext)
 
   const { user, setRoom, rooms } = useContext(UserContext)
 
   return (
-    <Box>
-      {/* w="90%" alignItems="right" */}
+    <Center>
       <Menu
+        style={[themeContainerStyle]}
+        h='200'
         closeOnSelect={true}
-        w='190'
         onOpen={() => console.log('opened')}
         onClose={() => {
           console.log('closed')
@@ -31,6 +32,7 @@ export default function RoomHB() {
             rooms.map((room, i) => {
               return (
                 <Menu.ItemOption
+                  style={themeContainerStyle}
                   value={room.name}
                   key={i}
                   onPress={() => {
@@ -49,6 +51,6 @@ export default function RoomHB() {
                 <Menu.ItemOption value="Delete a Room">Delete a Room</Menu.ItemOption>
                 </Menu.OptionGroup>*/}
       </Menu>
-    </Box>
+    </Center>
   )
 }

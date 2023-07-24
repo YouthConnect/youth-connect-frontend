@@ -17,6 +17,7 @@ export default function TabNav({ user, room, themeNavStyle }) {
     tabBarItemStyle: {
       ...themeNavStyle,
     },
+    tabBarLabelStyle: { fontWeight: '900', fontSize: 15 },
   }
 
   return (

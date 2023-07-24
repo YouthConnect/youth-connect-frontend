@@ -24,9 +24,13 @@ export const styles = StyleSheet.create({
   },
   lightNav: {
     backgroundColor: colors.primary,
+    color: '#ffffff',
   },
   darkNav: {
     backgroundColor: colors.secondary,
+    color: '#ffffff',
+    fontSize: 'large',
+    fontWeight: '600',
   },
   lightContainer: {
     backgroundColor: colors.backgroundDark,

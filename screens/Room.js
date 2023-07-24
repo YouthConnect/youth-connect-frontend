@@ -9,6 +9,7 @@ import {
   Button,
   ScrollView,
   KeyboardAvoidingView,
+  HStack,
   Menu,
 } from 'native-base'
 
@@ -61,7 +62,7 @@ export default function Room({ route, navigation }) {
   }, [room])
 
   const addNewMessage = message => {
-    console.log('NEW MESSAGE', message)
+    console.log('NEW MESSAGE', messages, message)
     setMessages([...messages, message])
   }
 
@@ -74,6 +75,8 @@ export default function Room({ route, navigation }) {
     if (user.username === name) {
       let newText = text.split(' ')
       return newText[1]
+    } else {
+      return text
     }
   }
 
@@ -168,6 +171,7 @@ export default function Room({ route, navigation }) {
             base: '400px',
             lg: 'auto',
           }}
+          w={'100%'}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           <ScrollView
@@ -212,35 +216,44 @@ export default function Room({ route, navigation }) {
                 })}
             </VStack>
           </ScrollView>
+
+          {user?.username && (
+            <VStack width={'100%'}>
+                <HStack style={{ alignItems: 'center', width: '100%' }}>
+              <FormControl style={{ flex: 1 }}>
+                <FormControl.Label>Send a message</FormControl.Label>
+
+                <Input
+                  value={message}
+                  style={themeContainerStyle}
+                  onChangeText={setMessage}
+                />
+              </FormControl>
+              <Button
+                w={20}
+                style={[themeButtonStyle]}
+                mt='2'
+                colorScheme='cyan'
+                onPress={() => {
+                  handleSubmit()
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                }}
+                disabled={!isValidRoom(room)}
+              >
+                Send
+              <Button
+                w={20}
+                style={[themeButtonStyle]}
+                onPress={() => navigation.navigate('Camera')}
+              >
+              </Button>
+                {/* Camera */}
+                <Ionicons name='camera-outline' size={24} color='black' />
+              </Button>
+              </HStack>
+            </VStack>
+          )}
         </KeyboardAvoidingView>
-        {user?.username && (
-          <VStack>
-            <FormControl>
-              <FormControl.Label>Send a message</FormControl.Label>
-              <Input
-                value={message}
-                style={themeContainerStyle}
-                onChangeText={setMessage}
-              />
-            </FormControl>
-            <Button
-              style={[themeButtonStyle]}
-              mt='2'
-              colorScheme='cyan'
-              onPress={() => {
-                handleSubmit()
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-              }}
-              disabled={!isValidRoom(room)}
-            >
-              Send
-            </Button>
-            <Button onPress={() => navigation.navigate('Camera')}>
-              {/* Camera */}
-              <Ionicons name='camera-outline' size={24} color='black' />
-            </Button>
-          </VStack>
-        )}
       </ThemedBackground>
     </ThemedBox>
   )

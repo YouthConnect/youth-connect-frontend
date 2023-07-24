@@ -41,7 +41,7 @@ export default function HomeScreen({ navigation }) {
           )}
 
           {user?.username && <RoomHB />}
-
+          
           <Button
             style={[themeButtonStyle]}
             mt={10}
