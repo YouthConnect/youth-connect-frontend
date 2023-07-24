@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function RoomHB() {
     const navigation = useNavigation();
+    const { themeTextStyle } = useContext(ThemeContext)
     const { user, setRoom, rooms, room, setRooms } = useContext(UserContext)
 
     return <Box > {/* w="90%" alignItems="right" */}
@@ -15,7 +16,12 @@ export default function RoomHB() {
             console.log('closed')
         }} trigger={triggerProps => {
             return <Pressable {...triggerProps}>
-                <ThreeDotsIcon />
+                <ThemedText
+                    style={themeTextStyle}
+                    textAlign={'center'}
+                    fontSize={'lg'}
+                    text={'Join a room'}
+                ></ThemedText>
             </Pressable>;
         }}>
             <Menu.OptionGroup defaultValue="Rooms" title="Rooms" type="radio">

@@ -118,6 +118,9 @@ export default function Room({ route, navigation }) {
     } catch (error) {
       console.error('ERROR RECEIVING RECENT MESSAGES', error);
     }
+    // socket.on('CHAT BOT RESPONSE', (payload) => {
+      // setMessges([...messages, payload])
+    //})
   }, [socket]);
 
   return (
