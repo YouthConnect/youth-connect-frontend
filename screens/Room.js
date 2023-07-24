@@ -11,7 +11,6 @@ import {
   KeyboardAvoidingView,
   HStack,
   Menu,
-  HStack,
 } from 'native-base';
 
 import { Platform } from 'react-native';
@@ -65,7 +64,6 @@ export default function Room({ route, navigation }) {
   }, [room]);
 
   const addNewMessage = message => {
-
     console.log('NEW MESSAGE', message);
     setMessages([...messages, message]);
   };
@@ -85,7 +83,14 @@ export default function Room({ route, navigation }) {
   };
 
   const isValidHttpUrl = str => {
-  };
+    // alert("Image " + str)
+
+    if (str.includes('Image')) {
+      str.trimLeft('Image ')
+      // alert("Image " + testimage)
+      return true
+    } else return false
+  }
 
   useEffect(() => {
     if (room === 'none' || room === 'Chat') {
@@ -99,7 +104,7 @@ export default function Room({ route, navigation }) {
   useEffect(() => {
     try {
       socket.on('NEW MESSAGE', payload => {
-        console.log(payload);
+
         addNewMessage(payload);
       });
     } catch (error) {
@@ -127,44 +132,45 @@ export default function Room({ route, navigation }) {
   //   socket.emit('EDIT_MESSAGE', updatedMessage);
 
   //   const handleDeleteMessage = (messageId) => {
+  // fetch delete to api/v1/messages/:id
   //     socket.emit('DELETE_MESSAGE', messageId);
   //   };
 
 
 
-    return (
-      <ThemedBox container={true} safeArea={true}>
-        <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
-          <Box flex={1} mt={15} p={3} mb={-3}>
-            {!isValidRoom(room) && (
-              <ThemedText
-                style={themeTextStyle}
-                textAlign={'center'}
-                fontSize={'lg'}
-                text={'Please join a room'}
-              ></ThemedText>
-            )}
+  return (
+    <ThemedBox container={true} safeArea={true}>
+      <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
+        <Box flex={1} mt={15} p={3} mb={-3}>
+          {!isValidRoom(room) && (
+            <ThemedText
+              style={themeTextStyle}
+              textAlign={'center'}
+              fontSize={'lg'}
+              text={'Please join a room'}
+            ></ThemedText>
+          )}
 
-            {isValidRoom(room) && (
-              <>
-                <Button
-                  size={'sm'}
-                  p={3}
-                  style={[themeButtonStyle]}
-                  onPress={() => {
-                    setMessages([]);
-                    setRoom('none');
-                  }}
-                >
-                  Leave
-                </Button>
-                <RoomHB />
-              </>
+          {isValidRoom(room) && (
+            <>
+              <Button
+                size={'sm'}
+                p={3}
+                style={[themeButtonStyle]}
+                onPress={() => {
+                  setMessages([]);
+                  setRoom('none');
+                }}
+              >
+                Leave
+              </Button>
+              <RoomHB />
+            </>
 
-            )}
-          </Box>
-          
-                  <KeyboardAvoidingView
+          )}
+        </Box>
+
+        <KeyboardAvoidingView
           h={{
             base: '400px',
             lg: 'auto',
@@ -172,110 +178,112 @@ export default function Room({ route, navigation }) {
           w={'100%'}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          
-            <ScrollView
-              mt={5}
-              maxH={400}
-              alignContent={'center'}
-              contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-            >
-              <VStack mt={10} mb={50} space={4} alignItems='center'>
-                {messages.length > 0 &&
-                  messages.map((message, i) => {
-                    const isOutgoing = message.username === user.username;
-                    const isEditMode = editMode && selectedMessage?.id === message.id;
-                    return (
-                      <Center
-                        key={i}
-                        w='80'
-                        bg={
-                          colorScheme === 'light'
-                            ? colors.backgroundDark
-                            : colors.darkBackground
-                        }
-                        rounded='md'
-                        shadow={3}
-                      >
-                        {isValidHttpUrl(message.text) ? (
-                          <Image
-                            key={i}
-                            source={{
-                              uri: imageTrim(message.text, message.username),
-                            }}
-                            style={{ width: 200, height: 200 }}
-                            alt={`${user.username} Image ${i}`}
+
+          <ScrollView
+            mt={5}
+            maxH={400}
+            alignContent={'center'}
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+          >
+            <VStack mt={10} mb={50} space={4} alignItems='center'>
+              {messages.length > 0 &&
+                messages.map((message, i) => {
+                  const isOutgoing = message.username === user.username;
+                  const isEditMode = editMode && selectedMessage?.id === message.id;
+                  return (
+                    <Center
+                      key={i}
+                      w='80'
+                      bg={
+                        colorScheme === 'light'
+                          ? colors.backgroundDark
+                          : colors.darkBackground
+                      }
+                      rounded='md'
+                      shadow={3}
+                    >
+                      {isValidHttpUrl(message.text) ? (
+                        <Image
+                          key={i}
+                          source={{
+                            uri: imageTrim(message.text, message.username),
+                          }}
+                          style={{ width: 200, height: 200 }}
+                          alt={`${user.username} Image ${i}`}
+                        />
+                      ) : (
+                        <HStack space={2} alignItems='center'>
+                          <ThemedText
+                            style={themeTextStyle}
+                            fontSize={'md'}
+                            text={`${message.username}: ${message.text}`}
                           />
-                        ) : (
-                          <HStack space={2} alignItems='center'>
-                            <ThemedText
-                              style={themeTextStyle}
-                              fontSize={'md'}
-                              text={`${message.username}: ${message.text}`}
-                            />
-                            {isOutgoing && (
-                              <>
-                                <Ionicons
-                                  name='create-outline'
-                                  size={20}
-                                  color='gray'
-                                  onPress={() => {
-                                    setEditMode(true);
-                                    setSelectedMessage(message);
-                                  }}
-                                />
-                                <Ionicons
-                                  name='trash-outline'
-                                  size={20}
-                                  color='gray'
-                                  onPress={() => {
-                                    handleDeleteMessage(message.id);
-                                    setMessages(messages.filter(msg => msg.id !== message.id));
-                                  }}
-                                />
-                              </>
-                            )}
-                          </HStack>
-                        )}
-                      </Center>
-                    );
-                  })}
-              </VStack>
-            </ScrollView>
-     
+                          {isOutgoing && (
+                            <>
+                              <Ionicons
+                                name='create-outline'
+                                size={20}
+                                color='gray'
+                                onPress={() => {
+                                  setEditMode(true);
+                                  setSelectedMessage(message);
+                                }}
+                              />
+                              <Ionicons
+                                name='trash-outline'
+                                size={20}
+                                color='gray'
+                                onPress={() => {
+                                  handleDeleteMessage(message.id);
+                                  console.log(message.id, message) // <-- see if this outputs
+                                  setMessages(messages.filter(msg => msg.id !== message.id));
+                                }}
+                              />
+                            </>
+                          )}
+                        </HStack>
+                      )}
+                    </Center>
+                  );
+                })}
+            </VStack>
+          </ScrollView>
+
           {user?.username && (
             <VStack width={'100%'}>
-                <HStack style={{ alignItems: 'center', width: '100%' }}>
-              <FormControl style={{ flex: 1 }}>
-                <FormControl.Label>Send a message</FormControl.Label>
-                <Input
-                  value={message}
-                  style={themeContainerStyle}
-                  onChangeText={setMessage}
-                />
-              </FormControl>
-              <Button
-
-                w={20}
-                style={[themeButtonStyle]}
-                mt='2'
-                colorScheme='cyan'
-                onPress={() => {
-                  handleSubmit();
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                }}
-                disabled={!isValidRoom(room)}
-              >
-                Send
               <Button
                 w={20}
                 style={[themeButtonStyle]}
                 onPress={() => navigation.navigate('Camera')}
               >
-              </Button>
-                {/* Camera */}
                 <Ionicons name='camera-outline' size={24} color='black' />
               </Button>
+              <HStack style={{ alignItems: 'center', width: '100%' }}>
+                <FormControl style={{ flex: 1 }}>
+                  <FormControl.Label>Send a message</FormControl.Label>
+                  <Input
+                    value={message}
+                    style={themeContainerStyle}
+                    onChangeText={setMessage}
+                  />
+                </FormControl>
+                <Button
+
+                  w={20}
+                  style={[themeButtonStyle]}
+                  mt='2'
+                  colorScheme='cyan'
+                  onPress={() => {
+                    handleSubmit();
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  }}
+                  disabled={!isValidRoom(room)}
+                >
+                  Send
+                </Button>
               </HStack>
+
+
             </VStack>
           )}
         </KeyboardAvoidingView>
