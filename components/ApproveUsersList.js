@@ -1,22 +1,58 @@
 import React from 'react'
-import { VStack, Button, Modal, Center } from 'native-base'
-import { useState } from 'react'
+import { VStack, Box, Button, Modal, Center } from 'native-base'
+import { useState, useEffect } from 'react'
 import { useContext } from 'react'
-import { ThemeContext } from '../App'
+import { ThemeContext, UserContext } from '../App'
+import ThemedText from './ThemedText'
 export default function ApproveUsersList() {
+  const { user } = useContext(UserContext)
   const [showModal, setShowModal] = useState(false)
   const [users, setUsers] = useState([])
   const { themeButtonStyle } = useContext(ThemeContext)
 
-  const getUsers = () => {
-    // fetch to https://youth-connect-backend.onrender.com/unapproved
-    // setUsers(data)
+  const getUsers = async () => {
+    try {
+      let headers = new Headers()
+
+      headers.set('Authorization', `Bearer ${user.token}`)
+      fetch('https://youth-connect-backend.onrender.com/users/unapproved', {
+        method: 'GET',
+        headers: headers,
+      })
+        .then(res => res.json())
+        .then(data => {
+          setUsers(data)
+        })
+    } catch (error) {
+      console.log('ERROR GETTING USERS: ', error)
+    }
   }
 
-  const approveUser = userId => {
-    // fetch to https://youth-connect-backend.onrender.com/users/${userId}/approve
-    // getUsers() // <-- to refresh
+  const approveUser = async userId => {
+    console.log(userId)
+    try {
+      let headers = new Headers()
+
+      headers.set('Authorization', `Bearer ${user.token}`)
+      fetch(
+        `https://youth-connect-backend.onrender.com/users/${userId}/approve`,
+        {
+          method: 'PUT',
+          headers: headers,
+        }
+      )
+        .then(res => res.json())
+        .then(data => {
+          getUsers()
+        })
+    } catch (error) {
+      console.log('ERROR SIGNING IN: ', error)
+    }
   }
+
+  useEffect(() => {
+    getUsers()
+  }, [])
 
   return (
     <Center>
@@ -39,16 +75,20 @@ export default function ApproveUsersList() {
           <Modal.Body>
             <VStack space={2}>
               {users.length > 0 &&
-                users.map(user => {
+                users.map((user, i) => {
                   return (
-                    <Button
-                      onPress={() => {
-                        approveUser(user._id)
-                      }}
-                    >
-                      {user.username} | {user.role} |{' '}
-                      {user.approved ? '✔️' : '❌'}
-                    </Button>
+                    <Box key={i}>
+                      <Button
+                        style={themeButtonStyle}
+                        onPress={() => {
+                          approveUser(user.id)
+                        }}
+                      >
+                        <ThemedText>
+                          {user.username} | {user.role} ✔️{' '}
+                        </ThemedText>
+                      </Button>
+                    </Box>
                   )
                 })}
             </VStack>

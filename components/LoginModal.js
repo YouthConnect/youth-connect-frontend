@@ -11,10 +11,10 @@ import {
 import React, { useState, useContext } from 'react'
 import { UserContext, ThemeContext } from '../App'
 import base64 from 'base-64'
-import { useRef } from 'react'
+import { useRef } from 'react' //
 
 const LoginModal = ({ visible, onClose }) => {
-  const passwordRef = useRef(null)
+  const passwordRef = useRef(null) //
   const [showModal, setShowModal] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -48,7 +48,6 @@ const LoginModal = ({ visible, onClose }) => {
           console.log('login success')
           console.log(data.user)
           setUser(data.user)
-          navigation.navigate('Home')
         })
     } catch (error) {
       console.log('ERROR SIGNING IN: ', error)
@@ -81,7 +80,7 @@ const LoginModal = ({ visible, onClose }) => {
                 <Input
                   style={themeInputStyle}
                   onChangeText={setUsername}
-                  returnKeyType='next'
+                  returnKeyType='next' //
                   onSubmitEditing={() => {
                     passwordRef.current.focus()
                   }}
@@ -94,7 +93,7 @@ const LoginModal = ({ visible, onClose }) => {
                   type='password'
                   style={themeInputStyle}
                   onChangeText={setPassword}
-                  returnKeyType='submit'
+                  returnKeyType='send'
                   onSubmitEditing={() => {
                     handleSubmit()
                   }}

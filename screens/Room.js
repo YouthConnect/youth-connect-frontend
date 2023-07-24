@@ -24,6 +24,7 @@ import { UserContext, ThemeContext } from '../App'
 import socket from '../utils/socket'
 import ThemedText from '../components/ThemedText'
 import ThemedBackground from '../components/ThemedBackground'
+import { Ionicons } from '@expo/vector-icons'
 
 export default function Room({ route, navigation }) {
   const {
@@ -35,6 +36,9 @@ export default function Room({ route, navigation }) {
   } = useContext(ThemeContext)
   const { user, room, setRoom, pickedImagePath } = useContext(UserContext)
   const [toChatBot, setToChatBot] = useState('')
+  const [messages, setMessages] = useState([])
+  const [message, setMessage] = useState('')
+  const testimage = 'https://i.imgur.com/2nCt3Sbl.jpg'
 
   const handleSubmit = () => {
     const payload = {
@@ -52,10 +56,6 @@ export default function Room({ route, navigation }) {
     socket.emit('TO CHAT BOT', toChatBot)
   }
 
-  const [messages, setMessages] = useState([])
-  const [message, setMessage] = useState('')
-  const testimage = 'https://i.imgur.com/2nCt3Sbl.jpg'
-
   useEffect(() => {
     socket.emit('GET RECENT MESSAGES', room)
   }, [room])
@@ -68,6 +68,11 @@ export default function Room({ route, navigation }) {
   const isValidRoom = room => {
     let valid = room !== 'none' && room !== null && room !== undefined
     return valid
+  }
+
+  const imageTrim = text => {
+    let newText = text.split(' ')
+    return newText[1]
   }
 
   const isValidHttpUrl = str => {
@@ -92,7 +97,9 @@ export default function Room({ route, navigation }) {
   }
 
   useEffect(() => {
-    if (room !== 'none') {
+    if (room === 'none' || room === 'Chat') {
+      navigation.navigate('Home')
+    } else {
       console.log('ROOM CHANGED', room)
       navigation.navigate(room)
     }
@@ -101,6 +108,7 @@ export default function Room({ route, navigation }) {
   useEffect(() => {
     try {
       socket.on('NEW MESSAGE', payload => {
+        console.log(payload)
         addNewMessage(payload)
       })
     } catch (error) {
@@ -129,7 +137,7 @@ export default function Room({ route, navigation }) {
   return (
     <ThemedBox container={true} safeArea={true}>
       <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
-        <Box flex={1} mt={15} p={3}>
+        <Box flex={1} mt={15} p={3} mb={-3}>
           {!isValidRoom(room) && (
             <ThemedText
               style={themeTextStyle}
@@ -142,11 +150,11 @@ export default function Room({ route, navigation }) {
           {isValidRoom(room) && (
             <Button
               size={'sm'}
+              p={3}
               style={[themeButtonStyle]}
               onPress={() => {
                 setMessages([])
                 setRoom('none')
-                navigation.navigate('Home')
               }}
             >
               Leave
@@ -182,9 +190,11 @@ export default function Room({ route, navigation }) {
                       shadow={3}
                     >
                       {isValidHttpUrl(message.text) ? (
-                        <Image
-                          source={{ uri: pickedImagePath }}
+                        <Image // uri: pickedImagePath
+                          key={i}
+                          source={{ uri: imageTrim(message.text) }}
                           style={{ width: 200, height: 200 }}
+                          alt={`${user.username} Image ${i}`}
                         />
                       ) : (
                         <ThemedText
@@ -222,7 +232,8 @@ export default function Room({ route, navigation }) {
               Send
             </Button>
             <Button onPress={() => navigation.navigate('Camera')}>
-              Camera
+              {/* Camera */}
+              <Ionicons name='camera-outline' size={24} color='black' />
             </Button>
           </VStack>
         )}
