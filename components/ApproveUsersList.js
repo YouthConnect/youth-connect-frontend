@@ -22,7 +22,7 @@ export default function ApproveUsersList() {
       })
         .then(res => res.json())
         .then(data => {
-          
+
           setUsers(data)
         })
     } catch (error) {
