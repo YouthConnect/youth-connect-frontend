@@ -48,7 +48,6 @@ const LoginModal = ({ visible, onClose }) => {
           console.log('login success')
           console.log(data.user)
           setUser(data.user)
-          navigation.navigate('Home')
         })
     } catch (error) {
       console.log('ERROR SIGNING IN: ', error)
@@ -81,7 +80,7 @@ const LoginModal = ({ visible, onClose }) => {
                 <Input
                   style={themeInputStyle}
                   onChangeText={setUsername}
-                  returnKeyType='next' // 
+                  returnKeyType='next' //
                   onSubmitEditing={() => {
                     passwordRef.current.focus()
                   }}

@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { Text } from 'native-base';
-import { ThemeContext } from '../App';
-import { styles } from '../utils/styles';
-import { fonts } from '../utils/fonts';
+import React, { useContext } from 'react'
+import { Text } from 'native-base'
+import { ThemeContext } from '../App'
+import { styles } from '../utils/styles'
+import { fonts } from '../utils/fonts'
 
 export default function ThemedText({
   testID,
@@ -12,8 +12,9 @@ export default function ThemedText({
   textAlign,
   mb,
   mt,
+  children,
 }) {
-  const { themeTextStyle } = useContext(ThemeContext);
+  const { themeTextStyle } = useContext(ThemeContext)
 
   return (
     <Text
@@ -24,7 +25,7 @@ export default function ThemedText({
       testID={testID}
       style={testStyle ? testStyle : [styles.themeTextStyle, themeTextStyle]}
     >
-      {text}
+      {text} {children}
     </Text>
-  );
+  )
 }
