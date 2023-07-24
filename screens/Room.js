@@ -70,9 +70,11 @@ export default function Room({ route, navigation }) {
     return valid
   }
 
-  const imageTrim = text => {
-    let newText = text.split(' ')
-    return newText[1]
+  const imageTrim = (text, name) => {
+    if (user.username === name) {
+      let newText = text.split(' ')
+      return newText[1]
+    }
   }
 
   const isValidHttpUrl = str => {
@@ -192,7 +194,9 @@ export default function Room({ route, navigation }) {
                       {isValidHttpUrl(message.text) ? (
                         <Image // uri: pickedImagePath
                           key={i}
-                          source={{ uri: imageTrim(message.text) }}
+                          source={{
+                            uri: imageTrim(message.text, message.username),
+                          }}
                           style={{ width: 200, height: 200 }}
                           alt={`${user.username} Image ${i}`}
                         />
