@@ -14,6 +14,7 @@ export default function ThemedText({
   mt,
   children,
 }) {
+  console.log('ThemeContext', ThemeContext);
   const { themeTextStyle } = useContext(ThemeContext)
 
   return (
@@ -23,7 +24,7 @@ export default function ThemedText({
       textAlign={textAlign}
       fontSize={fontSize}
       testID={testID}
-      style={testStyle ? testStyle : [styles.themeTextStyle, themeTextStyle]}
+      style={testStyle ? testStyle : [themeTextStyle]}
     >
       {text} {children}
     </Text>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { VStack, Box, Button, Modal, Center } from 'native-base'
+import { VStack, Box, Button, Modal, Center, Text } from 'native-base'
 import { useState, useEffect } from 'react'
 import { useContext } from 'react'
 import { ThemeContext, UserContext } from '../App'
@@ -8,7 +8,7 @@ export default function ApproveUsersList() {
   const { user } = useContext(UserContext)
   const [showModal, setShowModal] = useState(false)
   const [users, setUsers] = useState([])
-  const { themeButtonStyle } = useContext(ThemeContext)
+  const { themeTextStyle, themeButtonStyle } = useContext(ThemeContext)
 
   const getUsers = async () => {
     try {
@@ -84,9 +84,9 @@ export default function ApproveUsersList() {
                           approveUser(user.id)
                         }}
                       >
-                        <ThemedText>
+                        <Text>
                           {user.username} | {user.role} ✔️{' '}
-                        </ThemedText>
+                        </Text>
                       </Button>
                     </Box>
                   )
