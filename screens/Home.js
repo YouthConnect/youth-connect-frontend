@@ -10,6 +10,7 @@ import ThemedBackground from '../components/ThemedBackground'
 import LoginModal from '../components/LoginModal'
 import RoomHB from '../components/RoomHB'
 import ApproveUsersList from '../components/ApproveUsersList'
+import LogoutButton from '../components/LogoutButton'
 
 export default function HomeScreen({ navigation }) {
   const { toggleTheme, themeButtonStyle } = useContext(ThemeContext)
@@ -23,9 +24,8 @@ export default function HomeScreen({ navigation }) {
           textAlign={'center'}
           fontSize='xl'
           testID={'HOME TITLE'}
-          text={`Welcome to Youth Connect! ${
-            user && user.username !== 'null' ? user.username : ''
-          }`}
+          text={`Welcome to Youth Connect! ${user && user.username !== 'null' ? user.username : ''
+            }`}
         />
 
         {user && user.role === 'admin' && <ApproveUsersList />}
@@ -40,8 +40,13 @@ export default function HomeScreen({ navigation }) {
             </>
           )}
 
-          {user?.username && <RoomHB />}
-          
+
+          {user?.username &&
+            <>
+              <RoomHB />
+              <LogoutButton />
+            </>}
+
           <Button
             style={[themeButtonStyle]}
             mt={10}

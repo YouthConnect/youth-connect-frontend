@@ -14,6 +14,7 @@ export default function ThemedText({
   mt,
   children,
 }) {
+  console.log('ThemeContext', ThemeContext);
   const { themeTextStyle } = useContext(ThemeContext)
 
   return (
