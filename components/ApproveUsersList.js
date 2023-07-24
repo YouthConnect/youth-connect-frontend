@@ -8,7 +8,8 @@ export default function ApproveUsersList() {
   const { user } = useContext(UserContext)
   const [showModal, setShowModal] = useState(false)
   const [users, setUsers] = useState([])
-  const { themeTextStyle, themeButtonStyle } = useContext(ThemeContext)
+  const { themeButtonStyle, themeTextStyle } = useContext(ThemeContext)
+
 
   const getUsers = async () => {
     try {

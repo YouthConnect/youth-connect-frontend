@@ -9,6 +9,7 @@ import {
   Button,
   ScrollView,
   KeyboardAvoidingView,
+  HStack,
   Menu,
   HStack,
 } from 'native-base';
@@ -64,6 +65,7 @@ export default function Room({ route, navigation }) {
   }, [room]);
 
   const addNewMessage = message => {
+
     console.log('NEW MESSAGE', message);
     setMessages([...messages, message]);
   };
@@ -161,13 +163,16 @@ export default function Room({ route, navigation }) {
 
             )}
           </Box>
-          <KeyboardAvoidingView
-            h={{
-              base: '400px',
-              lg: 'auto',
-            }}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          >
+          
+                  <KeyboardAvoidingView
+          h={{
+            base: '400px',
+            lg: 'auto',
+          }}
+          w={'100%'}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          
             <ScrollView
               mt={5}
               maxH={400}
@@ -236,10 +241,11 @@ export default function Room({ route, navigation }) {
                   })}
               </VStack>
             </ScrollView>
-          </KeyboardAvoidingView>
+     
           {user?.username && (
-            <VStack>
-              <FormControl>
+            <VStack width={'100%'}>
+                <HStack style={{ alignItems: 'center', width: '100%' }}>
+              <FormControl style={{ flex: 1 }}>
                 <FormControl.Label>Send a message</FormControl.Label>
                 <Input
                   value={message}
@@ -248,6 +254,8 @@ export default function Room({ route, navigation }) {
                 />
               </FormControl>
               <Button
+
+                w={20}
                 style={[themeButtonStyle]}
                 mt='2'
                 colorScheme='cyan'
@@ -258,14 +266,21 @@ export default function Room({ route, navigation }) {
                 disabled={!isValidRoom(room)}
               >
                 Send
+              <Button
+                w={20}
+                style={[themeButtonStyle]}
+                onPress={() => navigation.navigate('Camera')}
+              >
               </Button>
-              <Button onPress={() => navigation.navigate('Camera')}>
                 {/* Camera */}
                 <Ionicons name='camera-outline' size={24} color='black' />
               </Button>
+              </HStack>
             </VStack>
           )}
-        </ThemedBackground>
-      </ThemedBox>
-    );
-  }
+        </KeyboardAvoidingView>
+      </ThemedBackground>
+    </ThemedBox>
+  )
+}
+
