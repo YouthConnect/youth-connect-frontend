@@ -1,8 +1,12 @@
 import React from 'react'
 import { VStack, Button, Modal, Center } from 'native-base'
 import { useState } from 'react'
+import { useContext } from 'react'
+import { ThemeContext } from '../App'
 export default function ApproveUsersList() {
+  const [showModal, setShowModal] = useState(false)
   const [users, setUsers] = useState([])
+  const { themeButtonStyle } = useContext(ThemeContext)
 
   const getUsers = () => {
     // fetch to https://youth-connect-backend.onrender.com/unapproved
@@ -16,7 +20,9 @@ export default function ApproveUsersList() {
 
   return (
     <Center>
-      <Button onPress={() => setShowModal(true)}>Button</Button>
+      <Button style={themeButtonStyle} onPress={() => setShowModal(true)}>
+        Approve Users
+      </Button>
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
