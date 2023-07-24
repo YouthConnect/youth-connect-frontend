@@ -12,7 +12,7 @@ export const colors = {
 
 // coolors.co <-- get more styles
 const blueGreen = {
-  green1: '#D9ED92'
+  green1: '#D9ED92',
 }
 
 export const styles = StyleSheet.create({
@@ -23,10 +23,10 @@ export const styles = StyleSheet.create({
     height: '100%',
   },
   lightNav: {
-    backgroundColor: colors.primary
+    backgroundColor: colors.primary,
   },
   darkNav: {
-    backgroundColor: colors.secondary
+    backgroundColor: colors.secondary,
   },
   lightContainer: {
     backgroundColor: colors.backgroundDark,
@@ -38,21 +38,21 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.darkBackground,
   },
   lightThemeButton: {
-    backgroundColor: colors.backgroundDarker
+    backgroundColor: colors.backgroundDarker,
   },
   darkThemeButton: {
-    backgroundColor: colors.darkBackground
+    backgroundColor: colors.darkBackground,
   },
   lightThemeText: {
     color: '#333',
   },
   lightInput: {
-    backgroundColor: colors.backgroundDarker,
-    color: 'white'
+    backgroundColor: colors.backgroundDark,
+    color: 'black',
   },
   darkInput: {
     backgroundColor: colors.backgroundDark,
-    color: 'white'
+    color: 'black',
   },
   darkThemeText: {
     color: '#fff',

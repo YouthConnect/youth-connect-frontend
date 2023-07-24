@@ -1,16 +1,15 @@
-import React, { useEffect, useLayoutEffect, useState, useContext } from 'react'
+import React, {  useContext } from 'react'
 import {
   View,
-  TextInput,
   Button,
   Image,
-  StyleSheet
+ 
 } from 'react-native';
 import { Box, Input } from "native-base";
 import * as ImagePicker from 'expo-image-picker';
 import socket from '../utils/socket'
 import { UserContext } from '../App'
-import axios from 'axios';
+
 
 
 
