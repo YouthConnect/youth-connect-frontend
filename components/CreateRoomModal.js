@@ -85,6 +85,9 @@ export default function CreateRoomModal({ visible, onClose }) {
   return (
     <>
       <Button
+        style={[themeButtonStyle]}
+        mt={10}
+        // size={'sm'}
         onPress={() => {
           setShowModal(true)
         }}

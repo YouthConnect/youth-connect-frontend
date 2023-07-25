@@ -75,9 +75,9 @@ export const getRooms = async () => {
   
 
 
-export const deleteRoom = async payload => {
+export const deleteRoom = async (id) => {
   const method = 'DELETE';
-  const url = `https://youth-connect-server.onrender.com/api/v1/rooms/${id}`;
+  const url = `https://youth-connect-backend.onrender.com/api/v1/rooms/${id}`;
   const action = 'DELETING ROOM';
   let headers = new Headers();
   const body = {};
