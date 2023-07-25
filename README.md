@@ -1,18 +1,32 @@
+<div align='center'>
+
 # Youth Connect - The app
+
+</div>
 
 ![Youth Connect Logo](./assets/adaptive-icon.png)
 
-![Expo](https://img.shields.io/badge/expo-1C1E24?style=for-the-badge&logo=expo&logoColor=#D04A37) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%010101) ![Render](https://img.shields.io/badge/render-0A0A0A?style=for-the-badge&logo=render&logoColor=white)
+<div align='center'>
 
-## What is this project?
+![Expo](https://img.shields.io/badge/expo-1C1E24?style=for-the-badge&logo=expo&logoColor=#D04A37) ![Google Play](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)
+![Jest](https://img.shields.io/badge/Jest-323330?style=for-the-badge&logo=Jest&logoColor=white) ![Testing Library](https://img.shields.io/badge/testing%20library-323330?style=for-the-badge&logo=testing-library&logoColor=red) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%010101) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+
+</div>
+<div align='center'>
+
+![Express](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge) ![Postgres](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white) ![SqlLite3](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white) ![Sequelize](https://img.shields.io/badge/sequelize-323330?style=for-the-badge&logo=sequelize&logoColor=blue) ![JWT](https://img.shields.io/badge/json%20web%20tokens-323330?style=for-the-badge&logo=json-web-tokens&logoColor=pink) ![Render](https://img.shields.io/badge/render-0A0A0A?style=for-the-badge&logo=render&logoColor=white)
+
+</div>
+
+## What is this project? <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
 - This repository contains the source code for a front end application using the [Youth Connect Backend](https://github.com/YouthConnect/youth-connect-backend) built on [React Native](https://reactnative.dev/) and [Expo](https://docs.expo.dev)
 
-## What is Youth connect?
+## What is Youth connect? <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
 - Youth connect is a mobile app built for Youth to join a safe and secure space. The app currently has support for download through the Google Play Store [Here!](https://google.com)
 
-## The purpose of Youth Connect
+## The purpose of Youth Connect <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
     To create a safe space for interaction between users, where they can
     share, collaborate, and seek help with homework or related topics.
@@ -21,15 +35,15 @@
     The greatest emphasis of the app is to keep everyone safe by providing
     secured groups only accessible by people who really know each other.
 
-### Problem domain
+### Problem domain <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
-### Collaboration
+### Collaboration <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
 - Ryan Galloway
 - Mark Smith
-- Daniel ???
+- Daniel Frey
 
-### Features <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/main/assets/adaptive-icon.png?raw=true' width='80px'>
+### Features <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
 - Amazingly **Styled** UI
 - **Consistent** Theme and Brand
@@ -40,8 +54,22 @@
   - and more
 - **Signup/Login** with your own username
 - **Join** a chat room
+  - send messages in real time
+  - send images and view them in the chat!
 - **Create** a chat room
+  - organize your space and chats
 - Use your preferred light/dark **Theme**
+
+## UML, Wireframe, and User Stories <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
+
+<div align="center">
+
+![Wireframe](./assets/wireframe.png) ![UML](./assets/UML.png)
+![User Stories](./assets/userStories.png)
+
+</div>
+
+### Please view information about the backend at [Youth Connect Backend](https://github.com/youthconnect/youth-connect-backend)
 
 ## Data privacy / How do we handle your data?
 
