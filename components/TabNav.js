@@ -30,7 +30,7 @@ export default function TabNav({ user, room, themeNavStyle }) {
             title={'Room'}
             component={Room}
           />
-          {room !== 'none' && <Tab.Screen name='Camera' component={Camera} />}
+          {/*room !== 'none' && <Tab.Screen name='Camera' component={Camera} />*/}
         </>
       )}
     </Tab.Navigator>
