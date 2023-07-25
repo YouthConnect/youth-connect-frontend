@@ -4,8 +4,9 @@ export const colors = {
   background: '#ebf3fa',
   backgroundDark: '#ebf3fa',
   // backgroundDark: '#8aebff',
-  backgroundDarker: '#88acff',
-  primary: '#00ffff',
+  backgroundDarker: '#02c1c4',
+  // primary: '#00ffff',
+  primary: '#05e2e6',
   secondary: '#5ff5cc',
   darkBackground: '#5aa5aa',
 }
