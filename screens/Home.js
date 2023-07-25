@@ -3,6 +3,7 @@ import { ThemeContext, UserContext } from '../App'
 import { Button, VStack } from 'native-base'
 import { styles } from '../utils/styles'
 import SignUpModal from '../components/SignUpModal'
+import CreateRoomModal from '../components/CreateRoomModal';
 import ThemedBox from '../components/ThemedBox'
 import ThemedText from '../components/ThemedText'
 
@@ -28,7 +29,12 @@ export default function HomeScreen({ navigation }) {
             }`}
         />
 
-        {user && user.role === 'admin' && <ApproveUsersList />}
+        {user && user.role === 'admin' &&
+        <>
+        <ApproveUsersList />
+        <CreateRoomModal />
+        </>
+        }
 
         <VStack space={4} alignItems='center'>
           {user?.username ? (

@@ -2,7 +2,9 @@ import { Menu, Pressable, Button, Box, Center, useDisclose } from 'native-base'
 import React, { useContext } from 'react'
 import socket from '../utils/socket'
 import { ThemeContext, UserContext } from '../App'
+import { deleteRoom } from '../utils/APIFunctions'
 import { styles } from '../utils/styles'
+import { Ionicons } from '@expo/vector-icons';
 
 export default function RoomHB() {
   const { themeButtonStyle, themeContainerStyle } = useContext(ThemeContext)
@@ -41,6 +43,16 @@ export default function RoomHB() {
                   }}
                 >
                   {room.name}
+                  <>
+                    {/* {user.role === "admin"
+                    } */}
+                    {/* <Ionicons
+                      name='trash-outline'
+                      size={20}
+                      color='gray'
+                      onPress={() => { }}
+                    /> */}
+                  </>
                 </Menu.ItemOption>
               )
             })}
