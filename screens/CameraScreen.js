@@ -4,7 +4,6 @@ import { Box, Input } from 'native-base'
 import * as ImagePicker from 'expo-image-picker'
 import socket from '../utils/socket'
 import { UserContext } from '../App'
-import { FileSystem } from 'expo-file-system'
 
 const CameraScreen = () => {
   const testimage = 'https://i.imgur.com/2nCt3Sbl.jpg'
@@ -23,7 +22,7 @@ const CameraScreen = () => {
     }
 
     // have we verified the format?
-    // 
+    //
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       base64: true, //this is what we want to send to the socket server
@@ -35,28 +34,15 @@ const CameraScreen = () => {
     // console.log ('object.keys', Object.keys(result));
 
     if (!result.canceled) {
-
-      const displayedImage = result.assets[0];
+      const displayedImage = result.assets[0]
       // setImage(result);
       setPickedImagePath(result.assets[0].uri) //we want to send base64, not uri
 
-      //const fsImage = await FileSystem.readAsStringAsync(result.assets[0].uri, {})
-      //console.log('FILE SYSTEM image:', fsImage)
-      //alert("picture uri"+ displayedImage);
-      /*const payload = {
-        // if ios something, if android result.uri
-        text: 'Image ',
+      const payload = {
+        text: 'Image ' + result.assets[0].uri,
         room: room,
         username: user.username,
         isImage: true,
-        image: result.assets[0].base64,
-      }*/
-
-      const payload = { 
-        text: "Image " + result.assets[0].uri,
-        room: room,
-        username: user.username,
-        isImage: true
       }
       // alert(payload);
       socket.emit('MESSAGE', payload)
@@ -99,12 +85,11 @@ const CameraScreen = () => {
 
       //then server creates image - and emits (TO EVERYONE) "NEW IMAGE"
 
-      
       const payload = {
-        text: "Image "+result.uri,
+        text: 'Image ' + result.uri,
         room: room,
         username: user.username,
-        isImage: true
+        isImage: true,
       }
       socket.emit('MESSAGE', payload)
     }

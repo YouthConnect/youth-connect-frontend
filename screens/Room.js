@@ -10,20 +10,26 @@ import {
   ScrollView,
   HStack,
   Menu,
-} from 'native-base';
+} from 'native-base'
 
-import { Platform, View, KeyboardAvoidingView } from 'react-native';
-import RoomHB from '../components/RoomHB';
-import React, { useEffect, useState, useContext } from 'react';
-import ThemedBox from '../components/ThemedBox';
-import * as Haptics from 'expo-haptics';
-import { colors, styles } from '../utils/styles';
-import { UserContext, ThemeContext } from '../App';
-import socket from '../utils/socket';
-import ThemedText from '../components/ThemedText';
-import ThemedBackground from '../components/ThemedBackground';
-import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker'
 
+import {
+  Platform,
+  View,
+  KeyboardAvoidingView,
+  KeyboardAvoidingViewBase,
+} from 'react-native'
+import RoomHB from '../components/RoomHB'
+import React, { useEffect, useState, useContext } from 'react'
+import ThemedBox from '../components/ThemedBox'
+import * as Haptics from 'expo-haptics'
+import { colors, styles } from '../utils/styles'
+import { UserContext, ThemeContext } from '../App'
+import socket from '../utils/socket'
+import ThemedText from '../components/ThemedText'
+import ThemedBackground from '../components/ThemedBackground'
+import { Ionicons } from '@expo/vector-icons'
 
 export default function Room({ route, navigation }) {
   const {
@@ -32,15 +38,16 @@ export default function Room({ route, navigation }) {
     themeButtonStyle,
     themeContainerStyle,
     themeTextStyle,
-  } = useContext(ThemeContext);
-  const { user, room, setRoom, pickedImagePath } = useContext(UserContext);
-  const [toChatBot, setToChatBot] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
-  const [editMode, setEditMode] = useState(false);
-  const [selectedMessage, setSelectedMessage] = useState(null);
+  } = useContext(ThemeContext)
+  const { user, room, setRoom, pickedImagePath, setPickedImagePath } =
+    useContext(UserContext)
+  const [toChatBot, setToChatBot] = useState('')
+  const [messages, setMessages] = useState([])
+  const [message, setMessage] = useState('')
+  const [editMode, setEditMode] = useState(false)
+  const [selectedMessage, setSelectedMessage] = useState(null)
 
-  const testimage = 'https://i.imgur.com/2nCt3Sbl.jpg';
+  const testimage = 'https://i.imgur.com/2nCt3Sbl.jpg'
 
   const handleSubmit = () => {
     const payload = {
@@ -48,41 +55,40 @@ export default function Room({ route, navigation }) {
       room: room,
       username: user.username,
       timestamp: new Date().getTime(), // Add timestamp to the payload
-    };
-    socket.emit('MESSAGE', payload);
-    setMessages([...messages, payload]);
-    setMessage('');
-  };
-
+    }
+    socket.emit('MESSAGE', payload)
+    setMessages([...messages, payload])
+    setMessage('')
+  }
 
   const sendToChatBot = () => {
-    socket.emit('TO CHAT BOT', toChatBot);
-  };
+    socket.emit('TO CHAT BOT', toChatBot)
+  }
 
   useEffect(() => {
-    socket.emit('GET RECENT MESSAGES', room);
-  }, [room]);
+    socket.emit('GET RECENT MESSAGES', room)
+  }, [room])
 
   const addNewMessage = message => {
-    console.log('NEW MESSAGE', message);
-    setMessages([...messages, message]);
-  };
+    console.log('NEW MESSAGE', message)
+    setMessages([...messages, message])
+  }
 
   const isValidRoom = room => {
-    let valid = room !== 'none' && room !== null && room !== undefined;
-    return valid;
-  };
+    let valid = room !== 'none' && room !== null && room !== undefined
+    return valid
+  }
 
   const imageTrim = (text, name) => {
     if (user.username === name) {
       console.log(text)
-      let newText = text.split(' ');
+      let newText = text.split(' ')
       console.log(newText)
-      return newText[1];
+      return newText[1]
     } else {
-      return text;
+      return text
     }
-  };
+  }
 
   const isValidHttpUrl = str => {
     // alert("Image " + str)
@@ -96,33 +102,31 @@ export default function Room({ route, navigation }) {
 
   useEffect(() => {
     if (room === 'none' || room === 'Chat') {
-      navigation.navigate('Home');
+      navigation.navigate('Home')
     } else {
-      console.log('ROOM CHANGED', room);
-      navigation.navigate(room);
+      console.log('ROOM CHANGED', room)
+      navigation.navigate(room)
     }
-  }, [room]);
+  }, [room])
 
   useEffect(() => {
     try {
       socket.on('NEW MESSAGE', payload => {
-
-        addNewMessage(payload);
-      });
+        addNewMessage(payload)
+      })
     } catch (error) {
-      console.error('ERROR RECEIVING MESSAGE', error);
+      console.error('ERROR RECEIVING MESSAGE', error)
     }
 
     try {
       socket.on('SENDING RECENT MESSAGES', payload => {
-        console.log('RECEIVED RECENT MESSAGES');
-        setMessages([...messages, payload])
+        console.log('RECEIVED RECENT MESSAGES')
+        setMessages(payload)
       })
     } catch (error) {
-      console.error('ERROR RECEIVING RECENT MESSAGES', error);
+      console.error('ERROR RECEIVING RECENT MESSAGES', error)
     }
-
-  }, [socket]);
+  }, [socket])
 
   const handleEditMessage = (messageId, content) => {
     const updatedMessage = {
@@ -130,28 +134,30 @@ export default function Room({ route, navigation }) {
       text: content,
       username: user.username,
       timestamp: new Date().getTime(),
-    };
-
-    socket.emit('EDIT_MESSAGE', updatedMessage);
-
-    return updatedMessage;
-  };
-
-  const handleDeleteMessage = async (messageId) => {
-    try {
-      await fetch(`/api/v1/messages/${messageId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      socket.emit('DELETE_MESSAGE', messageId);
-    } catch (error) {
-      console.error('Error deleting message:', error);
     }
-  };
 
+    socket.emit('EDIT_MESSAGE', updatedMessage)
+
+    return updatedMessage
+  }
+
+  const handleDeleteMessage = async messageId => {
+    try {
+      /* await fetch(
+        `https://youth-connect-backend/api/v1/messages/${messageId}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )*/
+
+      socket.emit('DELETE_MESSAGE', { messageId, room })
+    } catch (error) {
+      console.error('Error deleting message:', error)
+    }
+  }
 
   // const handleEditMessage = (messageId, content) => {
   //   const updatedMessage = {
@@ -168,7 +174,70 @@ export default function Room({ route, navigation }) {
   //     socket.emit('DELETE_MESSAGE', messageId);
   //   };
 
+  const handleCameraImage = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync()
+    if (permissionResult.granted === false) {
+      alert('Sorry, we need camera  permissions to make this work!')
+      return
+    }
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    if (status !== 'granted') {
+      alert('Sorry, we need camera roll permissions to make this work!')
+      return
+    }
 
+    // have we verified the format?
+    //
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64: true, //this is what we want to send to the socket server
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    })
+    if (!result.canceled) {
+      const displayedImage = result.assets[0]
+      // setImage(result);
+      setPickedImagePath(result.assets[0].uri) //we want to send base64, not uri
+
+      const payload = {
+        text: 'Image ' + result.assets[0].uri,
+        room: room,
+        username: user.username,
+        isImage: true,
+      }
+      // alert(payload);
+      socket.emit('MESSAGE', payload)
+    }
+  }
+
+  const handlePickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    if (status !== 'granted') {
+      alert('Sorry, we need camera roll permissions to make this work!')
+      return
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    })
+
+    if (!result.canceled) {
+      // setImage(result);
+      setPickedImagePath(result.assets.uri)
+
+      const payload = {
+        text: 'Image ' + result.uri,
+        room: room,
+        username: user.username,
+        isImage: true,
+      }
+      socket.emit('MESSAGE', payload)
+    }
+  }
 
   return (
     // <KeyboardAvoidingView
@@ -189,43 +258,42 @@ export default function Room({ route, navigation }) {
 
     <ThemedBox container={true} safeArea={true} style={{ flex: 1 }}>
       <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
-        <Box flex={1} mt={15} p={3} mb={-3}>
-          {!isValidRoom(room) && (
-            <ThemedText
-              style={themeTextStyle}
-              textAlign={'center'}
-              fontSize={'lg'}
-              text={'Please join a room'}
-            ></ThemedText>
-          )}
-
-          {isValidRoom(room) && (
-            <>
-              <Button
-                size={'sm'}
-                p={3}
-                style={[themeButtonStyle]}
-                onPress={() => {
-                  setMessages([]);
-                  setRoom('none');
-                }}
-              >
-                Leave
-              </Button>
-              <RoomHB />
-            </>
-
-          )}
-        </Box>
-
         <KeyboardAvoidingView
           h={{
             base: '400px',
             lg: 'auto',
           }}
           w={'100%'}
+          paddingBottom={40}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
+          <Box flex={1} mt={15} p={3} mb={-3}>
+            {!isValidRoom(room) && (
+              <ThemedText
+                style={themeTextStyle}
+                textAlign={'center'}
+                fontSize={'lg'}
+                text={'Please join a room'}
+              ></ThemedText>
+            )}
+
+            {isValidRoom(room) && (
+              <>
+                <Button
+                  size={'sm'}
+                  p={3}
+                  style={[themeButtonStyle]}
+                  onPress={() => {
+                    setMessages([])
+                    setRoom('none')
+                  }}
+                >
+                  Leave
+                </Button>
+                <RoomHB />
+              </>
+            )}
+          </Box>
 
           <ScrollView
             mt={5}
@@ -236,13 +304,14 @@ export default function Room({ route, navigation }) {
             <VStack mt={10} mb={50} space={4} alignItems='center'>
               {messages.length > 0 &&
                 messages.map((message, i) => {
-                  const isOutgoing = message.username === user.username;
-                  const isEditMode = editMode && selectedMessage?.id === message.id;
+                  const isOutgoing = message.username === user.username
+                  const isEditMode =
+                    editMode && selectedMessage?.id === message.id
                   return (
                     <HStack
                       key={i}
-                      width={"95%"}
-                      bg={isOutgoing ? '#05e2e6' : '#a7ef72'}//receiver color bright green
+                      width={'95%'}
+                      bg={isOutgoing ? '#05e2e6' : '#a7ef72'} //receiver color bright green
                       //bg={#05e2e6}//user color teal
                       color={'white'}
                       alignItems={'center'}
@@ -266,7 +335,9 @@ export default function Room({ route, navigation }) {
                         />
                       ) : (
                         <>
-                          <VStack alignItems={isOutgoing ? 'flex-end' : 'flex-start'}>
+                          <VStack
+                            alignItems={isOutgoing ? 'flex-end' : 'flex-start'}
+                          >
                             <ThemedText
                               style={{
                                 ...themeTextStyle,
@@ -282,8 +353,8 @@ export default function Room({ route, navigation }) {
                                 size={20}
                                 color='gray'
                                 onPress={() => {
-                                  setEditMode(true);
-                                  setSelectedMessage(message);
+                                  setEditMode(true)
+                                  setSelectedMessage(message)
                                 }}
                               />
                               <Ionicons
@@ -291,9 +362,15 @@ export default function Room({ route, navigation }) {
                                 size={20}
                                 color='gray'
                                 onPress={() => {
-                                  handleDeleteMessage(message.id);
-                                  console.log(message.id, message) // <-- see if this outputs
-                                  setMessages(messages.filter(msg => msg.id !== message.id));
+                                  handleDeleteMessage(i)
+                                  // <-- see if this outputs
+                                  setMessages(
+                                    messages.filter(
+                                      msg =>
+                                        message.text !== msg.text &&
+                                        message.user !== msg.user
+                                    )
+                                  )
                                 }}
                               />
                             </HStack>
@@ -301,57 +378,67 @@ export default function Room({ route, navigation }) {
                         </>
                       )}
                     </HStack>
-                  );
+                  )
                 })}
             </VStack>
           </ScrollView>
-        </KeyboardAvoidingView>
-        <Button
-          w={20}
-          style={[themeButtonStyle, { alignItems: 'center' }]}
-          onPress={() => navigation.navigate('Camera')}
-        >
-          <Ionicons name='camera-outline' size={24} color='black' />
-        </Button>
 
-        {/* <View style={{ flexDirection: 'row' }}> */}
-        {user?.username && (
-          <VStack width={'100%'} style={{ flex: 1 }}>
-            <HStack style={{ alignItems: 'center', width: '100%', paddingHorizontal: 10 }}>
-              <View style={{ flex: 1 }}>
-                {/* <FormControl.Label>Send a message</FormControl.Label> */}
-                <Input
-                  value={message}
-                  style={themeContainerStyle}
-                  onChangeText={setMessage}
-                  placeholder="Send a message"
-                  placeholderTextColor="black"
-                />
-              </View>
-              <Button
-                w={20}
-                style={[themeButtonStyle]}
-                mb='1'
-                colorScheme='cyan'
-                onPress={() => {
-                  handleSubmit();
-                  // onSend(messages)
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          <HStack>
+            <Button
+              w={20}
+              style={[themeButtonStyle, { alignItems: 'center' }]}
+              onPress={handleCameraImage}
+            >
+              <Ionicons name='camera-outline' size={24} color='black' />
+            </Button>
+            <Button
+              w={20}
+              onPress={handlePickImage}
+              style={[themeButtonStyle, { alignItems: 'center' }]}
+            >
+              <Ionicons name='image-outline' size={24} color='black' />
+            </Button>
+          </HStack>
+          {/* <View style={{ flexDirection: 'row' }}> */}
+          {user?.username && (
+            <VStack width={'100%'} style={{ flex: 1 }}>
+              <HStack
+                style={{
+                  alignItems: 'center',
+                  width: '100%',
+                  paddingHorizontal: 10,
                 }}
-                disabled={!isValidRoom(room)}
               >
-                <Ionicons name="send-outline" size={25}></Ionicons>
-              </Button>
-
-            </HStack>
-
-
-          </VStack>
-        )}
-        {/* </View> */}
+                <View style={{ flex: 1 }}>
+                  {/* <FormControl.Label>Send a message</FormControl.Label> */}
+                  <Input
+                    value={message}
+                    style={themeContainerStyle}
+                    onChangeText={setMessage}
+                    placeholder='Send a message'
+                    placeholderTextColor='black'
+                  />
+                </View>
+                <Button
+                  w={20}
+                  style={[themeButtonStyle]}
+                  mb='1'
+                  colorScheme='cyan'
+                  onPress={() => {
+                    handleSubmit()
+                    // onSend(messages)
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                  }}
+                  disabled={!isValidRoom(room)}
+                >
+                  <Ionicons name='send-outline' size={25}></Ionicons>
+                </Button>
+              </HStack>
+            </VStack>
+          )}
+        </KeyboardAvoidingView>
       </ThemedBackground>
     </ThemedBox>
-    // </KeyboardAvoidingView >
+    //</KeyboardAvoidingView >
   )
 }
-
