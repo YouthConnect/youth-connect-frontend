@@ -8,12 +8,11 @@ describe('<App />', () => {
   it('has home screen and title', async () => {
     render(<App />)
 
-    let home = await screen.findByText('Welcome to Youth Connect! ')
-    let title = await screen.findByTestId('HOME TITLE')
+    let home = await screen.findByTestId('HOME')
+    let logo = await screen.findByTestId('YCLOGO')
 
     expect(home).toBeDefined()
-    expect(title).toBeDefined()
-    expect(title.children[0]).toEqual('Welcome to Youth Connect! ')
+    expect(logo).toBeDefined()
   })
 
   it('has login form', async () => {

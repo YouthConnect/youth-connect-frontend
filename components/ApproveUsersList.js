@@ -8,7 +8,7 @@ export default function ApproveUsersList() {
   const { user } = useContext(UserContext)
   const [showModal, setShowModal] = useState(false)
   const [users, setUsers] = useState([])
-  const { themeButtonStyle, themeTextStyle } = useContext(ThemeContext)
+  const { themeButtonStyle, themeTextStyle, themeContainerStyle, colorScheme } = useContext(ThemeContext)
 
 
   const getUsers = async () => {
@@ -56,7 +56,7 @@ export default function ApproveUsersList() {
   }, [])
 
   return (
-    <Center>
+    <Center style={{ backgroundColor: '#02c1c4' }} >
       <Button style={themeButtonStyle} onPress={() => setShowModal(true)}>
         Approve Users
       </Button>
@@ -85,7 +85,7 @@ export default function ApproveUsersList() {
                           approveUser(user.id)
                         }}
                       >
-                        <Text>
+                        <Text color={'white'}>
                           {user.username} | {user.role} ✔️{' '}
                         </Text>
                       </Button>
@@ -123,6 +123,6 @@ export default function ApproveUsersList() {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-    </Center>
+    </ Center >
   )
 }

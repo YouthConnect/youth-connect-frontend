@@ -69,11 +69,12 @@ const SignUpModal = ({ visible, onClose }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
         <Center
-          style={
-            colorScheme === 'light'
-              ? { backgroundColor: 'white' }
-              : styles.llightContainer
-          }
+          // style={
+          //   colorScheme === 'light'
+          //     ? { backgroundColor: 'white' }
+          //     : styles.llightContainer
+          // }
+          style={[themeContainerStyle]}
         >
           <Button
           style={[themeButtonStyle]}

@@ -22,7 +22,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <ThemedBox container={true} testID='HOME'>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: -40 }}>
-        <Image source={{ uri: imageUrl }} style={{ width: 400, height: 400, alt: 'Youth connect logo' }} />
+        <Image source={{ uri: imageUrl }} style={{ width: 400, height: 400, alt: 'Youth connect logo' }} testID={'YCLOGO'} />
       </View>
 
 

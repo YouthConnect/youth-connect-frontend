@@ -317,7 +317,7 @@ export default function Room({ route, navigation }) {
                             alignItems={isOutgoing ? 'flex-end' : 'flex-start'}
                           > */}
                           <ThemedText
-                            color={isOutgoing ? 'black' : 'white'}
+                            color={isOutgoing ? 'black' : 'black'}
                             fontSize={'md'}
                             text={`${message.username}: ${message.text}`}
                           />
