@@ -8,26 +8,31 @@ import HomeScreen from '../screens/Home'
 import RoomList from '../screens/RoomList'
 import Login from '../screens/Login'
 import Room from '../screens/Room'
-import { colors } from '../utils/styles'
 import Camera from '../screens/CameraScreen'
 
-export default function TabNav({room, themeNavStyle }) {
- 
+export default function TabNav({ user, room, themeNavStyle }) {
   const screenOptions = {
     unmountOnBlur: false,
     headerShown: false,
     tabBarItemStyle: {
-      ...themeNavStyle
+      ...themeNavStyle,
     },
+    tabBarLabelStyle: { fontWeight: '900', fontSize: 15 },
   }
 
   return (
     <Tab.Navigator initialRouteName='Home' screenOptions={{ ...screenOptions }}>
       <Tab.Screen name='Home' component={HomeScreen} />
-      <Tab.Screen name='Login' component={Login} />
-      <Tab.Screen name='Rooms' component={RoomList} />
-      <Tab.Screen name='Room' component={Room} />
-      <Tab.Screen name='Camera' component={Camera} />
+      {user && user.username && (
+        <>
+          <Tab.Screen
+            name={room !== 'none' ? room : 'Chat'}
+            title={'Room'}
+            component={Room}
+          />
+          {/*room !== 'none' && <Tab.Screen name='Camera' component={Camera} />*/}
+        </>
+      )}
     </Tab.Navigator>
   )
 }

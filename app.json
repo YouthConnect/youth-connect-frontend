@@ -2,14 +2,15 @@
   "expo": {
     "name": "youth-connect",
     "slug": "youth-connect",
-    "version": "1.5.4",
+    "version": "2.7.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#aaaa"
+      "backgroundColor": "#aaaa",
+      "marginTop": "10px"
     },
     "plugins": [
       [
@@ -22,15 +23,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-
       "bundleIdentifier": "com.youthconnect.youth-connect",
-      "infoPlist": { 
-        "NSCameraUsageDescription": "We needs camera permissions to allow you to upload profile photos.", 
-        "NSPhotoLibraryAddUsageDescription": "We needs photo library permissions to allow you to upload profile images.",
-         "NSPhotoLibraryUsageDescription": "We needs photo library permissions to allow you to upload profile images."
-         },
-      "assetBundlePatterns": ["**/*"]
-
+      "infoPlist": {
+        "NSCameraUsageDescription": "We need camera permissions to allow you to upload profile photos.",
+        "NSPhotoLibraryAddUsageDescription": "We need photo library permissions to allow you to upload profile images.",
+        "NSPhotoLibraryUsageDescription": "We need photo library permissions to allow you to upload profile images."
+      }
     },
     "android": {
       "adaptiveIcon": {

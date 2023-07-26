@@ -26,7 +26,7 @@ export default function CreateRoomModal({ visible, onClose }) {
 
   const createRoom = async payload => {
     const method = 'POST'
-    const url = 'https://youth-connect-server.onrender.com/api/v1/rooms'
+    const url = 'https://youth-connect-backend.onrender.com/api/v1/rooms'
     const action = 'CREATING ROOM'
     let headers = new Headers()
     const body = {
@@ -85,6 +85,9 @@ export default function CreateRoomModal({ visible, onClose }) {
   return (
     <>
       <Button
+        style={[themeButtonStyle]}
+        mt={10}
+        // size={'sm'}
         onPress={() => {
           setShowModal(true)
         }}
