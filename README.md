@@ -66,20 +66,19 @@
 
 </div>
 
-### How to run on your device
+### How to run on your device <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
+
 
 - **install expo cli**
-- `npx create-expo-app <your-app-name>`
-- `cd <your-app-name>`
+- `npm i`
 - `npx expo start`
-- **Expo Tunnel**
-- `npm i @expo/ngrok@^4.1.0 (or higher)`
-- `npx expo start --tunnel`
+- `npx expo start --tunnel` (if npx expo start does not work for you locally)
 
 
 ### Please view information about the backend at [Youth Connect Backend](https://github.com/youthconnect/youth-connect-backend)
 
-## Data privacy / How do we handle your data?
+## Data privacy / How do we handle your data? <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
+
 
 - This app will not send or store any data that you do not provide it.
 - The only information that is kept / saved is your log in info and the content of messages that you send
@@ -87,10 +86,15 @@
 - Messages you send should not contain sensitive data about who you are or where you live (etc)
 - All information will be wiped from the app soon after release
 
-## How do I have my data removed from the app?
+## How do I have my data removed from the app? <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
+
 
 To request that your data is removed from the app please send an email to youthconnectapp@gmail.com providing:
 
 - your **in app** username.
 - details about what data must be changed/removed
   upon request to have your data removed in part or entirety it will be processed shortly or we will ask for further clarification.
+
+### Testing <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
+
+- `npm run tests`
