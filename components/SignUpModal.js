@@ -20,7 +20,7 @@ const SignUpModal = ({ visible, onClose }) => {
   const [password, setPassword] = useState('')
   const [alert, setAlert] = useState(false)
   const { user, setUser } = useContext(UserContext)
-  const { colorScheme, themeInputStyle, themeTextStyle, themeButtonStyle } =
+  const { colorScheme, themeInputStyle, themeTextStyle, themeButtonStyle, themeContainerStyle } =
     useContext(ThemeContext)
 
   const handleSubmit = async () => {
@@ -66,14 +66,6 @@ const SignUpModal = ({ visible, onClose }) => {
 
   return (
     <KeyboardAvoidingView
-      // h={{
-      //   base: '400px',
-      //   lg: 'auto',
-      // }}
-      //   // w={'100%'}
-      //   // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      //   // style={{ flex: 1 }}
-      // behavior={Platform.OS === "ios" ? "padding" : "height"}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
         <Center
@@ -83,15 +75,18 @@ const SignUpModal = ({ visible, onClose }) => {
               : styles.llightContainer
           }
         >
-          <Button style={[themeButtonStyle]} onPress={() => setShowModal(true)}>
+          <Button
+          style={[themeButtonStyle]}
+          onPress={() => setShowModal(true)}>
             Sign Up
           </Button>
           <Modal
-            style={{
-              backgroundColor:
-                colorScheme === 'light' ? 'white' : colors.backgroundDarker,
-              // position: 'absolute',
-            }}
+            // style={{
+            //   backgroundColor:
+            //     colorScheme === 'light' ? 'white' : colors.backgroundDarker,
+            //   // position: 'absolute',
+            // }}
+            style={themeContainerStyle}
             isOpen={showModal}
             onClose={() => setShowModal(false)}
           >

@@ -288,7 +288,7 @@ export default function Room({ route, navigation }) {
                   return (
                     <HStack
                       key={i}
-                      width={'80%'}
+                      width={'90%'}
                       bg={isOutgoing ? '#05e2e6' : '#a7ef72'} //receiver color bright green
                       //bg={#05e2e6}//user color teal
                       color={'white'}
@@ -317,14 +317,12 @@ export default function Room({ route, navigation }) {
                             alignItems={isOutgoing ? 'flex-end' : 'flex-start'}
                           > */}
                           <ThemedText
-                            style={{
-                              ...themeTextStyle,
-                            }}
+                            color={isOutgoing ? 'black' : 'white'}
                             fontSize={'md'}
                             text={`${message.username}: ${message.text}`}
                           />
                           {/* </VStack> */}
-                          {isOutgoing && (
+                          {/*isOutgoing && (
                             <HStack>
                               <Ionicons
                                 name='create-outline'
@@ -352,7 +350,7 @@ export default function Room({ route, navigation }) {
                                 }}
                               />
                             </HStack>
-                          )}
+                              )*/}
                         </>
                       )}
                     </HStack>
@@ -367,14 +365,14 @@ export default function Room({ route, navigation }) {
               style={[themeButtonStyle, { alignItems: 'center' }]}
               onPress={handleCameraImage}
             >
-              <Ionicons name='camera-outline' size={24} color='black' />
+              <Ionicons name='camera-outline' size={24} color='white' />
             </Button>
             <Button
               w={20}
               onPress={handlePickImage}
               style={[themeButtonStyle, { alignItems: 'center' }]}
             >
-              <Ionicons name='image-outline' size={24} color='black' />
+              <Ionicons name='image-outline' size={24} color='white' />
             </Button>
           </HStack>
 
@@ -394,14 +392,15 @@ export default function Room({ route, navigation }) {
                     style={themeContainerStyle}
                     onChangeText={setMessage}
                     placeholder='Send a message'
-                    placeholderTextColor='black'
+                    placeholderTextColor={colorScheme === 'light' ? 'black' : 'white'}
+                    color={colorScheme === 'light' ? 'black' : 'white'}
                     returnKeyType="send"
                     onSubmitEditing={() => {
                       handleSubmit()
                     }}
                   />
                 </View>
-                <Button
+                {/* <Button
                   w={20}
                   style={[themeButtonStyle]}
                   mb='1'
@@ -412,8 +411,8 @@ export default function Room({ route, navigation }) {
                   }}
                   disabled={!isValidRoom(room)}
                 >
-                  <Ionicons name='send-outline' size={25}></Ionicons>
-                </Button>
+                  <Ionicons name='send-outline' size={25} color='white'></Ionicons>
+                </Button> */}
               </HStack>
             </VStack>
           )}

@@ -13,6 +13,7 @@ export default function ThemedText({
   mb,
   mt,
   children,
+  color,
 }) {
   const { themeTextStyle } = useContext(ThemeContext)
 
@@ -24,6 +25,7 @@ export default function ThemedText({
       fontSize={fontSize}
       testID={testID}
       style={testStyle ? testStyle : [themeTextStyle]}
+      color={color}
     >
       {text} {children}
     </Text>

@@ -79,7 +79,7 @@ const LoginModal = ({ visible, onClose }) => {
               <FormControl testID='LOGIN FORM'>
                 <FormControl.Label>Username</FormControl.Label>
                 <Input
-                  style={themeInputStyle}
+                 
                   onChangeText={setUsername}
                   returnKeyType='next' //
                   onSubmitEditing={() => {
@@ -92,7 +92,7 @@ const LoginModal = ({ visible, onClose }) => {
                 <Input
                   ref={passwordRef}
                   type='password'
-                  style={themeInputStyle}
+                 
                   onChangeText={setPassword}
                   returnKeyType='send'
                   onSubmitEditing={() => {

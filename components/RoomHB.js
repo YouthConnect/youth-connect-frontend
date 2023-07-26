@@ -2,13 +2,15 @@ import { Menu, Pressable, Button, Box, Center, useDisclose } from 'native-base'
 import React, { useContext } from 'react'
 import socket from '../utils/socket'
 import { ThemeContext, UserContext } from '../App'
+import { Text } from 'native-base'
 import CreateRoomModal from './CreateRoomModal'
 import { deleteRoom } from '../utils/APIFunctions'
 import { styles } from '../utils/styles'
+import ThemedText from './ThemedText'
 import { Ionicons } from '@expo/vector-icons';
 
 export default function RoomHB() {
-  const { themeButtonStyle, themeContainerStyle } = useContext(ThemeContext)
+  const { themeButtonStyle, themeContainerStyle, colorScheme } = useContext(ThemeContext)
 
   const { user, setRoom, rooms, room, setRooms } = useContext(UserContext)
 
@@ -49,7 +51,7 @@ export default function RoomHB() {
                     setRoom(room.name)
                   }}
                 >
-                  {room.name}
+                  <Text color={colorScheme === 'dark' ? 'white' : 'black'}>{room.name}</Text>
                   <>
                     {/* {user.role === "admin"
                     } */}
@@ -63,7 +65,7 @@ export default function RoomHB() {
                 </Menu.ItemOption>
               )
             })}
-            {/* <Menu.ItemOption
+          {/* <Menu.ItemOption
               style={themeContainerStyle}
               value={'Create'}
               key={99}

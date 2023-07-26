@@ -8,7 +8,8 @@ export const colors = {
   // primary: '#00ffff',
   primary: '#05e2e6',
   secondary: '#5ff5cc',
-  darkBackground: '#5aa5aa',
+  darkBackground: '#010e12', // greens: #0f2b1a  #092916  #022410
+                            // blues: #1c2e4a  #082533  #01121a  
 }
 
 // coolors.co <-- get more styles
@@ -28,7 +29,7 @@ export const styles = StyleSheet.create({
     color: '#ffffff',
   },
   darkNav: {
-    backgroundColor: colors.secondary,
+    backgroundColor: '#a7ef72',
     color: '#ffffff',
     fontSize: 'large',
     fontWeight: '600',
@@ -57,7 +58,7 @@ export const styles = StyleSheet.create({
   },
   darkInput: {
     backgroundColor: colors.backgroundDark,
-    color: 'black',
+    color: 'white',
   },
   darkThemeText: {
     color: '#fff',
