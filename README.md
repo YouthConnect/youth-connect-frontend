@@ -37,6 +37,9 @@
 
 ### Problem domain <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
+- ...
+- ...
+
 ### Collaboration <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
 - Ryan Galloway
@@ -64,10 +67,14 @@
 
 <div align="center">
 
-![Wireframe](./assets/wireframe.png) ![UML](./assets/UML.png)
-![User Stories](./assets/userStories.png)
+![Wireframe](./assets/wireframe.png) ![User Stories](./assets/userStories.png) ![UML](./assets/UML.png)
 
 </div>
+
+### How to run on your device
+
+- install expo cli ...
+- ...
 
 ### Please view information about the backend at [Youth Connect Backend](https://github.com/youthconnect/youth-connect-backend)
 
