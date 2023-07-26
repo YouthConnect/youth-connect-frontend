@@ -6,12 +6,13 @@ import {
   Center,
   Alert,
   Text,
-  KeyboardAvoidingView,
 } from 'native-base'
 import React, { useState, useContext } from 'react'
 import { UserContext, ThemeContext } from '../App'
 import base64 from 'base-64'
 import { useRef } from 'react' //
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 
 const LoginModal = ({ visible, onClose }) => {
   const passwordRef = useRef(null) //
@@ -56,15 +57,15 @@ const LoginModal = ({ visible, onClose }) => {
   }
 
   return (
-    <Center style={[themeContainerStyle]}>
-      <Button
-        testID='LOGIN BUTTON'
-        style={[themeButtonStyle]}
-        onPress={() => setShowModal(true)}
-      >
-        Log in
-      </Button>
-      <KeyboardAvoidingView>
+      <Center style={[themeContainerStyle]} >
+        <Button
+          testID='LOGIN BUTTON'
+          style={[themeButtonStyle]}
+          onPress={() => setShowModal(true)}
+
+        >
+          Log in
+        </Button>
         <Modal
           testID='LOGIN'
           style={themeContainerStyle}
@@ -128,9 +129,8 @@ const LoginModal = ({ visible, onClose }) => {
             </Modal.Footer>
           </Modal.Content>
         </Modal>
-      </KeyboardAvoidingView>
-    </Center>
-  )
+      </Center>
+      )
 }
 
-export default LoginModal
+      export default LoginModal

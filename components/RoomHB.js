@@ -2,6 +2,7 @@ import { Menu, Pressable, Button, Box, Center, useDisclose } from 'native-base'
 import React, { useContext } from 'react'
 import socket from '../utils/socket'
 import { ThemeContext, UserContext } from '../App'
+import CreateRoomModal from './CreateRoomModal'
 import { deleteRoom } from '../utils/APIFunctions'
 import { styles } from '../utils/styles'
 import { Ionicons } from '@expo/vector-icons';
@@ -9,11 +10,17 @@ import { Ionicons } from '@expo/vector-icons';
 export default function RoomHB() {
   const { themeButtonStyle, themeContainerStyle } = useContext(ThemeContext)
 
-  const { user, setRoom, rooms } = useContext(UserContext)
+  const { user, setRoom, rooms, room, setRooms } = useContext(UserContext)
+
+  const isValidRoom = room => {
+    let valid = room !== 'none' && room !== null && room !== undefined
+    return valid
+  }
 
   return (
     <Center>
       <Menu
+        rooms={rooms}
         style={[themeContainerStyle]}
         h='200'
         closeOnSelect={true}
@@ -24,7 +31,7 @@ export default function RoomHB() {
         trigger={triggerProps => {
           return (
             <Button style={themeButtonStyle} {...triggerProps}>
-              Join a room
+              {isValidRoom(room) ? 'Change Room' : 'Join a Room'}
             </Button>
           )
         }}
@@ -56,6 +63,12 @@ export default function RoomHB() {
                 </Menu.ItemOption>
               )
             })}
+            {/* <Menu.ItemOption
+              style={themeContainerStyle}
+              value={'Create'}
+              key={99}
+              onPress={() => {handleCreateRoom}}
+            ></Menu.ItemOption> */}
         </Menu.OptionGroup>
         {/*<Divider mt="3" w="100%" />
             <Menu.OptionGroup title="Edit Rooms" type="checkbox">

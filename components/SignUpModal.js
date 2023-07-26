@@ -6,13 +6,12 @@ import {
   Center,
   Alert,
   Text,
-  KeyboardAvoidingView,
 } from 'native-base'
 import React, { useState, useContext } from 'react'
 import { UserContext, ThemeContext } from '../App'
 import { styles, colors } from '../utils/styles'
 import { useRef } from 'react'
-import { Platform } from 'react-native'
+import { Platform, KeyboardAvoidingView, View } from 'react-native'
 
 const SignUpModal = ({ visible, onClose }) => {
   const passwordRef = useRef(null)
@@ -66,85 +65,94 @@ const SignUpModal = ({ visible, onClose }) => {
   }
 
   return (
-    <Center
-      style={
-        colorScheme === 'light'
-          ? { backgroundColor: 'white' }
-          : styles.llightContainer
-      }
+    <KeyboardAvoidingView
+      // h={{
+      //   base: '400px',
+      //   lg: 'auto',
+      // }}
+      //   // w={'100%'}
+      //   // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      //   // style={{ flex: 1 }}
+      // behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <Button style={[themeButtonStyle]} onPress={() => setShowModal(true)}>
-        Sign Up
-      </Button>
-      <KeyboardAvoidingView
-        behavior="padding" enabled
-      >
-        <Modal
-          style={{
-            backgroundColor:
-              colorScheme === 'light' ? 'white' : colors.backgroundDarker,
-              // position: 'absolute',
-          }}
-          isOpen={showModal}
-          onClose={() => setShowModal(false)}
+        <Center
+          style={
+            colorScheme === 'light'
+              ? { backgroundColor: 'white' }
+              : styles.llightContainer
+          }
         >
-          <Modal.Content maxWidth='400px'>
-            <Modal.CloseButton />
-            <Modal.Header>Sign Up For Youth Connect</Modal.Header>
-            <Modal.Body>
-              <FormControl>
-                <FormControl.Label>Username</FormControl.Label>
-                <Input
-                  onChangeText={setUsername}
-                  returnKeyType='next'
-                  onSubmitEditing={() => {
-                    passwordRef.current.focus()
-                  }}
-                />
-              </FormControl>
-              <FormControl mt='3'>
-                <FormControl.Label>Password</FormControl.Label>
-                <Input
-                  ref={passwordRef}
-                  type='password'
-                  onChangeText={setPassword}
-                  returnKeyType='send'
-                  onSubmitEditing={() => {
-                    handleSubmit()
-                  }}
-                />
-              </FormControl>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button.Group space={2}>
-                <Button
-                  variant='ghost'
-                  colorScheme='blueGray'
-                  onPress={() => {
-                    setShowModal(false)
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onPress={() => {
-                    handleSubmit()
-                  }}
-                >
-                  Submit
-                </Button>
-                {alert && (
-                  <Alert variant='subtle' status='error' mt={2}>
-                    <Text>Error, Please enter all required fields</Text>
-                  </Alert>
-                )}
-              </Button.Group>
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-      </KeyboardAvoidingView>
-    </Center>
+          <Button style={[themeButtonStyle]} onPress={() => setShowModal(true)}>
+            Sign Up
+          </Button>
+          <Modal
+            style={{
+              backgroundColor:
+                colorScheme === 'light' ? 'white' : colors.backgroundDarker,
+              // position: 'absolute',
+            }}
+            isOpen={showModal}
+            onClose={() => setShowModal(false)}
+          >
+            <Modal.Content maxWidth='400px'>
+              <Modal.CloseButton />
+              <Modal.Header>Sign Up For Youth Connect</Modal.Header>
+              <Modal.Body>
+                <FormControl>
+                  <FormControl.Label>Username</FormControl.Label>
+                  <Input
+                    onChangeText={setUsername}
+                    returnKeyType='next'
+                    onSubmitEditing={() => {
+                      passwordRef.current.focus()
+                    }}
+                  />
+                </FormControl>
+                <FormControl mt='3'>
+                  <FormControl.Label>Password</FormControl.Label>
+                  <Input
+                    ref={passwordRef}
+                    type='password'
+                    onChangeText={setPassword}
+                    returnKeyType='send'
+                    onSubmitEditing={() => {
+                      handleSubmit()
+                    }}
+                  />
+                </FormControl>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button.Group space={2}>
+                  <Button
+                    variant='ghost'
+                    colorScheme='blueGray'
+                    onPress={() => {
+                      setShowModal(false)
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onPress={() => {
+                      handleSubmit()
+                    }}
+                  >
+                    Submit
+                  </Button>
+                  {alert && (
+                    <Alert variant='subtle' status='error' mt={2}>
+                      <Text>Error, Please enter all required fields</Text>
+                    </Alert>
+                  )}
+                </Button.Group>
+              </Modal.Footer>
+            </Modal.Content>
+          </Modal>
+        </Center>
+    </KeyboardAvoidingView>
   )
 }
+
 
 export default SignUpModal

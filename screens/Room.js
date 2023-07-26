@@ -21,7 +21,7 @@ import {
   KeyboardAvoidingViewBase,
 } from 'react-native'
 import RoomHB from '../components/RoomHB'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import ThemedBox from '../components/ThemedBox'
 import * as Haptics from 'expo-haptics'
 import { colors, styles } from '../utils/styles'
@@ -30,8 +30,10 @@ import socket from '../utils/socket'
 import ThemedText from '../components/ThemedText'
 import ThemedBackground from '../components/ThemedBackground'
 import { Ionicons } from '@expo/vector-icons'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function Room({ route, navigation }) {
+  const messageInputRef = useRef(null);
   const {
     colorScheme,
     bgImage,
@@ -66,12 +68,18 @@ export default function Room({ route, navigation }) {
   }
 
   useEffect(() => {
-    socket.emit('GET RECENT MESSAGES', room)
+    if (room === 'none' || room === 'Chat') {
+      navigation.navigate('Home')
+    } else {
+      console.log('ROOM CHANGED', room)
+      navigation.navigate(room)
+      socket.emit('GET RECENT MESSAGES', room)
+    }
   }, [room])
 
-  const addNewMessage = message => {
-    console.log('NEW MESSAGE', message)
-    setMessages([...messages, message])
+  const addNewMessage = payload => {
+    console.log('NEW MESSAGE', message, messages)
+    setMessages([...messages, payload])
   }
 
   const isValidRoom = room => {
@@ -101,18 +109,12 @@ export default function Room({ route, navigation }) {
   }
 
   useEffect(() => {
-    if (room === 'none' || room === 'Chat') {
-      navigation.navigate('Home')
-    } else {
-      console.log('ROOM CHANGED', room)
-      navigation.navigate(room)
-    }
-  }, [room])
-
-  useEffect(() => {
     try {
       socket.on('NEW MESSAGE', payload => {
-        addNewMessage(payload)
+        console.log('NEW MESSAGE', messages, payload)
+        if (typeof payload === 'object') {
+          setMessages([...messages, payload])
+        }
       })
     } catch (error) {
       console.error('ERROR RECEIVING MESSAGE', error)
@@ -120,8 +122,11 @@ export default function Room({ route, navigation }) {
 
     try {
       socket.on('SENDING RECENT MESSAGES', payload => {
-        console.log('RECEIVED RECENT MESSAGES')
-        setMessages(payload)
+
+        if (messages.length < 1) { // WARNING <- REMOVE ME
+          console.log('RECEIVED RECENT MESSAGES', payload)
+          setMessages(payload)
+        }
       })
     } catch (error) {
       console.error('ERROR RECEIVING RECENT MESSAGES', error)
@@ -240,33 +245,18 @@ export default function Room({ route, navigation }) {
   }
 
   return (
-    // <KeyboardAvoidingView
-    //   // h={{
-    //   //   base: '400px',
-    //   //   lg: 'auto',
-    //   // }}
-    //   // w={'100%'}
-    //   // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    //   // style={{ flex: 1 }}
-    //   behavior={Platform.OS === "ios" ? "padding" : "height"}
-    //   style={{ flex: 1 }}
-    // >
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    // style={{ flex: 1 }}
+    >
 
-    // colorScheme === 'light'
+      {/* // colorScheme === 'light'
     // ? colors.backgroundDark
-    // : colors.darkBackground
+    // : colors.darkBackground */}
 
-    <ThemedBox container={true} safeArea={true} style={{ flex: 1 }}>
-      <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
-        <KeyboardAvoidingView
-          h={{
-            base: '400px',
-            lg: 'auto',
-          }}
-          w={'100%'}
-          paddingBottom={40}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
+      < ThemedBox container={true} safeArea={true}>
+        <ThemedBackground source={bgImage} resizeMode='cover' style={{ flex: 1 }}>
           <Box flex={1} mt={15} p={3} mb={-3}>
             {!isValidRoom(room) && (
               <ThemedText
@@ -279,22 +269,10 @@ export default function Room({ route, navigation }) {
 
             {isValidRoom(room) && (
               <>
-                <Button
-                  size={'sm'}
-                  p={3}
-                  style={[themeButtonStyle]}
-                  onPress={() => {
-                    setMessages([])
-                    setRoom('none')
-                  }}
-                >
-                  Leave
-                </Button>
                 <RoomHB />
               </>
             )}
           </Box>
-
           <ScrollView
             mt={5}
             maxH={500}
@@ -310,7 +288,7 @@ export default function Room({ route, navigation }) {
                   return (
                     <HStack
                       key={i}
-                      width={'95%'}
+                      width={'80%'}
                       bg={isOutgoing ? '#05e2e6' : '#a7ef72'} //receiver color bright green
                       //bg={#05e2e6}//user color teal
                       color={'white'}
@@ -335,17 +313,17 @@ export default function Room({ route, navigation }) {
                         />
                       ) : (
                         <>
-                          <VStack
+                          {/* <VStack
                             alignItems={isOutgoing ? 'flex-end' : 'flex-start'}
-                          >
-                            <ThemedText
-                              style={{
-                                ...themeTextStyle,
-                              }}
-                              fontSize={'md'}
-                              text={`${message.username}: ${message.text}`}
-                            />
-                          </VStack>
+                          > */}
+                          <ThemedText
+                            style={{
+                              ...themeTextStyle,
+                            }}
+                            fontSize={'md'}
+                            text={`${message.username}: ${message.text}`}
+                          />
+                          {/* </VStack> */}
                           {isOutgoing && (
                             <HStack>
                               <Ionicons
@@ -399,7 +377,7 @@ export default function Room({ route, navigation }) {
               <Ionicons name='image-outline' size={24} color='black' />
             </Button>
           </HStack>
-          {/* <View style={{ flexDirection: 'row' }}> */}
+
           {user?.username && (
             <VStack width={'100%'} style={{ flex: 1 }}>
               <HStack
@@ -410,13 +388,17 @@ export default function Room({ route, navigation }) {
                 }}
               >
                 <View style={{ flex: 1 }}>
-                  {/* <FormControl.Label>Send a message</FormControl.Label> */}
                   <Input
+                    ref={messageInputRef}
                     value={message}
                     style={themeContainerStyle}
                     onChangeText={setMessage}
                     placeholder='Send a message'
                     placeholderTextColor='black'
+                    returnKeyType="send"
+                    onSubmitEditing={() => {
+                      handleSubmit()
+                    }}
                   />
                 </View>
                 <Button
@@ -426,7 +408,6 @@ export default function Room({ route, navigation }) {
                   colorScheme='cyan'
                   onPress={() => {
                     handleSubmit()
-                    // onSend(messages)
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
                   }}
                   disabled={!isValidRoom(room)}
@@ -436,9 +417,8 @@ export default function Room({ route, navigation }) {
               </HStack>
             </VStack>
           )}
-        </KeyboardAvoidingView>
-      </ThemedBackground>
-    </ThemedBox>
-    //</KeyboardAvoidingView >
+        </ThemedBackground>
+      </ThemedBox >
+    </KeyboardAwareScrollView >
   )
 }
