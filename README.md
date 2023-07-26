@@ -68,7 +68,7 @@
 
 ### How to run on your device
 
-- install expo cli 
+- **install expo cli**
 - `npx create-expo-app <your-app-name>`
 - `cd <your-app-name>`
 - `npx expo start`
