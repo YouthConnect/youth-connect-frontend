@@ -26,7 +26,7 @@
 
 - Youth connect is a mobile app built for Youth to join a safe and secure space. The app currently has support for download through the Google Play Store [Here!](https://google.com)
 
-## The purpose of Youth Connect <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
+## The purpose of Youth Connect / Problem domain  <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
     To create a safe space for interaction between users, where they can
     share, collaborate, and seek help with homework or related topics.
@@ -34,11 +34,6 @@
     user-friendly features for effective communication.
     The greatest emphasis of the app is to keep everyone safe by providing
     secured groups only accessible by people who really know each other.
-
-### Problem domain <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
-
-- ...
-- ...
 
 ### Collaboration <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
@@ -73,8 +68,14 @@
 
 ### How to run on your device
 
-- install expo cli ...
-- ...
+- install expo cli 
+- `npx create-expo-app <your-app-name>`
+- `cd <your-app-name>`
+- `npx expo start`
+- **Expo Tunnel**
+- `npm i @expo/ngrok@^4.1.0 (or higher)`
+- `npx expo start --tunnel`
+
 
 ### Please view information about the backend at [Youth Connect Backend](https://github.com/youthconnect/youth-connect-backend)
 
