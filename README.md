@@ -69,6 +69,12 @@
 ### How to run on your device <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
 
+#### For Android users:
+* [Google Play](https://play.google.com/store/apps/details?id=com.youthconnect.youthconnect)
+
+#### For iOS users:
+
+
 - **install expo cli**
 - `npm i`
 - `npx expo start`
