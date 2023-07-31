@@ -75,7 +75,7 @@
 #### For iOS users:
 
 
-- **install expo cli**
+- **[install expo cli](https://docs.expo.dev/more/expo-cli/)**
 - `npm i`
 - `npx expo start`
 - `npx expo start --tunnel` (if npx expo start does not work for you locally)
