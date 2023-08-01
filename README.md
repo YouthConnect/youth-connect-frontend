@@ -18,6 +18,8 @@
 
 </div>
 
+## [Get it on Google Play!](https://play.google.com/store/apps/details?id=com.youthconnect.youthconnect)
+
 ## What is this project? <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
 - This repository contains the source code for a front end application using the [Youth Connect Backend](https://github.com/YouthConnect/youth-connect-backend) built on [React Native](https://reactnative.dev/) and [Expo](https://docs.expo.dev)
