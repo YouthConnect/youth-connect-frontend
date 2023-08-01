@@ -26,7 +26,7 @@
 
 ## What is Youth connect? <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
-- Youth connect is a mobile app built for Youth to join a safe and secure space. The app currently has support for download through the Google Play Store [Here!](https://google.com)
+- Youth connect is a mobile app built for Youth to join a safe and secure space. The app currently has support for download through the Google Play Store [Here!]([https://google.com](https://play.google.com/store/apps/details?id=com.youthconnect.youthconnect))
 
 ## The purpose of Youth Connect / Problem domain  <img src='https://github.com/YouthConnect/youth-connect-frontend/blob/readme/assets/adaptive-icon%20copy.png?raw=true' width='20px'>
 
